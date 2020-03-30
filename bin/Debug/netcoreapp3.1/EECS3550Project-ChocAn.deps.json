@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "EECS3550Project-ChocAn/1.0.0": {
+        "runtime": {
+          "EECS3550Project-ChocAn.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "EECS3550Project-ChocAn/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
