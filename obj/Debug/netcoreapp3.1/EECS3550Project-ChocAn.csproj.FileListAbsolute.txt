@@ -1,0 +1,13 @@
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\bin\Debug\netcoreapp3.1\EECS3550Project-ChocAn.exe
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\bin\Debug\netcoreapp3.1\EECS3550Project-ChocAn.deps.json
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\bin\Debug\netcoreapp3.1\EECS3550Project-ChocAn.runtimeconfig.json
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\bin\Debug\netcoreapp3.1\EECS3550Project-ChocAn.runtimeconfig.dev.json
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\bin\Debug\netcoreapp3.1\EECS3550Project-ChocAn.dll
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\bin\Debug\netcoreapp3.1\EECS3550Project-ChocAn.pdb
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\obj\Debug\netcoreapp3.1\EECS3550Project-ChocAn.csprojAssemblyReference.cache
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\obj\Debug\netcoreapp3.1\EECS3550Project-ChocAn.csproj.CoreCompileInputs.cache
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\obj\Debug\netcoreapp3.1\EECS3550Project-ChocAn.AssemblyInfoInputs.cache
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\obj\Debug\netcoreapp3.1\EECS3550Project-ChocAn.AssemblyInfo.cs
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\obj\Debug\netcoreapp3.1\EECS3550Project-ChocAn.dll
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\obj\Debug\netcoreapp3.1\EECS3550Project-ChocAn.pdb
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\obj\Debug\netcoreapp3.1\EECS3550Project-ChocAn.genruntimeconfig.cache
