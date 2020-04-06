@@ -1,0 +1,7 @@
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\ChocAn1\bin\Debug\ChocAn.exe.config
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\ChocAn1\bin\Debug\ChocAn.exe
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\ChocAn1\bin\Debug\ChocAn.pdb
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\ChocAn1\obj\Debug\ChocAn.csprojAssemblyReference.cache
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\ChocAn1\obj\Debug\ChocAn.csproj.CoreCompileInputs.cache
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\ChocAn1\obj\Debug\ChocAn.exe
+C:\Users\adamb\Documents\GitHub\EECS3550Project-ChocAn\ChocAn1\obj\Debug\ChocAn.pdb
