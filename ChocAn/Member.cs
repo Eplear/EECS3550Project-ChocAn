@@ -14,6 +14,7 @@ namespace ChocAn
         protected string City { get; set; }
         protected string State { get; set; }
         protected int Zip { get; set; }
+        protected bool Suspended { get; set; }
 
         public Member(string name, int number, string address, string city, string state, int zip)
         {
@@ -23,6 +24,12 @@ namespace ChocAn
             this.City = city;
             this.State = state;
             this.Zip = zip;
+            Suspended = false;
+        }
+
+        void Suspend()
+        {
+            Suspended = true;
         }
     }
 }
