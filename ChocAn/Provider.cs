@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChocAn
 {
-    class Member
+    class Provider
     {
         protected string Name { get; set; }
         protected int Number { get; set; }
@@ -15,7 +15,7 @@ namespace ChocAn
         protected string State { get; set; }
         protected int Zip { get; set; }
 
-        public Member(string name, int number, string address, string city, string state, int zip)
+        public Provider(string name, int number, string address, string city, string state, int zip)
         {
             this.Name = name;
             this.Number = number;
