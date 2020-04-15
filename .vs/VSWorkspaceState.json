@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ChocAn",
+    "\\ChocAn\\bin",
+    "\\ChocAn\\Properties"
   ],
+  "SelectedNode": "\\ChocAn\\Client.cs",
   "PreviewInSolutionExplorer": false
 }
