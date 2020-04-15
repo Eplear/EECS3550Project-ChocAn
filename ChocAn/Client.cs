@@ -9,7 +9,6 @@ namespace ChocAn
     class Client
     {
         protected string  LocationCode { get; set; }
-        protected Provider CurrentProvider;
 
         public Client()
         {
@@ -27,9 +26,9 @@ namespace ChocAn
             Console.WriteLine("");
         }
 
-        bool validateCredential()
+        void validateCredential()
         {
-            bool isValid = 1;
+            bool isValid = true;
 
             Console.WriteLine("Enter location Code: ");
             LocationCode = Console.ReadLine();
@@ -39,14 +38,11 @@ namespace ChocAn
              * provider = grab location code
              */
 
-            CurrentProvider = new Provider("name", 1, "add", "cit", "state", 1);
 
             if(isValid)
             {
                 Console.WriteLine();
                 Console.Write("Location: ");
-                string temp = CurrentProvider.Name;
-                Console.WriteLine(temp);
 
             } 
 
@@ -55,9 +51,5 @@ namespace ChocAn
                 Console.Write("> Invalid location code.");
             }
         }
-
-
-
-
     }
 }
