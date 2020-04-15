@@ -8,10 +8,12 @@ namespace ChocAn
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine("Hellow World!");
-            Client client = new Client();
+            Client client = new Client();;
+            
         }
+        
     }
 }

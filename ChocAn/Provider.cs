@@ -24,5 +24,10 @@ namespace ChocAn
             this.State = state;
             this.Zip = zip;
         }
+
+        public int getHelp()
+        {
+            return 0;
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChocAn
 {
-    public class Client
+    class Client
     {
         protected string  LocationCode { get; set; }
         protected Provider CurrentProvider;
