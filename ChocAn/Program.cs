@@ -11,8 +11,6 @@ namespace ChocAn
         static void Main(string[] args)
         {
             Console.WriteLine("Hellow World!");
-
-            //push test Josh
         }
     }
 }
