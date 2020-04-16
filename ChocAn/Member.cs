@@ -8,13 +8,13 @@ namespace ChocAn
 {
     class Member
     {
-        protected string Name { get; set; }
-        protected int Number { get; set; }
-        protected string Address { get; set; }
-        protected string City { get; set; }
-        protected string State { get; set; }
-        protected int Zip { get; set; }
-        protected bool Suspended { get; set; }
+        public string Name { get; set; }
+        public int Number { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public int Zip { get; set; }
+        public bool Suspended { get; set; }
 
         public Member(string name, int number, string address, string city, string state, int zip)
         {

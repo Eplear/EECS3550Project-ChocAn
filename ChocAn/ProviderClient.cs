@@ -8,10 +8,12 @@ namespace ChocAn
 {
     class ProviderClient
     {
-        const int maxNumTries = 5;
-        protected string  LocationCode { get; set; }
+        const int maxLoginAttempts = 5;
+
+        //protected string LocationCode;
 
         protected Provider provider;
+        protected Member member;
         
         //main constructor and process
         public ProviderClient()
@@ -23,7 +25,7 @@ namespace ChocAn
             while (!isValidLocation())
             {
                 numTries++;
-                if (numTries == maxNumTries)
+                if (numTries >= maxLoginAttempts)
                 {
                     Console.WriteLine("> Maximum number of attempts exceeded. Please Exit.");
                     while (true) ;
@@ -54,16 +56,16 @@ namespace ChocAn
 
             Console.WriteLine();
             Console.Write("Enter location Code: ");
-            LocationCode = Console.ReadLine();
+            string LocationCode = Console.ReadLine();
             // use Provider class to validate location code
 
             /*
              * provider = grab location code
-             * 
              */
 
             //DEBUG
             provider = new Provider("Promedica", 92, "1945 Heiss Road", "Monore", "MI", 48162);
+            
             if(LocationCode == provider.Number.ToString()) isValid = true;
 
             if (isValid)
@@ -80,7 +82,8 @@ namespace ChocAn
 
             else
             {
-                Console.WriteLine("> Invalid location code '" + LocationCode + "'. Acess Denied.");
+                Console.WriteLine("> Invalid location code '" + LocationCode);
+                Console.WriteLine("> Access Denied.");
             }
 
             return isValid;
@@ -88,10 +91,9 @@ namespace ChocAn
         void printLegend()
         {
             Console.WriteLine("----------------------------- Legend ------------------------------");
-            Console.WriteLine("\ta - Log Service");
-            Console.WriteLine("\tb - Add User");
-            Console.WriteLine("\tc - Delete User");
-            Console.WriteLine("\td - Exit");
+            Console.WriteLine(" 1 - Check member status");
+            Console.WriteLine(" 2 - Log Service");
+            Console.WriteLine(" e - Exit");
             Console.WriteLine("-------------------------------------------------------------------");
         }
 
@@ -100,33 +102,31 @@ namespace ChocAn
         bool executeCommands()
         {
             bool done = false;
-            char cmd;
+            
+
+            Console.WriteLine();
             Console.Write("Enter a command: ");
-            cmd = char.Parse(Console.ReadLine());
+            char cmd;
+            
+            if (!char.TryParse(Console.ReadLine(), out cmd)) cmd = ' '; //send to default case
 
             switch (cmd)
             {
-                case 'a':
-                    Console.WriteLine("> Log Service");
-                    Console.WriteLine();
+                case '1':
+                    Console.WriteLine("> Check member status");
+                    checkMemberStatus();
                     break;
-                case 'b':
-                    Console.WriteLine("> Add user");
-                    Console.WriteLine();
+                case '2':
+                    Console.WriteLine("> Log service");
+                    logService();
                     break;
-                case 'c':
-                    Console.WriteLine("> Delete user");
-                    Console.WriteLine();
-                    break;
-                case 'd': //done
-                    Console.WriteLine("> Exiting.");
+                case 'e': //done
+                    Console.WriteLine("> Exiting");
                     done = true;
                     break;
                 default:
                     Console.WriteLine("> Invalid command");
-                    Console.WriteLine();
                     break;
-
             }
             return done;
         }
@@ -135,6 +135,103 @@ namespace ChocAn
         {
             Console.WriteLine("----------------------------- Goodbye -----------------------------");
             Console.WriteLine("");
+        }
+
+        //command functions follow:
+        bool checkMemberStatus()
+        {
+            bool isValid = false;
+            
+            Console.Write("> Slide member card (type #): ");
+            string MemberNumber = Console.ReadLine();
+
+            /*
+             * member = grab member number
+             * isValid = true;
+             */
+
+            //Debug
+            member = new Member("Josh", 123, "1945 Heiss Road", "Monroe", "MI", 48162);
+            if(MemberNumber == member.Number.ToString()) isValid = true;
+
+            if (isValid)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Account #: " + MemberNumber);
+
+                if (member.Suspended)
+                {
+                    Console.WriteLine("Status:    Suspended");
+                    isValid = false;
+                }
+                else
+                {
+                    Console.WriteLine("Status:    Active");
+                }
+            } 
+            else
+            {
+                Console.WriteLine("> Account not found");
+            }
+
+            return isValid;
+        }
+
+        void logService()
+        {
+
+            if (!checkMemberStatus()) return;
+
+            Console.WriteLine();
+            Console.Write("> Enter date of service (MM-DD-YYYY): ");
+            DateTime dateOfService;
+            while (true)
+            {
+                if (DateTime.TryParse(Console.ReadLine(), out dateOfService)) break;
+                Console.Write("> Enter a valid date MM-DD-YYYY:      ");
+            }
+
+            Console.Write("> Enter name of service:              ");
+            string nameOfService = Console.ReadLine();
+
+            Console.Write("> Enter service code:                 ");
+            int serviceCode;// = Int32.Parse(Console.ReadLine());
+            while (true)
+            {
+                if (Int32.TryParse(Console.ReadLine(), out serviceCode)) break;
+                Console.Write("> Enter a numeric service code:       ");
+            }
+
+            //validate service code
+
+            Console.Write("> Enter service fee:                  ");
+            double serviceFee;
+            while(true)
+            {
+                if (double.TryParse(Console.ReadLine(), out serviceFee)) break;
+                Console.Write("> Enter a valid fee:                  ");
+            }
+
+            Service service = new Service(dateOfService, dateOfService, "comp", provider.Name, nameOfService, member.Name, member.Number, serviceCode, serviceFee);
+
+            Console.Write("> Would you like to log service? y/n: ");
+            char cmd;
+            while (true)
+            {
+                if (char.TryParse(Console.ReadLine(), out cmd)) break;
+                Console.Write("Enter a y or n: ");
+            }
+
+            if (char.ToUpperInvariant(cmd) == 'Y')
+            {
+                //log service
+                //if properly logged
+                    Console.WriteLine("> Service logged");
+            }
+            else
+            {
+                Console.WriteLine("> Service not logged");
+            }
         }
     }
 }

@@ -8,28 +8,33 @@ namespace ChocAn
 {
     class Service
     {
-        protected DateTime DateOfService { get; set; }
-        protected DateTime DateReceived { get; set; }
-        protected string Computer { get; set; }
-        protected string ProviderName { get; set; }
-        protected string ServiceName { get; set; }
-        protected string MemberName { get; set; }
-        protected int MemberNumber { get; set; }
-        protected int ServiceCode { get; set; }
-        protected double Fee { get; set; }
+        public DateTime DateOfService { get; set; }
+        public DateTime DateReceived { get; set; }
+        public string Computer { get; set; }
+        public string ProviderName { get; set; }
+        public string ServiceName { get; set; }
+        public string MemberName { get; set; }
+        public int MemberNumber { get; set; }
+        public int ServiceCode { get; set; }
+        public double Fee { get; set; }
+
+        public Service()
+        {
+
+        }
 
         public Service(DateTime dateOfService, DateTime dateReceived, string computer, string providerName,
             string serviceName, string memberName, int memberNumber, int serviceCode, double fee)
         {
-            DateOfService = dateOfService;
-            DateReceived = dateReceived;
-            Computer = computer;
-            ProviderName = providerName;
-            ServiceName = serviceName;
-            MemberName = memberName;
-            MemberNumber = memberNumber;
-            ServiceCode = serviceCode;
-            Fee = fee;
+            this.DateOfService = dateOfService;
+            this.DateReceived = dateReceived;
+            this.Computer = computer;
+            this.ProviderName = providerName;
+            this.ServiceName = serviceName;
+            this.MemberName = memberName;
+            this.MemberNumber = memberNumber;
+            this.ServiceCode = serviceCode;
+            this.Fee = fee;
         }
     }
 }
