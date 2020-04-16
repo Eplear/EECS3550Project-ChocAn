@@ -13,23 +13,9 @@ namespace ChocAn
 
         public static void Main(string[] args)
         {
+
             ProviderClient provider_client = new ProviderClient();
-
-            provider_client.printHeader();
-
-            int numTries = 0;
-            while(!provider_client.isValidLocation())
-            {
-                numTries++;
-                if (numTries == maxNumTries)
-                {
-                    Console.WriteLine("> Maximum number of attempts exceeded. Please Exit.");
-                    while (true) ;
-                }
-            }
-            provider_client.printFooter();
-
-            while (true) ;
+            
         }
         
     }

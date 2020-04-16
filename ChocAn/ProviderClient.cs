@@ -8,27 +8,43 @@ namespace ChocAn
 {
     class ProviderClient
     {
+        const int maxNumTries = 5;
         protected string  LocationCode { get; set; }
 
         protected Provider provider;
         
         public ProviderClient()
         {
+            printHeader();
 
+            int numTries = 0;
+            while (!isValidLocation())
+            {
+                numTries++;
+                if (numTries == maxNumTries)
+                {
+                    Console.WriteLine("> Maximum number of attempts exceeded. Please Exit.");
+                    while (true) ;
+                }
+            }
+            
+            //include other operations
+            while (true) ;
+            printFooter();
         }
 
-        public void printHeader()
+        void printHeader()
         {
             Console.WriteLine("---------------------- Chocoholics Anonymous ----------------------");
         }
 
-        public void printFooter()
+        void printFooter()
         {
             Console.WriteLine("----------------------------- Goodbye -----------------------------");
             Console.WriteLine("");
         }
 
-        public bool isValidLocation()
+        bool isValidLocation()
         {
             bool isValid = false;
 
