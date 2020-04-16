@@ -11,9 +11,9 @@ namespace ChocAn
         public string Name { get; set; }
         public int Number { get; set; }
         public string Address { get; set; }
-        protected string City { get; set; }
-        protected string State { get; set; }
-        protected int Zip { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public int Zip { get; set; }
 
         public Provider(string name, int number, string address, string city, string state, int zip)
         {

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataCenter.cs" />
+    <Compile Include="ManagerClient.cs" />
     <Compile Include="ProviderClient.cs" />
     <Compile Include="Member.cs" />
     <Compile Include="Program.cs" />

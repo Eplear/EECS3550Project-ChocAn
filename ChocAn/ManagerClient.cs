@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ChocAn
 {
-    class DataCenter
+    class ManagerClient
     {
-        public DataCenter()
+
+        public ManagerClient()
         {
 
         }

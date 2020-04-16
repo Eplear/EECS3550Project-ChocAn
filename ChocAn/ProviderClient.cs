@@ -13,10 +13,12 @@ namespace ChocAn
 
         protected Provider provider;
         
+        //main constructor and process
         public ProviderClient()
         {
             printHeader();
 
+            ///provide user with finite attempts to provide valid loaction
             int numTries = 0;
             while (!isValidLocation())
             {
@@ -27,10 +29,17 @@ namespace ChocAn
                     while (true) ;
                 }
             }
+
+            printLegend();
             
+            //continueally ask for command until 'Exit'
+            while (!executeCommands()) ;
+
             //include other operations
-            while (true) ;
+            
             printFooter();
+
+            while (true) ;
         }
 
         void printHeader()
@@ -38,12 +47,7 @@ namespace ChocAn
             Console.WriteLine("---------------------- Chocoholics Anonymous ----------------------");
         }
 
-        void printFooter()
-        {
-            Console.WriteLine("----------------------------- Goodbye -----------------------------");
-            Console.WriteLine("");
-        }
-
+        //get location code and test if its valid
         bool isValidLocation()
         {
             bool isValid = false;
@@ -66,9 +70,10 @@ namespace ChocAn
             {
                 Console.WriteLine("> Access granted.");
                 Console.WriteLine();
-                Console.WriteLine("-------------------------------------------------------------------");
-                Console.WriteLine("Provider: " + provider.Name);
-                Console.WriteLine("Location: " + provider.Address);
+                Console.WriteLine("-------------------------- Information ----------------------------");
+                Console.WriteLine("Provider:\t" + provider.Name);
+                Console.WriteLine("Location:\t" + provider.Address);
+                Console.WriteLine("\t\t" + provider.City + ", " + provider.State + " " + provider.Zip);
                 Console.WriteLine("-------------------------------------------------------------------");
                 Console.WriteLine();
             } 
@@ -79,6 +84,57 @@ namespace ChocAn
             }
 
             return isValid;
+        }
+        void printLegend()
+        {
+            Console.WriteLine("----------------------------- Legend ------------------------------");
+            Console.WriteLine("\ta - Log Service");
+            Console.WriteLine("\tb - Add User");
+            Console.WriteLine("\tc - Delete User");
+            Console.WriteLine("\td - Exit");
+            Console.WriteLine("-------------------------------------------------------------------");
+        }
+
+        //get command and execute
+        //return true if cmd was 'Exit'
+        bool executeCommands()
+        {
+            bool done = false;
+            char cmd;
+            Console.Write("Enter a command: ");
+            cmd = char.Parse(Console.ReadLine());
+
+            switch (cmd)
+            {
+                case 'a':
+                    Console.WriteLine("> Log Service");
+                    Console.WriteLine();
+                    break;
+                case 'b':
+                    Console.WriteLine("> Add user");
+                    Console.WriteLine();
+                    break;
+                case 'c':
+                    Console.WriteLine("> Delete user");
+                    Console.WriteLine();
+                    break;
+                case 'd': //done
+                    Console.WriteLine("> Exiting.");
+                    done = true;
+                    break;
+                default:
+                    Console.WriteLine("> Invalid command");
+                    Console.WriteLine();
+                    break;
+
+            }
+            return done;
+        }
+
+        void printFooter()
+        {
+            Console.WriteLine("----------------------------- Goodbye -----------------------------");
+            Console.WriteLine("");
         }
     }
 }

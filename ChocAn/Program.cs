@@ -9,12 +9,25 @@ namespace ChocAn
 {
     class Program
     {
-        const int maxNumTries = 5;
+        const bool OPERATOR_PROVIDER = true;
+        const bool OPERATOR_MANAGER  = false;
 
         public static void Main(string[] args)
         {
+            //generate 'database' from files
+            DataCenter database = new DataCenter();
 
-            ProviderClient provider_client = new ProviderClient();
+            //enter if terminal should be provider
+            if (OPERATOR_PROVIDER)
+            {
+                ProviderClient client = new ProviderClient();
+            }
+
+            //enter if terminal should be provider
+            if (OPERATOR_MANAGER)
+            {
+                ManagerClient client = new ManagerClient();
+            }
             
         }
         
