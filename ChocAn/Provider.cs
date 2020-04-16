@@ -8,9 +8,9 @@ namespace ChocAn
 {
     class Provider
     {
-        protected string Name { get; set; }
-        protected int Number { get; set; }
-        protected string Address { get; set; }
+        public string Name { get; set; }
+        public int Number { get; set; }
+        public string Address { get; set; }
         protected string City { get; set; }
         protected string State { get; set; }
         protected int Zip { get; set; }
