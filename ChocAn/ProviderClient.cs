@@ -16,10 +16,10 @@ namespace ChocAn
         protected Member member;
         
         //main constructor and process
-        public ProviderClient()
+        public ProviderClient(DataCenter.LoginToken token)
         {
             printHeader();
-
+            
             ///provide user with finite attempts to provide valid loaction
             int numTries = 0;
             while (!isValidLocation())
@@ -202,7 +202,7 @@ namespace ChocAn
                 Console.Write("> Enter a numeric service code:       ");
             }
 
-            //validate service code
+            //TODO validate service code
 
             Console.Write("> Enter service fee:                  ");
             double serviceFee;
@@ -212,7 +212,10 @@ namespace ChocAn
                 Console.Write("> Enter a valid fee:                  ");
             }
 
-            Service service = new Service(dateOfService, dateOfService, "comp", provider.Name, nameOfService, member.Name, member.Number, serviceCode, serviceFee);
+            Console.WriteLine("> Enter any comments:");
+            string comment = Console.ReadLine();
+
+            Service service = new Service(dateOfService, dateOfService, "comp", provider.Name, provider.Number, nameOfService, member.Name, member.Number, serviceCode, comment, serviceFee);
 
             Console.Write("> Would you like to log service? y/n: ");
             char cmd;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChocAn
 {
-    class Member
+    public class Member
     {
         public string Name { get; set; }
         public int Number { get; set; }

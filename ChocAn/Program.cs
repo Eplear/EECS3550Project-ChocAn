@@ -20,7 +20,7 @@ namespace ChocAn
             //enter if terminal should be provider
             if (OPERATOR_PROVIDER)
             {
-                ProviderClient client = new ProviderClient();
+                ProviderClient client = new ProviderClient(database.GenerateLoginToken());
             }
 
             //enter if terminal should be provider
