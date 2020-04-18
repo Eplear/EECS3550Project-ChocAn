@@ -27,9 +27,20 @@ namespace ChocAn
             Suspended = false;
         }
 
-        void Suspend()
+        public void Suspend()
         {
             Suspended = true;
+        }
+        public string ServiceReport()
+        {
+            string result = Name + "\n" + Number + "\n" + Address + "\n"
+                + City + "\n" + State + "\n" + Zip + "\n";
+            /* For each service:
+             *  Date Of Service
+             *  Proider Name
+             *  Service Name
+             */
+            return result;
         }
     }
 }
