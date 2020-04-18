@@ -36,9 +36,14 @@ namespace ChocAn
             this.ServiceCode = serviceCode;
             this.Fee = fee;
         }
-        public string ServiceReport()
+        public string MemberReport()
         {
             return DateOfService + "\n" + ProviderName + "\n" + ServiceName + "\n"; 
+        }
+        public string ProviderReport()
+        {
+            return DateOfService + "\n" + DateReceived + "\n" + MemberName + "\n" + 
+                MemberNumber + "\n" + ServiceCode + "\n" + Fee;
         }
     }
 }
