@@ -40,5 +40,14 @@ namespace ChocAn
             this.Comments = comments;
             this.Fee = fee;
         }
+        public string MemberReport()
+        {
+            return DateOfService + "\n" + ProviderName + "\n" + ServiceName + "\n"; 
+        }
+        public string ProviderReport()
+        {
+            return DateOfService + "\n" + DateReceived + "\n" + MemberName + "\n" + 
+                MemberNumber + "\n" + ServiceCode + "\n" + Fee;
+        }
     }
 }

@@ -29,5 +29,30 @@ namespace ChocAn
         {
             return 0;
         }
+        public string ServiceReport()
+        {
+            string result = Name + "\n" + Number + "\n" + Address + "\n" + City
+                + "\n" + State + "\n" + Zip + "\n";
+            /*For each service:
+             *  Date Of Service
+             *  Date Received by Computer 
+             *  Member Name
+             *  Memeber Number
+             *  Service Code
+             *  Fee to be paid
+             */
+            result += NumberOfConsultations() + "\n" + TotalFee();
+            return result;
+        }
+        //WIP
+        public int NumberOfConsultations()
+        {
+            return 0;
+        }
+        //WIP
+        public int TotalFee()
+        {
+            return 0;
+        }
     }
 }
