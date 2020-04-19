@@ -8,14 +8,38 @@ namespace ChocAn
     public class DataCenter
     {
         private readonly SQLiteConnection sqliteConn = CreateConnection();
-
+        protected Hashtable ProviderDirectory;
         public DataCenter()
         {
             CreateTable(sqliteConn);
             ReadData(sqliteConn);
             sqliteConn.Close();
+            InitializeDirectory();
         }
-
+        public void InitializeDirectory()
+        {
+            ProviderDirectory.Add(246894, "Therapy Session");
+            ProviderDirectory.Add(634378, "Swimming Lessons");
+            ProviderDirectory.Add(448238, "Physical Checkup");
+            ProviderDirectory.Add(893209, "Dental Cleaning");
+            ProviderDirectory.Add(435248, "Rahab");
+            ProviderDirectory.Add(234546, "Prescription Filling");
+            ProviderDirectory.Add(567467, "Prescription Refill");
+            ProviderDirectory.Add(213579, "STD Testing");
+            ProviderDirectory.Add(980343, "Kidney Transplant");
+            ProviderDirectory.Add(108375, "Physical Therapy");
+        }
+        public string FetchService(int key)
+        {
+            try
+            {
+                return (string)ProviderDirectory[key];
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public bool? ValidateMember(int memNum)
         {
             bool? isValid = false;
