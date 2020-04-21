@@ -69,6 +69,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider.cs" />
+    <Compile Include="Report.cs" />
     <Compile Include="Service.cs" />
   </ItemGroup>
   <ItemGroup>

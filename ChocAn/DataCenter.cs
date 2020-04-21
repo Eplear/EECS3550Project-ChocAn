@@ -8,7 +8,7 @@ namespace ChocAn
     public class DataCenter
     {
         private readonly SQLiteConnection sqliteConn = CreateConnection();
-        protected Hashtable ProviderDirectory;
+        public Hashtable ProviderDirectory;
         public DataCenter()
         {
             CreateTable(sqliteConn);
@@ -18,6 +18,7 @@ namespace ChocAn
         }
         public void InitializeDirectory()
         {
+            ProviderDirectory = new Hashtable();
             ProviderDirectory.Add(246894, "Therapy Session");
             ProviderDirectory.Add(634378, "Swimming Lessons");
             ProviderDirectory.Add(448238, "Physical Checkup");

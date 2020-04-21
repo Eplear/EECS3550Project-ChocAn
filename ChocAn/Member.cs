@@ -35,6 +35,7 @@ namespace ChocAn
         {
             string result = Name + "\n" + Number + "\n" + Address + "\n"
                 + City + "\n" + State + "\n" + Zip + "\n";
+            string path = "MemberReports/" + Name + ".txt";
             /* For each service:
              *  Date Of Service
              *  Proider Name
