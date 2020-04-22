@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace ChocAn
-{
+{ 
     class Program
     {
-        const bool OPERATOR_PROVIDER = true;
-        const bool OPERATOR_MANAGER  = false;
+        const bool PROVIDER_TERMINAL = true;
+        const bool MANAGER_TERMINAL  = false;
+
+        static public DataCenter database = new DataCenter();
 
         public static void Main(string[] args)
         {
             //generate 'database' from files
-            DataCenter database = new DataCenter();
+            //DataCenter database = new DataCenter();
 
             //Initialize report class
             Report report = new Report();
@@ -29,18 +30,16 @@ namespace ChocAn
             report.CleanupDirectories();
 
             //enter if terminal should be provider
-            if (OPERATOR_PROVIDER)
+            if (PROVIDER_TERMINAL)
             {
                 ProviderClient client = new ProviderClient(database.GenerateLoginToken());
             }
 
             //enter if terminal should be provider
-            if (OPERATOR_MANAGER)
+            if (MANAGER_TERMINAL)
             {
                 ManagerClient client = new ManagerClient();
             }
-            
-        }
-        
+        }        
     }
 }
