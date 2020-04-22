@@ -43,12 +43,12 @@ namespace ChocAn
                 return null;
             }
         }
-        public bool? ValidateMember(int memNum)
+        public bool? ValidateMember(String memNum)
         {
             bool? isValid = false;
             int found = 0;
             var sqliteCmd = sqliteConn.CreateCommand();
-            sqliteCmd.CommandText = "SELECT EXISTS(SELECT 1 FROM member WHERE mNum = " + memNum.ToString() + "); ";
+            sqliteCmd.CommandText = "SELECT EXISTS(SELECT 1 FROM member WHERE mNum = " + memNum + "); ";
             try
             {
                 found = sqliteCmd.ExecuteNonQuery();
@@ -65,7 +65,28 @@ namespace ChocAn
                 isValid = true;
             }
 
-            
+            return isValid;
+        }
+
+        public bool validateProvider(String provNum)
+        {
+            bool isValid = false;
+            int found = 0;
+            var sqliteCmd = sqliteConn.CreateCommand();
+            sqliteCmd.CommandText = "SELECT EXISTS(SELECT 1 FROM provider WHERE mNum = " + provNum + "); ";
+            try
+            {
+                found = sqliteCmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                Console.WriteLine("ERROR: Provider number not found.");
+            }
+
+            if (found >= 1)
+            {
+                isValid = true;
+            }
 
             return isValid;
         }
@@ -204,7 +225,6 @@ namespace ChocAn
             sqliteCmd.CommandText = createServTable;
             sqliteCmd.ExecuteNonQuery();
         }
-
 
         private static void ReadData(SQLiteConnection conn)
         {

@@ -18,11 +18,11 @@ namespace ChocAn
         //main constructor and process
         public ProviderClient(DataCenter.LoginToken token)
         {
-            printHeader();
+            PrintHeader();
             
             ///provide user with finite attempts to provide valid loaction
             int numTries = 0;
-            while (!isValidLocation())
+            while (!IsValidLocation())
             {
                 numTries++;
                 if (numTries >= maxLoginAttempts)
@@ -32,42 +32,34 @@ namespace ChocAn
                 }
             }
 
-            printLegend();
+            PrintLegend();
             
             //continueally ask for command until 'Exit'
-            while (!executeCommands()) ;
+            while (!ExecuteCommands()) ;
 
             //include other operations
             
-            printFooter();
+            PrintFooter();
 
             while (true) ;
         }
 
-        void printHeader()
+        void PrintHeader()
         {
             Console.WriteLine("---------------------- Chocoholics Anonymous ----------------------");
         }
 
         //get location code and test if its valid
-        bool isValidLocation()
+        bool IsValidLocation()
         {
-            bool isValid = false;
+            bool isValid;
 
             Console.WriteLine();
             Console.Write("Enter location Code: ");
             string LocationCode = Console.ReadLine();
-            // use Provider class to validate location code
 
-            /*
-             * provider = grab location code
-             */
-
-            //DEBUG
-            provider = new Provider("Promedica", 92, "1945 Heiss Road", "Monore", "MI", 48162);
-            
-            if(LocationCode == provider.Number.ToString()) isValid = true;
-
+            isValid = Program.database.validateProvider(LocationCode);
+           
             if (isValid)
             {
                 Console.WriteLine("> Access granted.");
@@ -88,7 +80,7 @@ namespace ChocAn
 
             return isValid;
         }
-        void printLegend()
+        void PrintLegend()
         {
             Console.WriteLine("----------------------------- Legend ------------------------------");
             Console.WriteLine(" 1 - Check member status");
@@ -97,28 +89,28 @@ namespace ChocAn
             Console.WriteLine("-------------------------------------------------------------------");
         }
 
-        //get command and execute
-        //return true if cmd was 'Exit'
-        bool executeCommands()
+        /*
+         * get command and execute
+         * return true if cmd was 'Exit'
+        */
+        bool ExecuteCommands()
         {
             bool done = false;
             
-
             Console.WriteLine();
             Console.Write("Enter a command: ");
-            char cmd;
-            
-            if (!char.TryParse(Console.ReadLine(), out cmd)) cmd = ' '; //send to default case
+
+            if (!char.TryParse(Console.ReadLine(), out char cmd)) cmd = ' '; //send to default case
 
             switch (cmd)
             {
                 case '1':
                     Console.WriteLine("> Check member status");
-                    checkMemberStatus();
+                    CheckMemberStatus();
                     break;
                 case '2':
                     Console.WriteLine("> Log service");
-                    logService();
+                    LogService();
                     break;
                 case 'e': //done
                     Console.WriteLine("> Exiting");
@@ -131,63 +123,53 @@ namespace ChocAn
             return done;
         }
 
-        void printFooter()
+        void PrintFooter()
         {
             Console.WriteLine("----------------------------- Goodbye -----------------------------");
             Console.WriteLine("");
         }
 
         //command functions follow:
-        bool checkMemberStatus()
+        bool? CheckMemberStatus()
         {
-            bool isValid = false;
-            
             Console.Write("> Slide member card (type #): ");
             string MemberNumber = Console.ReadLine();
 
-            /*
-             * member = grab member number
-             * isValid = true;
-             */
+            //isValid = database.ValidateMember(123);
+            bool? memStatus = Program.database.ValidateMember(MemberNumber);
 
-            //Debug
-            member = new Member("Josh", 123, "1945 Heiss Road", "Monroe", "MI", 48162);
-            if(MemberNumber == member.Number.ToString()) isValid = true;
-
-            if (isValid)
+            switch (memStatus)
             {
-                Console.WriteLine();
-                Console.WriteLine("Account #: " + MemberNumber);
-
-                if (member.Suspended)
-                {
-                    Console.WriteLine("Status:    Suspended");
-                    isValid = false;
-                }
-                else
-                {
+                case true:
+                    Console.WriteLine();
+                    Console.WriteLine("Account #: " + MemberNumber);
                     Console.WriteLine("Status:    Active");
-                }
-            } 
-            else
-            {
-                Console.WriteLine("> Account not found");
+                    break;
+                case false:
+                    Console.WriteLine();
+                    Console.WriteLine("Account #: " + MemberNumber);
+                    Console.WriteLine("Status:    Susepended");
+                    break;
+                default:
+                    Console.WriteLine("> Account not found");
+                    break;
             }
 
-            return isValid;
+            return memStatus;
         }
 
-        void logService()
+        void LogService()
         {
-
-            if (!checkMemberStatus()) return;
+            if (CheckMemberStatus() == true) return;
 
             Console.WriteLine();
             Console.Write("> Enter date of service (MM-DD-YYYY): ");
             DateTime dateOfService;
+            
             while (true)
             {
                 if (DateTime.TryParse(Console.ReadLine(), out dateOfService)) break;
+                
                 Console.Write("> Enter a valid date MM-DD-YYYY:      ");
             }
 
@@ -196,6 +178,7 @@ namespace ChocAn
 
             Console.Write("> Enter service code:                 ");
             int serviceCode;// = Int32.Parse(Console.ReadLine());
+            
             while (true)
             {
                 if (Int32.TryParse(Console.ReadLine(), out serviceCode)) break;
@@ -206,9 +189,11 @@ namespace ChocAn
 
             Console.Write("> Enter service fee:                  ");
             double serviceFee;
+            
             while(true)
             {
                 if (double.TryParse(Console.ReadLine(), out serviceFee)) break;
+                
                 Console.Write("> Enter a valid fee:                  ");
             }
 
@@ -219,9 +204,11 @@ namespace ChocAn
 
             Console.Write("> Would you like to log service? y/n: ");
             char cmd;
+            
             while (true)
             {
                 if (char.TryParse(Console.ReadLine(), out cmd)) break;
+                
                 Console.Write("Enter a y or n: ");
             }
 
