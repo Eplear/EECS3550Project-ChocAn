@@ -33,9 +33,8 @@ namespace ChocAn
         }
         public string ServiceReport()
         {
-            string result = Name + "\n" + Number + "\n" + Address + "\n"
-                + City + "\n" + State + "\n" + Zip + "\n";
-            string path = "MemberReports/" + Name + ".txt";
+            string result = "Name: " + Name + "\nMember Number: " + Number + "\nStreet Address: " + Address + "\nCity: "
+                + City + "\nState: " + State + "\nZipcode: " + Zip + "\n";
             /* For each service:
              *  Date Of Service
              *  Proider Name

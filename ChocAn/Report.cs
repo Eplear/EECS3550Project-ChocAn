@@ -8,7 +8,7 @@ using System.IO;
 namespace ChocAn
 {
     /* Report Class
-     * Used to write text file reports
+     * Writes reports into text files
      */
     class Report
     {

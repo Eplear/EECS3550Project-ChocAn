@@ -229,7 +229,7 @@ namespace ChocAn
             {
                 //log service
                 //if properly logged
-                    Console.WriteLine("> Service logged");
+                Console.WriteLine("> Service logged");
             }
             else
             {
