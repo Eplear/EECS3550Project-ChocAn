@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BankRecord.cs" />
     <Compile Include="DataCenter.cs" />
     <Compile Include="ManagerClient.cs" />
     <Compile Include="ProviderClient.cs" />
