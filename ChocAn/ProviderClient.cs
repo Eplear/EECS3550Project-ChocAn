@@ -4,23 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/* To do
+ * - initialize a provider from code
+ * - check that service was properly logged
+ */
+
 namespace ChocAn
 {
     class ProviderClient
     {
         const int maxLoginAttempts = 5;
-
-        //protected string LocationCode;
-
-        protected Provider provider;
-        protected Member member;
+        const string PROVIDER_DIRECTORY = "ProviderDirecotry.pdf";
         
-        //main constructor and process
+        /*
+         * Main constructor
+         * implements functions and creates the terminal interface
+         */
         public ProviderClient(DataCenter.LoginToken token)
         {
+            //beginning
             PrintHeader();
             
-            ///provide user with finite attempts to provide valid loaction
+            ///provide Provider with finite attempts to provide valid loaction
             int numTries = 0;
             while (!IsValidLocation())
             {
@@ -36,29 +41,38 @@ namespace ChocAn
             
             //continueally ask for command until 'Exit'
             while (!ExecuteCommands()) ;
-
-            //include other operations
             
             PrintFooter();
 
-            while (true) ;
+            Environment.Exit(0);
         }
 
+
+        /*
+         *  Type that appears at the beginning top of terminal
+         */
         void PrintHeader()
         {
             Console.WriteLine("---------------------- Chocoholics Anonymous ----------------------");
         }
 
-        //get location code and test if its valid
+
+        /*
+         * Prompt Provider for provider number
+         * return true if location exists in database
+         */
         bool IsValidLocation()
         {
             bool isValid;
 
             Console.WriteLine();
-            Console.Write("Enter location Code: ");
+            Console.Write("Enter provider number: ");
             string LocationCode = Console.ReadLine();
 
-            isValid = Program.database.validateProvider(LocationCode);
+            isValid = Program.database.ValidateProvider(LocationCode);
+            
+            // get provider details from number
+            Provider provider = new Provider("name", 123, "add", "city", "st", 4000);
            
             if (isValid)
             {
@@ -74,12 +88,17 @@ namespace ChocAn
 
             else
             {
-                Console.WriteLine("> Invalid location code '" + LocationCode);
+                Console.WriteLine("> Invalid provider number '" + LocationCode);
                 Console.WriteLine("> Access Denied.");
             }
 
             return isValid;
         }
+
+
+        /*
+         * print list of executable commands
+         */
         void PrintLegend()
         {
             Console.WriteLine("----------------------------- Legend ------------------------------");
@@ -89,13 +108,14 @@ namespace ChocAn
             Console.WriteLine("-------------------------------------------------------------------");
         }
 
+
         /*
          * get command and execute
          * return true if cmd was 'Exit'
-        */
+         */
         bool ExecuteCommands()
         {
-            bool done = false;
+            bool exit = false;
             
             Console.WriteLine();
             Console.Write("Enter a command: ");
@@ -112,30 +132,40 @@ namespace ChocAn
                     Console.WriteLine("> Log service");
                     LogService();
                     break;
-                case 'e': //done
+                case 'e':
                     Console.WriteLine("> Exiting");
-                    done = true;
+                    exit = true;
                     break;
                 default:
                     Console.WriteLine("> Invalid command");
                     break;
             }
-            return done;
+            return exit;
         }
 
+
+        /*
+         * type that appears at the bottom of the terminal
+         */
         void PrintFooter()
         {
             Console.WriteLine("----------------------------- Goodbye -----------------------------");
             Console.WriteLine("");
         }
 
-        //command functions follow:
+
+        /*
+         * Prompt Provider to slide member card
+         * check member status
+         * return false if member does not exist
+         * return true if member is valid
+         * return null if member is suspended
+         */
         bool? CheckMemberStatus()
         {
             Console.Write("> Slide member card (type #): ");
             string MemberNumber = Console.ReadLine();
 
-            //isValid = database.ValidateMember(123);
             bool? memStatus = Program.database.ValidateMember(MemberNumber);
 
             switch (memStatus)
@@ -158,6 +188,11 @@ namespace ChocAn
             return memStatus;
         }
 
+
+        /*
+         * Prompt Provider for service information
+         * log service rendered to database
+         */
         void LogService()
         {
             if (CheckMemberStatus() == true) return;
@@ -173,19 +208,39 @@ namespace ChocAn
                 Console.Write("> Enter a valid date MM-DD-YYYY:      ");
             }
 
+            DateTime dateRecieved = DateTime.Now;
+
             Console.Write("> Enter name of service:              ");
             string nameOfService = Console.ReadLine();
 
-            Console.Write("> Enter service code:                 ");
-            int serviceCode;// = Int32.Parse(Console.ReadLine());
+            Console.Write("> Enter service code or ls for list:  ");
+            int serviceCode;
             
             while (true)
             {
-                if (Int32.TryParse(Console.ReadLine(), out serviceCode)) break;
+                string s = Console.ReadLine();
+
+                if (s.Equals("ls"))
+                {
+                    System.Diagnostics.Process.Start(PROVIDER_DIRECTORY);
+                    break;
+                }
+
+                //is code numeric
+                if (int.TryParse(s, out serviceCode))
+                {
+                    //is numeric code valid
+                    if (Program.database.FetchService(serviceCode).Equals(null))
+                    {
+                        break;
+                    }
+
+                    Console.Write("> Enter a valid service code: ");
+                    break;
+                }
+
                 Console.Write("> Enter a numeric service code:       ");
             }
-
-            //TODO validate service code
 
             Console.Write("> Enter service fee:                  ");
             double serviceFee;
@@ -200,7 +255,7 @@ namespace ChocAn
             Console.WriteLine("> Enter any comments:");
             string comment = Console.ReadLine();
 
-            Service service = new Service(dateOfService, dateOfService, "comp", provider.Name, provider.Number, nameOfService, member.Name, member.Number, serviceCode, comment, serviceFee);
+            Service service = new Service(dateOfService, dateRecieved, "comp", provider.Name, provider.Number, nameOfService, member.Name, member.Number, serviceCode, comment, serviceFee);
 
             Console.Write("> Would you like to log service? y/n: ");
             char cmd;
@@ -214,8 +269,8 @@ namespace ChocAn
 
             if (char.ToUpperInvariant(cmd) == 'Y')
             {
-                //log service
-                //if properly logged
+                Program.database.AddService(service);
+                // check if properly logged?
                 Console.WriteLine("> Service logged");
             }
             else

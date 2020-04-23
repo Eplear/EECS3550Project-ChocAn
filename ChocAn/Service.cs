@@ -10,7 +10,6 @@ namespace ChocAn
     {
         public DateTime DateOfService { get; set; }
         public DateTime DateReceived { get; set; }
-        public string Computer { get; set; }
         public string ProviderName { get; set; }
         public int ProviderNumber { get; set; }
         public string ServiceName { get; set; }
@@ -30,7 +29,6 @@ namespace ChocAn
         {
             this.DateOfService = dateOfService;
             this.DateReceived = dateReceived;
-            this.Computer = computer;
             this.ProviderName = providerName;
             this.ProviderNumber = providerNumber;
             this.ServiceName = serviceName;

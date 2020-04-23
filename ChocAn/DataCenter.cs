@@ -9,6 +9,11 @@ namespace ChocAn
     {
         private readonly SQLiteConnection sqliteConn = CreateConnection();
         public Hashtable ProviderDirectory;
+
+
+        /*
+         * main constructor
+         */
         public DataCenter()
         {
             CreateTable(sqliteConn);
@@ -16,10 +21,16 @@ namespace ChocAn
             sqliteConn.Close();
             InitializeDirectory();
         }
+
+
+        /*
+         * description of function
+         */
         public void InitializeDirectory()
         {
             ProviderDirectory = new Hashtable
             {
+                /*
                 { 246894, new ServiceInfo(246894, "Therapy Session", 100) },
                 { 634378, new ServiceInfo(634378, "Swimming Lessons", 100) },
                 { 448238, new ServiceInfo(448238, "Physical Checkup", 100) },
@@ -30,8 +41,14 @@ namespace ChocAn
                 { 213579, new ServiceInfo(213579, "STD Testing", 100) },
                 { 980343, new ServiceInfo(980343, "Kidney Transplant", 100) },
                 { 108375, new ServiceInfo(108375, "Physical Therapy", 100) }
+                */
             };
         }
+
+
+        /*
+         * description of function
+         */
         public string FetchService(int key)
         {
             try
@@ -43,6 +60,11 @@ namespace ChocAn
                 return null;
             }
         }
+
+
+        /*
+         * description of function
+         */
         public bool? ValidateMember(String memNum)
         {
             bool? isValid = false;
@@ -68,7 +90,11 @@ namespace ChocAn
             return isValid;
         }
 
-        public bool validateProvider(String provNum)
+
+        /*
+         * description of function
+         */
+        public bool ValidateProvider(String provNum)
         {
             bool isValid = false;
             int found = 0;
@@ -91,12 +117,20 @@ namespace ChocAn
             return isValid;
         }
 
+
+        /*
+         * description of function
+         */
         public LoginToken GenerateLoginToken()
         {
             var token = new LoginToken();
             return token;
         }
 
+
+        /*
+         * description of function
+         */
         public void AddMember(Member member)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
@@ -111,6 +145,10 @@ namespace ChocAn
             sqliteCmd.ExecuteNonQuery();
         }
 
+
+        /*
+         * description of function
+         */
         public void AddProvider(Provider provider)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
@@ -125,6 +163,10 @@ namespace ChocAn
             sqliteCmd.ExecuteNonQuery();
         }
 
+
+        /*
+         * description of function
+         */
         public void AddService(Service service)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
@@ -139,38 +181,74 @@ namespace ChocAn
             sqliteCmd.ExecuteNonQuery();
         }
 
-        public void DeleteMember()
+
+        /*
+         * description of function
+         */
+        public void DeleteMember(string memNum)
         {
         }
 
-        public void DeleteProvider()
+
+        /*
+         * description of function
+         */
+        public void DeleteProvider(string memNum)
         {
         }
 
+
+        /*
+         * description of function
+         */
         public void ModifyMember()
         {
         }
 
+
+        /*
+         * description of function
+         */
         public void ModifyProvider()
         {
         }
 
+
+        /*
+         * description of function
+         */
         public void WriteEFT()
         {
         }
 
+
+        /*
+         * description of function
+         */
         public void GetProviderDirectory()
         {
         }
 
+
+        /*
+         * description of function
+         */
         public void GeneratePayableSummary()
         {
         }
 
+
+        /*
+         * description of function
+         */
         public void SendMemReport()
         {
         }
 
+
+        /*
+         * description of function
+         */
         private static SQLiteConnection CreateConnection()
         {
             SQLiteConnection sqlite_conn;
@@ -188,6 +266,10 @@ namespace ChocAn
             return sqlite_conn;
         }
 
+
+        /*
+         * description of function
+         */
         private static void CreateTable(SQLiteConnection conn)
         {
             SQLiteCommand sqliteCmd;
@@ -226,6 +308,10 @@ namespace ChocAn
             sqliteCmd.ExecuteNonQuery();
         }
 
+
+        /*
+         * description of function
+         */
         private static void ReadData(SQLiteConnection conn)
         {
             SQLiteDataReader sqliteDatareader;
@@ -241,6 +327,10 @@ namespace ChocAn
             }
         }
 
+
+        /*
+         * description of function
+         */
         public class LoginToken
         {
             private static Hashtable validProviders;
