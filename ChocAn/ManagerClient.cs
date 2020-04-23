@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 /* To Do
  * - generate member code
+ * - modify methods
+ * - generate reports method
  */
 
 namespace ChocAn
@@ -39,7 +41,7 @@ namespace ChocAn
 
 
         /*
-         * 
+         * print list of executable commands
          */
         void PrintLegend()
         {
@@ -58,12 +60,14 @@ namespace ChocAn
 
 
         /*
-         * 
+         * get command and execute
+         * return true if cmd was 'Exit'
          */
         bool ExecuteCommands()
         {
             bool exit = false;
 
+            //get command from console, store in cmd
             Console.WriteLine();
             Console.Write("Enter a command: ");
 
@@ -110,13 +114,13 @@ namespace ChocAn
                 default:
                     break;
             }
-
+            
             return exit;
         }
 
 
         /*
-         * 
+         * type that appears at the bottom of the terminal
          */
         void PrintFooter()
         {
@@ -126,16 +130,19 @@ namespace ChocAn
 
 
         /*
-         * Prompt user manager
+         * Promts manager to enter new member details
+         * adds new member to database
          */
         void AddMember()
         {
             Console.WriteLine("New member creation");
+            
+            //get new member details
             Console.Write("\tEnter name:    ");
             string name = Console.ReadLine();
 
             // generate member num
-            int number = 123456789; 
+            int number = 123456789; //for testing, DELETE later
 
             Console.Write("\tEnter address: ");
             string address = Console.ReadLine();
@@ -149,17 +156,22 @@ namespace ChocAn
             Console.Write("\tEnter ZIP:     ");
             int zip = int.Parse(Console.ReadLine());
             
+            //initialize a member object with entered details
             Member NewMember = new Member(name, number, address, city, state, zip);
 
+            //add new member to the databse
             Program.database.AddMember(NewMember);
 
+            //print confirmation of addition to database
             Console.WriteLine();
             Console.WriteLine("Member " + number + " added.");
         }
 
 
         /*
-         * 
+         * Promts manager to enter a member code
+         * Checks if code exists
+         * deletes member from database
          */
         void DeleteMember()
         {
@@ -173,17 +185,18 @@ namespace ChocAn
             }
             else
             {
-                // maybe show member details before deletion
+                //TODO maybe show member details before deletion
+
+                //Confirm member deletion
                 Console.WriteLine("Are you sure you want to delte member" + number + " (Y/N)?");
 
-                //confirm choice to delete
-                Console.Write("> Would you like to delete member? y/n: ");
                 char cmd;
 
                 while (true)
                 {
                     if (char.TryParse(Console.ReadLine(), out cmd)) break;
-
+                    
+                    //invalid command, prompt again
                     Console.Write("Enter a y or n: ");
                 }
 
@@ -196,6 +209,12 @@ namespace ChocAn
             }
         }
 
+
+        /*
+         * Prompts manager to enter a member code
+         * allow modifiactions to member information
+         * saves changes to database
+         */
         void ModifyMember()
         {
             
@@ -203,16 +222,19 @@ namespace ChocAn
 
 
         /*
-         * 
+         * Promts manager to enter new provider details
+         * adds new provider to database
          */
         void AddProvider()
         {
             Console.WriteLine("Provider creation");
+
+            //get new provider details
             Console.Write("\tEnter name: ");
             string name = Console.ReadLine();
 
             // generate provider num
-            int number = 123456789;
+            int number = 123456789; //for testing, DELETE later
 
             Console.Write("\tEnter address: ");
             string address = Console.ReadLine();
@@ -226,8 +248,10 @@ namespace ChocAn
             Console.Write("\tEnter ZIP:     ");
             int zip = int.Parse(Console.ReadLine());
 
+            //initialize a provider object with entered details 
             Provider NewProvider = new Provider(name, number, address, city, state, zip);
 
+            //add new provider to databse
             Program.database.AddProvider(NewProvider);
 
             Console.WriteLine();
@@ -236,7 +260,9 @@ namespace ChocAn
 
 
         /*
-         * 
+         * Promts manager to enter a provider code
+         * checks if code exists
+         * deletes provider from database
          */
         void DeleteProvider()
         {
@@ -245,22 +271,23 @@ namespace ChocAn
 
             if (Program.database.ValidateProvider(number))
             {
-                // member does not exist
+                //provider does not exist
                 Console.WriteLine("Provider " + number + " does not exist.");
             }
             else
             {
-                // maybe show member details before deletion
+                //TODO maybe show provider details before deletion
+
+                //confirm provider deletion
                 Console.WriteLine("Are you sure you want to delte provider" + number + " (Y/N)?");
 
-                //confirm choice to delete
-                Console.Write("> Would you like to delete provider? y/n: ");
                 char cmd;
 
                 while (true)
                 {
                     if (char.TryParse(Console.ReadLine(), out cmd)) break;
 
+                    //invalid command, prompt again
                     Console.Write("Enter a y or n: ");
                 }
 
@@ -273,8 +300,11 @@ namespace ChocAn
             }
         }
 
+
         /*
-         * 
+         * Prompts manager to enter a provider code
+         * allow modifiactions to provider information
+         * saves changes to database
          */
         void ModifyProvider()
         {
@@ -283,11 +313,13 @@ namespace ChocAn
 
 
         /*
-         * 
+         * Adds a new service offering to database
          */
         void AddService()
         {
             Console.WriteLine("Service creation");
+
+            //get new service details
             Console.Write("\tEnter name: ");
             string name = Console.ReadLine();
 
@@ -303,16 +335,80 @@ namespace ChocAn
                 Console.Write("> Enter a valid fee:                  ");
             }
 
-            //still need add service function
+            //initialize new service offering from entered details
+            
+            //add new service offering to directory
+            //TODO still need add service function
 
         }
 
+
         /*
-         * 
+         * prints a legend of commands
+         * allows the manager to choos which report to generate
+         * chosen report is created
          */
         void GenerateReports()
         {
+            //print legend of executable commands for report generation
+            Console.WriteLine("---------------------------- Reports ------------------------------");
+            Console.WriteLine(" 1 - Generate payable summary");
+            Console.WriteLine(" 2 - Send member report");
+            Console.WriteLine(" 3 - Write EFT");
+            Console.WriteLine(" 4 - Get provider directory");
+            Console.WriteLine(" 5 - Generate all reports");
+            Console.WriteLine(" e - Exit");
+            Console.WriteLine("-------------------------------------------------------------------");
 
+            bool exit = false; ;
+
+            //continueally ask for command until 'Exit'
+            do
+            {
+                Console.WriteLine();
+                Console.Write("Enter a command: ");
+
+                if (!char.TryParse(Console.ReadLine(), out char cmd)) cmd = ' '; //send to default case
+
+                switch (cmd)
+                {
+                    case '1':
+                        Console.WriteLine("> Generating payable summary...");
+                        Program.database.GeneratePayableSummary();
+                        Console.WriteLine("  Payable summary has been created.");
+                        break;
+                    case '2':
+                        Console.WriteLine("> Sending member reports...");
+                        Program.database.SendMemReport();
+                        Console.WriteLine("  member reports have been sent.");
+                        break;
+                    case '3':
+                        Console.WriteLine("> Writing EFT...");
+                        Program.database.WriteEFT();
+                        Console.WriteLine("  EFT written to disk.");
+                        break;
+                    case '4':
+                        Console.WriteLine("> Getting provider directory...");
+                        Program.database.GetProviderDirectory();
+                        // wait to see what function does
+                        break;
+                    case '5':
+                        Console.WriteLine("> Generating all reports...");
+                        Program.database.GeneratePayableSummary();
+                        Program.database.SendMemReport();
+                        Program.database.WriteEFT();
+                        //Program.database.GetProviderDirectory();
+                        Console.WriteLine("  Reports have been created. ");
+                        break;
+                    case 'e':
+                        Console.WriteLine("> Exiting");
+                        exit = true;
+                        break;
+                    default:
+                        break;
+                }
+
+            } while (!exit);
         }
     }
 }
