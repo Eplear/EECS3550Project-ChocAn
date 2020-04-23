@@ -10,8 +10,18 @@ namespace ChocAn
     public class DataCenter
     {
         private readonly SQLiteConnection sqliteConn = CreateConnection();
+        private bool isTesting = false;
         public Hashtable ProviderDirectory;
+
         public DataCenter()
+        {
+            CreateTable(sqliteConn);
+            ReadData(sqliteConn);
+            sqliteConn.Close();
+            InitializeDirectory();
+        }
+
+        public DataCenter(bool isTesting)
         {
             CreateTable(sqliteConn);
             ReadData(sqliteConn);
