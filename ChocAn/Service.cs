@@ -12,11 +12,11 @@ namespace ChocAn
         public DateTime DateReceived { get; set; }
         public string Computer { get; set; }
         public string ProviderName { get; set; }
-        public int ProviderNumber { get; set; }
+        public string ProviderNumber { get; set; }
         public string ServiceName { get; set; }
         public string MemberName { get; set; }
-        public int MemberNumber { get; set; }
-        public int ServiceCode { get; set; }
+        public string MemberNumber { get; set; }
+        public string ServiceCode { get; set; }
         public string Comments { get; set; }
         public double Fee { get; set; }
 
@@ -26,7 +26,7 @@ namespace ChocAn
         }
 
         public Service(DateTime dateOfService, DateTime dateReceived, string computer, string providerName,
-            int providerNumber, string serviceName, string memberName, int memberNumber, int serviceCode, string comments, double fee)
+            string providerNumber, string serviceName, string memberName, string memberNumber, string serviceCode, string comments, double fee)
         {
             this.DateOfService = dateOfService;
             this.DateReceived = dateReceived;

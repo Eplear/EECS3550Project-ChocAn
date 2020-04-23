@@ -9,13 +9,13 @@ namespace ChocAn
     public class Provider
     {
         public string Name { get; set; }
-        public int Number { get; set; }
+        public string Number { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public int Zip { get; set; }
+        public string Zip { get; set; }
 
-        public Provider(string name, int number, string address, string city, string state, int zip)
+        public Provider(string name, string number, string address, string city, string state, string zip)
         {
             this.Name = name;
             this.Number = number;

@@ -12,7 +12,7 @@ namespace ChocAn
      */
     class Report
     {
-        public const string ReportsPath = "C:/Users/adamb/Documents/GitHub/EECS3550Project-ChocAn/ChocAn/Reports";
+        public const string ReportsPath = "./Reports";
         public Report()
         {
             //setup directories for member and provider reports
