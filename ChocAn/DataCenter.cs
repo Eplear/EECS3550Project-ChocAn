@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics.Eventing.Reader;
+using System.Security.Policy;
 
 namespace ChocAn
 {
@@ -41,12 +43,46 @@ namespace ChocAn
                 return null;
             }
         }
-        public bool? ValidateMember(int memNum)
+
+        public bool? ValidateMember(string memNum)
         {
-            bool? isValid = false;
+            bool? isValid = null;
+            string status = null;
+            Member member;
+            var sqliteCmd = sqliteConn.CreateCommand();
+            sqliteCmd.CommandText = "SELECT isSuspended EXISTS(SELECT 1 FROM member WHERE mNum = " + memNum + "); ";
+
+            try
+            {
+                status = sqliteCmd.ExecuteScalar().ToString();
+                Console.WriteLine("Validation Status: " + status);
+            }
+            catch
+            {
+                Console.WriteLine("ERROR: Member number not found.");
+            }
+
+            if (!status.Equals(null))
+            {
+                if (status.Equals('1'))
+                {
+                    isValid = true;
+                }else if (status.Equals('0'))
+                {
+                    isValid = false;
+                }
+            }
+            
+            return isValid;
+        }
+
+        public bool ValidateProvider(string provNum)
+        {
+            bool isValid = false;
             int found = 0;
             var sqliteCmd = sqliteConn.CreateCommand();
-            sqliteCmd.CommandText = "SELECT EXISTS(SELECT 1 FROM member WHERE mNum = " + memNum.ToString() + "); ";
+            sqliteCmd.CommandText = "SELECT EXISTS(SELECT 1 FROM provider WHERE pNum = " + provNum + "); ";
+
             try
             {
                 found = sqliteCmd.ExecuteNonQuery();
@@ -56,22 +92,9 @@ namespace ChocAn
                 Console.WriteLine("ERROR: Member number not found.");
             }
 
-            if (found >= 1)
-            {
-                //TODO Check suspended status of member.
-
-                isValid = true;
-            }
-
-            
+            if (found == 1) isValid = true;
 
             return isValid;
-        }
-
-        public LoginToken GenerateLoginToken()
-        {
-            var token = new LoginToken();
-            return token;
         }
 
         public void AddMember(Member member)
@@ -106,7 +129,7 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText =
-                "INSERT INTO provider(pNum, pName, pStreet, pCity, pState, pZip) VALUES(" +
+                "INSERT INTO service(pNum, pName, pStreet, pCity, pState, pZip) VALUES(" +
                 "'" + service.DateOfService + "', " +
                 "'" + service.DateReceived + "', " +
                 "'" + service.ProviderNumber.ToString() + "', " +
@@ -116,32 +139,113 @@ namespace ChocAn
             sqliteCmd.ExecuteNonQuery();
         }
 
-        public void DeleteMember()
+        public void DeleteMember(String memberID)
         {
+            var sqliteCmd = sqliteConn.CreateCommand();
+            sqliteCmd.CommandText = "DELETE FROM member WHERE mNum='"+ memberID + "';";
+            sqliteCmd.ExecuteNonQuery();
         }
 
-        public void DeleteProvider()
+        public void DeleteProvider(String providerID)
         {
+            var sqliteCmd = sqliteConn.CreateCommand();
+            sqliteCmd.CommandText = "DELETE FROM provider WHERE pNum='" + providerID + "';";
+            sqliteCmd.ExecuteNonQuery();
         }
 
-        public void ModifyMember()
+        public void ModifyMember(Member oldMember, Member newMember)
         {
+            var sqliteCmd = sqliteConn.CreateCommand();
+            sqliteCmd.CommandText = "UPDATE member " +
+                                    "SET mName = " + newMember.Name +
+                                    "mNum = " + newMember.Number +
+                                    "mStreet = " + newMember.Address +
+                                    "mCity = " + newMember.City +
+                                    "mState = " + newMember.State +
+                                    "mZip = " + newMember.Zip +
+                                    "isSuspended = " + newMember.Suspended +
+                                    ";" +
+                                    "WHERE mNum = '" + oldMember.Number + "'" +
+                                    "LIMIT 1;";
+            sqliteCmd.ExecuteNonQuery();
         }
 
-        public void ModifyProvider()
+        public void ModifyProvider(Provider oldProvider, Provider newProvider)
         {
+            var sqliteCmd = sqliteConn.CreateCommand();
+            sqliteCmd.CommandText = "UPDATE provider " +
+                                    "SET mName = " + newProvider.Name +
+                                    "pNum = " + newProvider.Number +
+                                    "pStreet = " + newProvider.Address +
+                                    "pCity = " + newProvider.City +
+                                    "pState = " + newProvider.State +
+                                    "pZip = " + newProvider.Zip +
+                                    "WHERE pNum = '" + oldProvider.Number + "'" +
+                                    "LIMIT 1;";
+            sqliteCmd.ExecuteNonQuery();
+        }
+
+        private Provider ParseProvider(String pNum)
+        {
+            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteDataReader reader;
+            sqliteCmd.CommandText = "SELECT * FROM provider WHERE pNum = '" + pNum + "';";
+            reader = sqliteCmd.ExecuteReader();
+            return new Provider(reader.GetString(0), 
+                                reader.GetString(1), 
+                                reader.GetString(2), 
+                                reader.GetString(3), 
+                                reader.GetString(4), 
+                                reader.GetString(5));
+
+        }
+
+        private Member ParseMember(String mNum)
+        {
+            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteDataReader reader;
+            sqliteCmd.CommandText = "SELECT * FROM member WHERE mNum = '" + mNum + "';";
+            reader = sqliteCmd.ExecuteReader();
+            return new Member(reader.GetString(0),
+                reader.GetString(1),
+                reader.GetString(2),
+                reader.GetString(3),
+                reader.GetString(4),
+                reader.GetString(5),
+                reader.GetBoolean(10));
+        }
+
+        private Service ParseService(string sCode)
+        {
+            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteDataReader reader;
+            sqliteCmd.CommandText = "SELECT * FROM service WHERE sCode = '" + sCode  +"';";
+            reader = sqliteCmd.ExecuteReader();
+            return new Service( reader.GetDateTime(0),
+                                reader.GetDateTime(1),
+                                reader.GetString(2),
+                                reader.GetString(3),
+                                reader.GetString(4),
+                                reader.GetString(5),
+                                reader.GetString(6),
+                                reader.GetString(7),
+                                reader.GetString(8),
+                                reader.GetString(9),
+                                reader.GetDouble(10));
         }
 
         public void WriteEFT()
         {
         }
 
-        public void GetProviderDirectory()
+        public Hashtable GetProviderDirectory()
         {
+            return ProviderDirectory;
         }
 
         public void GeneratePayableSummary()
         {
+            
         }
 
         public void SendMemReport()
@@ -182,7 +286,8 @@ namespace ChocAn
                                  "mStreet TEXT, " +
                                  "mCity TEXT, " +
                                  "mState TEXT, " +
-                                 "mZip TEXT)";
+                                 "mZip TEXT, " +
+                                 "isSuspended BOOLEAN)";
 
             var createServTable = "CREATE TABLE IF NOT EXISTS service(" +
                                   "currDate TEXT, " +
@@ -190,7 +295,8 @@ namespace ChocAn
                                   "sProviderNum TEXT, " +
                                   "sMemberNum TEXT, " +
                                   "comment TEXT, " +
-                                  "sCode TEXT PRIMARY KEY, " +
+                                  "sCode TEXT, " +
+                                  "PRIMARY KEY(servDate, sMemberNum, sCode)," +
                                   "FOREIGN KEY(sProviderNum) REFERENCES provider(pNum), " +
                                   "FOREIGN KEY(sMemberNum) REFERENCES member(mNum))";
 
@@ -219,14 +325,5 @@ namespace ChocAn
             }
         }
 
-        public class LoginToken
-        {
-            private static Hashtable validProviders;
-            private bool isValid = false;
-
-            public void login(int provNum)
-            {
-            }
-        }
     }
 }
