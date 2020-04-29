@@ -3,7 +3,9 @@ using System.Collections;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics.Eventing.Reader;
+using System.Numerics;
 using System.Security.Policy;
+using System.Windows;
 
 namespace ChocAn
 {
@@ -30,17 +32,19 @@ namespace ChocAn
         }
         public void InitializeDirectory()
         {
-            ProviderDirectory = new Hashtable();
-            ProviderDirectory.Add(246894, "Therapy Session");
-            ProviderDirectory.Add(634378, "Swimming Lessons");
-            ProviderDirectory.Add(448238, "Physical Checkup");
-            ProviderDirectory.Add(893209, "Dental Cleaning");
-            ProviderDirectory.Add(435248, "Rahab");
-            ProviderDirectory.Add(234546, "Prescription Filling");
-            ProviderDirectory.Add(567467, "Prescription Refill");
-            ProviderDirectory.Add(213579, "STD Testing");
-            ProviderDirectory.Add(980343, "Kidney Transplant");
-            ProviderDirectory.Add(108375, "Physical Therapy");
+            ProviderDirectory = new Hashtable
+            {
+                { 246894, new ServiceInfo(246894, "Therapy Session", 100) },
+                { 634378, new ServiceInfo(634378, "Swimming Lessons", 100) },
+                { 448238, new ServiceInfo(448238, "Physical Checkup", 100) },
+                { 893209, new ServiceInfo(893209, "Dental Cleaning", 100) },
+                { 435248, new ServiceInfo(435248, "Rahab", 100) },
+                { 234546, new ServiceInfo(234546, "Prescription Filling", 100) },
+                { 567467, new ServiceInfo(567467, "Prescription Refill", 100) },
+                { 213579, new ServiceInfo(213579, "STD Testing", 100) },
+                { 980343, new ServiceInfo(980343, "Kidney Transplant", 100) },
+                { 108375, new ServiceInfo(108375, "Physical Therapy", 100) }
+            };
         }
         public string FetchService(int key)
         {
@@ -139,7 +143,7 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText =
-                "INSERT INTO service(pNum, pName, pStreet, pCity, pState, pZip) VALUES(" +
+                "INSERT INTO service(dServ, dRec, pNum, mNum, sCode, com) VALUES(" +
                 "'" + service.DateOfService + "', " +
                 "'" + service.DateReceived + "', " +
                 "'" + service.ProviderNumber.ToString() + "', " +
@@ -243,7 +247,30 @@ namespace ChocAn
                                 reader.GetString(9),
                                 reader.GetDouble(10));
         }
-
+        private ArrayList MemberServiceList(string mNum)
+        {
+            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteDataReader reader;
+            sqliteCmd.CommandText = "SELECT * FROM service WHERE mNum = '" + mNum + "';";
+            reader = sqliteCmd.ExecuteReader();
+            ArrayList result = new ArrayList();
+            while (reader.Read())
+            {
+                result.Add(new Service(reader.GetDateTime(0),
+                                reader.GetDateTime(1),
+                                reader.GetString(2),
+                                reader.GetString(3),
+                                reader.GetString(4),
+                                reader.GetString(5),
+                                reader.GetString(6),
+                                reader.GetString(7),
+                                reader.GetString(8),
+                                reader.GetString(9),
+                                reader.GetDouble(10)));
+                reader.NextResult();
+            }
+            return result;
+        }
         public void WriteEFT()
         {
         }
