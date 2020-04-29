@@ -72,6 +72,7 @@
     <Compile Include="Provider.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="Service.cs" />
+    <Compile Include="ServiceInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

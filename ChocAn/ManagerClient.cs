@@ -142,7 +142,7 @@ namespace ChocAn
             string name = Console.ReadLine();
 
             // generate member num
-            int number = 123456789; //for testing, DELETE later
+            string number = "123456789"; //for testing, DELETE later
 
             Console.Write("\tEnter address: ");
             string address = Console.ReadLine();
@@ -154,7 +154,7 @@ namespace ChocAn
             string state = Console.ReadLine();
 
             Console.Write("\tEnter ZIP:     ");
-            int zip = int.Parse(Console.ReadLine());
+            string zip = Console.ReadLine();
             
             //initialize a member object with entered details
             Member NewMember = new Member(name, number, address, city, state, zip);
@@ -234,7 +234,7 @@ namespace ChocAn
             string name = Console.ReadLine();
 
             // generate provider num
-            int number = 123456789; //for testing, DELETE later
+            string number = "123456789"; //for testing, DELETE later
 
             Console.Write("\tEnter address: ");
             string address = Console.ReadLine();
@@ -246,7 +246,7 @@ namespace ChocAn
             string state = Console.ReadLine();
 
             Console.Write("\tEnter ZIP:     ");
-            int zip = int.Parse(Console.ReadLine());
+            string zip = Console.ReadLine();
 
             //initialize a provider object with entered details 
             Provider NewProvider = new Provider(name, number, address, city, state, zip);

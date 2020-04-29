@@ -15,12 +15,14 @@ namespace ChocAn
     {
         const int maxLoginAttempts = 5;
         const string PROVIDER_DIRECTORY = "ProviderDirecotry.pdf";
-        
+
+        //temporary
+        private Provider provider = new Provider("name", "123", "add", "city", "st", "4000");
         /*
          * Main constructor
          * implements functions and creates the terminal interface
          */
-        public ProviderClient(DataCenter.LoginToken token)
+        public ProviderClient()
         {
             //beginning
             PrintHeader();
@@ -72,7 +74,7 @@ namespace ChocAn
             isValid = Program.database.ValidateProvider(LocationCode);
             
             // get provider details from number
-            Provider provider = new Provider("name", 123, "add", "city", "st", 4000);
+            
            
             if (isValid)
             {
@@ -214,7 +216,7 @@ namespace ChocAn
             string nameOfService = Console.ReadLine();
 
             Console.Write("> Enter service code or ls for list:  ");
-            int serviceCode;
+            string serviceCode = "";
             
             while (true)
             {
@@ -223,39 +225,29 @@ namespace ChocAn
                 if (s.Equals("ls"))
                 {
                     System.Diagnostics.Process.Start(PROVIDER_DIRECTORY);
-                    break;
+                    Console.Write("> Enter service code or ls for list:  ");
                 }
 
-                //is code numeric
-                if (int.TryParse(s, out serviceCode))
+                else 
                 {
+                    serviceCode = s;
                     //is numeric code valid
-                    if (Program.database.FetchService(serviceCode).Equals(null))
+                    if (Program.database.FetchService(int.Parse(serviceCode)).Equals(null))
                     {
                         break;
                     }
 
                     Console.Write("> Enter a valid service code: ");
-                    break;
                 }
-
-                Console.Write("> Enter a numeric service code:       ");
             }
 
-            Console.Write("> Enter service fee:                  ");
-            double serviceFee;
-            
-            while(true)
-            {
-                if (double.TryParse(Console.ReadLine(), out serviceFee)) break;
-                
-                Console.Write("> Enter a valid fee:                  ");
-            }
+            //TODO: Get service fee from service code
+            double serviceFee = 0;
 
             Console.WriteLine("> Enter any comments:");
             string comment = Console.ReadLine();
 
-            Service service = new Service(dateOfService, dateRecieved, "comp", provider.Name, provider.Number, nameOfService, member.Name, member.Number, serviceCode, comment, serviceFee);
+            Service service = new Service(dateOfService, dateRecieved, "comp", provider.Name, provider.Number, nameOfService, "Member name", "Member number", serviceCode, comment, serviceFee);
 
             Console.Write("> Would you like to log service? y/n: ");
             char cmd;

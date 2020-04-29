@@ -22,7 +22,7 @@ namespace ChocAn
             Report report = new Report();
 
             //Testing Member Reports - Adam
-            Member membtest = new Member("Jim Bob", 93201409, "908 Elm St", "Detroit", "Michigan", 12948);
+            Member membtest = new Member("Jim Bob", "93201409", "908 Elm St", "Detroit", "Michigan", "12948");
             report.MemberReport(membtest);
             //Cleanup test reports
             Console.WriteLine("Press any key to clean up report directories");
@@ -32,7 +32,7 @@ namespace ChocAn
             //enter if terminal should be provider
             if (PROVIDER_TERMINAL)
             {
-                ProviderClient client = new ProviderClient(database.GenerateLoginToken());
+                ProviderClient client = new ProviderClient();
             }
 
             //enter if terminal should be provider
