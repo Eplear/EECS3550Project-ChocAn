@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace ChocAn
@@ -31,7 +27,7 @@ namespace ChocAn
             Directory.Delete(ReportsPath + "/ProviderReports", true);
         }
         /* MemberReport()
-         * writes a report into a text file for a member
+         * Writes a report into a text file for a member
          * @params: Member to be reported on
          * @return: 1 if successful, 0 else
          */

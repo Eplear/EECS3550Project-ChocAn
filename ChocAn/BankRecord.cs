@@ -1,20 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace ChocAn
 {
+    /*
+     * Class BankRecord
+     * Simple boundary class 
+     * Used for writing EFT information to disk
+     */
     class BankRecord
     {
+        //Global Variable
         public const string BankRecordsPath = "C:/Users/adamb/Documents/GitHub/EECS3550Project-ChocAn/ChocAn/BankRecords";
+               
         public BankRecord()
         {
             //setup directory
             Directory.CreateDirectory(BankRecordsPath);
         }
+
+        /*
+         * Record()
+         * Writes banking records into text files
+         * @param: Provider to record EFT info for
+         * @returns: 1 if success, 0 if failure
+         */
         public int Record(Provider p)
         {
             string currentDate = DateTime.Now.Date.ToString();

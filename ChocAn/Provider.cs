@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChocAn
+﻿namespace ChocAn
 {
+    /*
+     * Class Provider
+     * Entity class for holding provider information
+     */
     public class Provider
     {
         public string Name { get; set; }
@@ -25,10 +23,13 @@ namespace ChocAn
             this.Zip = zip;
         }
 
-        public int getHelp()
-        {
-            return 0;
-        }
+        /*
+         * ServiceReport()
+         * Compiles information about the provider and
+         * the services they have provided
+         * @params: none
+         * @returns: string containing compiled information
+         */
         public string ServiceReport()
         {
             string result = "Name: " + Name + "\nProvider Number:" + Number + "\nStreet Address: " + Address + "\nCity: " + City

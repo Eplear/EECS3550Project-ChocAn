@@ -1,12 +1,9 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChocAn
+﻿namespace ChocAn
 {
+    /*
+     * Class Member
+     * Entity class for holding member information
+     */
     public class Member
     {
         public string Name { get; set; }
@@ -39,11 +36,23 @@ namespace ChocAn
             this.Suspended = isSuspended;
         }
         
-
+        /*
+         * Suspend()
+         * Suspends a member
+         * @params: none
+         * @returns: none
+         */
         public void Suspend()
         {
             Suspended = true;
         }
+        /*
+         * ServiceReport()
+         * Compiles information about the member and
+         * the services they have been provided
+         * @params: none
+         * @returns: string containing compiled information
+         */
         public string ServiceReport()
         {
             string result = "Name: " + Name + "\nMember Number: " + Number + "\nStreet Address: " + Address + "\nCity: "

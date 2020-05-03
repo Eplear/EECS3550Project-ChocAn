@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChocAn
+﻿namespace ChocAn
 {
+    /*
+     * Class ServiceInfo
+     * Simple entity class
+     * holds service information for the provider directory
+     */
     class ServiceInfo
     {
         protected int Code{ get; set; }

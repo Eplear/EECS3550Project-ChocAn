@@ -247,11 +247,16 @@ namespace ChocAn
                                 reader.GetString(9),
                                 reader.GetDouble(10));
         }
-        private ArrayList MemberServiceList(string mNum)
+        /*
+         * Created by Adam (don't know what I'm doing tho)
+         * INCOMPLETE
+         * need one similar for provider service list
+         */
+        public ArrayList MemberServiceList(string mNum)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT * FROM service WHERE mNum = '" + mNum + "';";
+            sqliteCmd.CommandText = "SELECT * FROM service WHERE sMemberNum = '" + mNum + "';";
             reader = sqliteCmd.ExecuteReader();
             ArrayList result = new ArrayList();
             while (reader.Read())
@@ -267,6 +272,25 @@ namespace ChocAn
                                 reader.GetString(8),
                                 reader.GetString(9),
                                 reader.GetDouble(10)));
+                reader.NextResult();
+            }
+            return result;
+        }
+        /*
+         * Created by Adam (don't know what I'm doing tho)
+         * INCOMPLETE
+         */
+        public int TotalProviderFee(string pNum)
+        {
+            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteDataReader reader;
+            sqliteCmd.CommandText = "SELECT * FROM service WHERE sProviderNum = '" + pNum + "';";
+            reader = sqliteCmd.ExecuteReader();
+            int result = 0;
+            while (reader.Read())
+            {
+                //Add together the fees
+                result += 0;
                 reader.NextResult();
             }
             return result;

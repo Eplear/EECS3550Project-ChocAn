@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChocAn
 {
+    /*
+     * Class Service
+     * Entity class for holding service information
+     */
     public class Service
     {
         public DateTime DateOfService { get; set; }
@@ -38,10 +38,22 @@ namespace ChocAn
             this.Comments = comments;
             this.Fee = fee;
         }
+        /*
+         * MemberReport()
+         * Compiles information regarding the member to report on
+         * @params: none
+         * @returns: string containing compiled information
+         */
         public string MemberReport()
         {
             return DateOfService + "\n" + ProviderName + "\n" + ServiceName + "\n"; 
         }
+        /*
+         * ProviderReport()
+         * Compiles information regarding the provider to report on
+         * @params: none
+         * @returns: string containing compiled information
+         */
         public string ProviderReport()
         {
             return DateOfService + "\n" + DateReceived + "\n" + MemberName + "\n" + 
