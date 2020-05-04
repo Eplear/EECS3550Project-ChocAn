@@ -199,7 +199,7 @@ namespace ChocAn
             sqliteCmd.ExecuteNonQuery();
         }
 
-        private Provider ParseProvider(String pNum)
+        public Provider ParseProvider(String pNum)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
@@ -214,7 +214,7 @@ namespace ChocAn
 
         }
 
-        private Member ParseMember(String mNum)
+        public Member ParseMember(String mNum)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 /* To do
+ * - handle login 
  * - initialize a provider from code
  * - check that service was properly logged
  */
@@ -197,7 +198,8 @@ namespace ChocAn
          */
         void LogService()
         {
-            if (CheckMemberStatus() == true) return;
+            //if member is invalid, don't log a service
+            if (CheckMemberStatus() != true) return;
 
             Console.WriteLine();
             Console.Write("> Enter date of service (MM-DD-YYYY): ");
