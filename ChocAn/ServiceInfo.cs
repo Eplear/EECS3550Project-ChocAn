@@ -7,9 +7,9 @@
      */
     class ServiceInfo
     {
-        protected int Code{ get; set; }
-        protected string Name { get; set; }
-        protected int Fee { get; set; }
+        public int Code{ get; set; }
+        public string Name { get; set; }
+        public int Fee { get; set; }
 
         public ServiceInfo(int code, string name, int fee)
         {

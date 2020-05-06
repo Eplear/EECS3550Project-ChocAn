@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 /* To Do
- * - generate member code
- * - modify methods
- * - generate reports method
+ * - generate member code, should we actually? or just take string
+ * - add service method, function missing from database
  */
 
 namespace ChocAn
@@ -217,9 +219,104 @@ namespace ChocAn
          */
         void ModifyMember()
         {
-            
+            Console.Write("Enter a member number: ");
+            string number = Console.ReadLine();
+
+            if (Program.database.ValidateMember(number) == null)
+            {
+                // member does not exist
+                Console.WriteLine("Member " + number + " does not exist.");
+            }
+            else
+            {
+                Member OldMemember = Program.database.ParseMember(number);
+
+                string Name     = OldMemember.Name;
+                string Address  = OldMemember.Address;
+                string City     = OldMemember.City;
+                string State    = OldMemember.State;
+                string Zip      = OldMemember.Zip;
+                bool Suspended  = OldMemember.Suspended;
+
+                //show current details of member
+                Console.WriteLine("Member " + number + " details:");
+                Console.WriteLine("Name:      " + Name);
+                Console.WriteLine("Address:   " + Address);
+                Console.WriteLine("City:      " + City);
+                Console.WriteLine("State      " + State);
+                Console.WriteLine("Zip:       " + Zip);
+                Console.WriteLine("Suspended: " + Suspended);
+                Console.WriteLine();
+                
+                Console.WriteLine("Modify 'name' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter new name: ");
+                    Name = Console.ReadLine();
+                }
+
+                Console.WriteLine("Modify 'address' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter new address: ");
+                    Address = Console.ReadLine();
+                }
+
+                Console.WriteLine("Modify 'city' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter new city: ");
+                    City = Console.ReadLine();
+                }
+
+                Console.WriteLine("Modify 'state' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter new state: ");
+                    State = Console.ReadLine();
+                }
+
+                Console.WriteLine("Modify 'zip' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter new ZIP: ");
+                    Zip = Console.ReadLine();
+                }
+
+                Console.WriteLine("Modify 'suspended' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter TRUE or FALSE: ");
+                    Suspended = bool.Parse(Console.ReadLine());
+                }
+
+                Member NewMember = new Member(Name, number, Address, City, State, Zip, Suspended);
+
+                Program.database.ModifyMember(OldMemember, NewMember);
+
+                Console.WriteLine();
+                Console.WriteLine("Record updated.");
+            }
         }
 
+
+        /*
+         * Returns true id user typed Y
+         * return false otherwise
+         */
+        bool AnsweredYes()
+        {
+            char cmd;
+
+            while (true)
+            {
+                if (char.TryParse(Console.ReadLine(), out cmd)) break;
+
+                Console.Write("Enter a y or n: ");
+            }
+
+            return (char.ToUpperInvariant(cmd) == 'Y');
+        }
 
         /*
          * Promts manager to enter new provider details
@@ -308,6 +405,75 @@ namespace ChocAn
          */
         void ModifyProvider()
         {
+            Console.Write("Enter a Provider number: ");
+            string number = Console.ReadLine();
+
+            if (!Program.database.ValidateProvider(number))
+            {
+                // member does not exist
+                Console.WriteLine("Provider " + number + " does not exist.");
+            }
+            else
+            {
+                Provider OldProvider = Program.database.ParseProvider(number);
+
+                string Name = OldProvider.Name;
+                string Address = OldProvider.Address;
+                string City = OldProvider.City;
+                string State = OldProvider.State;
+                string Zip = OldProvider.Zip;
+
+                //show current details of member
+                Console.WriteLine("Provider " + number + " details:");
+                Console.WriteLine("Name:      " + Name);
+                Console.WriteLine("Address:   " + Address);
+                Console.WriteLine("City:      " + City);
+                Console.WriteLine("State      " + State);
+                Console.WriteLine("Zip:       " + Zip);
+                Console.WriteLine();
+
+                Console.WriteLine("Modify 'name' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter new name: ");
+                    Name = Console.ReadLine();
+                }
+
+                Console.WriteLine("Modify 'address' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter new address: ");
+                    Address = Console.ReadLine();
+                }
+
+                Console.WriteLine("Modify 'city' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter new city: ");
+                    City = Console.ReadLine();
+                }
+
+                Console.WriteLine("Modify 'state' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter new state: ");
+                    State = Console.ReadLine();
+                }
+
+                Console.WriteLine("Modify 'zip' field? (y/n)");
+                if (AnsweredYes())
+                {
+                    Console.Write("Enter new ZIP: ");
+                    Zip = Console.ReadLine();
+                }
+
+                Provider NewProvider = new Provider(Name, number, Address, City, State, Zip);
+
+                Program.database.ModifyProvider(OldProvider, NewProvider);
+
+                Console.WriteLine();
+                Console.WriteLine("Record updated.");
+            }
 
         }
 
@@ -326,17 +492,16 @@ namespace ChocAn
             //generate code
 
             Console.Write("\tEnter fee:  ");
-            double serviceFee;
 
             while (true)
             {
-                if (double.TryParse(Console.ReadLine(), out serviceFee)) break;
+                if (double.TryParse(Console.ReadLine(), out double serviceFee)) break;
 
                 Console.Write("> Enter a valid fee:                  ");
             }
 
             //initialize new service offering from entered details
-            
+
             //add new service offering to directory
             //TODO still need add service function
 
@@ -389,15 +554,15 @@ namespace ChocAn
                         break;
                     case '4':
                         Console.WriteLine("> Getting provider directory...");
-                        Program.database.GetProviderDirectory();
-                        // wait to see what function does
+                        
+                        Hashtable ProvDir = Program.database.GetProviderDirectory();
+                        PrintProviderDirectory(ProvDir);
                         break;
                     case '5':
                         Console.WriteLine("> Generating all reports...");
                         Program.database.GeneratePayableSummary();
                         Program.database.SendMemReport();
                         Program.database.WriteEFT();
-                        //Program.database.GetProviderDirectory();
                         Console.WriteLine("  Reports have been created. ");
                         break;
                     case 'e':
@@ -409,6 +574,20 @@ namespace ChocAn
                 }
 
             } while (!exit);
+        }
+
+
+        void PrintProviderDirectory(Hashtable dir)
+        {
+            Console.Write("Printing directory [code, name, fee].");
+
+            foreach (string key in dir.Keys)
+            {
+                ServiceInfo si = (ServiceInfo)dir[key];
+                Console.Write(si.Code);
+                Console.Write(si.Name);
+                Console.WriteLine(si.Fee);
+            }
         }
     }
 }
