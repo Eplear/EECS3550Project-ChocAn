@@ -226,7 +226,7 @@ namespace ChocAn
 
                 if (s.Equals("ls"))
                 {
-                    System.Diagnostics.Process.Start(PROVIDER_DIRECTORY);
+                    Program.database.GetProviderDirectory();
                     Console.Write("> Enter service code or ls for list:  ");
                 }
 

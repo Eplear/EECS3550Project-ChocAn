@@ -14,6 +14,7 @@ namespace ChocAn
         private readonly SQLiteConnection sqliteConn = CreateConnection();
         private bool isTesting = false;
         public Hashtable ProviderDirectory;
+        const string PROVIDER_DIRECTORY = "ProviderDirectory.pdf";
 
         public DataCenter()
         {
@@ -34,16 +35,16 @@ namespace ChocAn
         {
             ProviderDirectory = new Hashtable
             {
-                { 246894, new ServiceInfo(246894, "Therapy Session", 100) },
-                { 634378, new ServiceInfo(634378, "Swimming Lessons", 100) },
-                { 448238, new ServiceInfo(448238, "Physical Checkup", 100) },
-                { 893209, new ServiceInfo(893209, "Dental Cleaning", 100) },
-                { 435248, new ServiceInfo(435248, "Rahab", 100) },
+                { 246894, new ServiceInfo(246894, "Therapy Session", 150) },
+                { 634378, new ServiceInfo(634378, "Swimming Lessons", 45) },
+                { 448238, new ServiceInfo(448238, "Physical Checkup", 30) },
+                { 893209, new ServiceInfo(893209, "Dental Cleaning", 120) },
+                { 435248, new ServiceInfo(435248, "Rahab", 750) },
                 { 234546, new ServiceInfo(234546, "Prescription Filling", 100) },
-                { 567467, new ServiceInfo(567467, "Prescription Refill", 100) },
-                { 213579, new ServiceInfo(213579, "STD Testing", 100) },
-                { 980343, new ServiceInfo(980343, "Kidney Transplant", 100) },
-                { 108375, new ServiceInfo(108375, "Physical Therapy", 100) }
+                { 567467, new ServiceInfo(567467, "Prescription Refill", 50) },
+                { 213579, new ServiceInfo(213579, "STD Testing", 15) },
+                { 980343, new ServiceInfo(980343, "Kidney Transplant", 9000) },
+                { 108375, new ServiceInfo(108375, "Physical Therapy", 220) }
             };
         }
         public string FetchService(int key)
@@ -295,13 +296,31 @@ namespace ChocAn
             }
             return result;
         }
+
         public void WriteEFT()
         {
+            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteDataReader reader;
+            sqliteCmd.CommandText = "SELECT * FROM member;";
+            reader = sqliteCmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Member temp = new Member(
+                    reader.GetString(0),
+                    reader.GetString(1),
+                    reader.GetString(2),
+                    reader.GetString(3),
+                    reader.GetString(4),
+                    reader.GetString(5),
+                    reader.GetBoolean(10));
+                temp.ServiceReport();
+                reader.NextResult();
+            }
         }
 
-        public Hashtable GetProviderDirectory()
+        public void GetProviderDirectory()
         {
-            return ProviderDirectory;
+            System.Diagnostics.Process.Start(PROVIDER_DIRECTORY);
         }
 
         public void GeneratePayableSummary()

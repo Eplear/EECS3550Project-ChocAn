@@ -554,9 +554,7 @@ namespace ChocAn
                         break;
                     case '4':
                         Console.WriteLine("> Getting provider directory...");
-                        
-                        Hashtable ProvDir = Program.database.GetProviderDirectory();
-                        PrintProviderDirectory(ProvDir);
+                        Program.database.GetProviderDirectory();
                         break;
                     case '5':
                         Console.WriteLine("> Generating all reports...");

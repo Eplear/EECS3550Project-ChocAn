@@ -12,15 +12,12 @@ namespace ChocAn
         const bool MANAGER_TERMINAL  = false;
 
         static public DataCenter database = new DataCenter();
+        static public Report report = new Report();
+        static public BankRecord bankrecord = new BankRecord();
 
         public static void Main(string[] args)
         {
-            //generate 'database' from files
-            //DataCenter database = new DataCenter();
-
-            //Initialize report class
-            Report report = new Report();
-
+            
             //enter if terminal should be provider
             if (PROVIDER_TERMINAL)
             {
