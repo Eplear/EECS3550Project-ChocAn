@@ -15,7 +15,7 @@ namespace ChocAn
     class ProviderClient
     {
         const int maxLoginAttempts = 5;
-        const string PROVIDER_DIRECTORY = "ProviderDirecotry.pdf";
+        const string PROVIDER_DIRECTORY = "ProviderDirectory.pdf";
 
         //temporary
         private Provider provider = new Provider("name", "123", "add", "city", "st", "4000");
@@ -27,7 +27,7 @@ namespace ChocAn
         {
             //beginning
             PrintHeader();
-            
+
             ///provide Provider with finite attempts to provide valid loaction
             int numTries = 0;
             while (!IsValidLocation())

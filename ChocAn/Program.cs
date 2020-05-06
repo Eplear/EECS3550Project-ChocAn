@@ -21,14 +21,6 @@ namespace ChocAn
             //Initialize report class
             Report report = new Report();
 
-            //Testing Member Reports - Adam
-            Member membtest = new Member("Jim Bob", "93201409", "908 Elm St", "Detroit", "Michigan", "12948");
-            report.MemberReport(membtest);
-            //Cleanup test reports
-            Console.WriteLine("Press any key to clean up report directories");
-            Console.ReadKey();
-            report.CleanupDirectories();
-
             //enter if terminal should be provider
             if (PROVIDER_TERMINAL)
             {
