@@ -55,7 +55,7 @@ namespace ChocAn
          */
         public int ProviderReport(Provider p)
         {
-            string currentDate = DateTime.Now.Date.ToString();
+            string currentDate = DateTime.Now.Date.Month + "-" + DateTime.Now.Date.Day + "-" + DateTime.Now.Date.Year;
             try
             {
                 File.WriteAllText(ReportsPath + "/ProviderReports/" + p.Name + " - " + currentDate + ".txt", p.ServiceReport());

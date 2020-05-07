@@ -23,6 +23,10 @@
             this.Zip = zip;
         }
 
+        public Provider()
+        {
+        }
+
         /*
          * ServiceReport()
          * Compiles information about the provider and

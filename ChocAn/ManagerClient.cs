@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 /* To Do
  * - generate member code, should we actually? or just take string
  * - add service method, function missing from database
- * - check member exists
+ * - 
  */
 
 namespace ChocAn
@@ -118,6 +118,7 @@ namespace ChocAn
                     exit = true;
                     break;
                 default:
+                    Console.WriteLine("Invalid command.");
                     break;
             }
             
@@ -252,43 +253,49 @@ namespace ChocAn
                 Console.WriteLine("Zip:       " + Zip);
                 Console.WriteLine("Suspended: " + Suspended);
                 Console.WriteLine();
-                
-                Console.WriteLine("Modify 'name' field? (y/n)");
+
+                Console.WriteLine();
+                Console.Write("Modify 'name' field? (y/n) ");
                 if (AnsweredYes())
                 {
                     Console.Write("Enter new name:      ");
                     Name = Console.ReadLine();
                 }
 
-                Console.WriteLine("Modify 'address' field? (y/n)");
+                Console.WriteLine();
+                Console.Write("Modify 'address' field? (y/n) ");
                 if (AnsweredYes())
                 {
                     Console.Write("Enter new address:   ");
                     Address = Console.ReadLine();
                 }
 
-                Console.WriteLine("Modify 'city' field? (y/n)");
+                Console.WriteLine();
+                Console.Write("Modify 'city' field? (y/n) ");
                 if (AnsweredYes())
                 {
                     Console.Write("Enter new city:      ");
                     City = Console.ReadLine();
                 }
 
-                Console.WriteLine("Modify 'state' field? (y/n)");
+                Console.WriteLine();
+                Console.Write("Modify 'state' field? (y/n) ");
                 if (AnsweredYes())
                 { 
                     Console.Write("Enter new state:     ");
                     State = Console.ReadLine();
                 }
 
-                Console.WriteLine("Modify 'zip' field? (y/n)");
+                Console.WriteLine();
+                Console.Write("Modify 'zip' field? (y/n) ");
                 if (AnsweredYes())
                 {
                     Console.Write("Enter new ZIP:       ");
                     Zip = Console.ReadLine();
                 }
 
-                Console.WriteLine("Modify 'suspended' field? (y/n)");
+                Console.WriteLine();
+                Console.Write("Modify 'suspended' field? (y/n) ");
                 if (AnsweredYes())
                 {
                     Console.Write("Enter TRUE or FALSE: ");
@@ -297,10 +304,18 @@ namespace ChocAn
 
                 Member NewMember = new Member(Name, number, Address, City, State, Zip, Suspended);
 
-                Program.database.ModifyMember(OldMemember, NewMember);
+                try
+                {
+                    Program.database.ModifyMember(OldMemember, NewMember);
 
-                Console.WriteLine();
-                Console.WriteLine("Record updated.");
+                    Console.WriteLine();
+                    Console.WriteLine("Record updated.");
+                }
+                catch
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Record not updated.");
+                }
             }
         }
 
@@ -380,7 +395,7 @@ namespace ChocAn
             Console.Write("Enter a provider number: ");
             string number = Console.ReadLine();
 
-            if (Program.database.ValidateProvider(number))
+            if (!Program.database.ValidateProvider(number))
             {
                 //provider does not exist
                 Console.WriteLine("Provider " + number + " does not exist.");
@@ -442,35 +457,40 @@ namespace ChocAn
                 Console.WriteLine("Zip:       " + Zip);
                 Console.WriteLine();
 
-                Console.WriteLine("Modify 'name' field? (y/n)");
+                Console.WriteLine();
+                Console.Write("Modify 'name' field? (y/n) ");
                 if (AnsweredYes())
                 {
                     Console.Write("Enter new name:    ");
                     Name = Console.ReadLine();
                 }
 
-                Console.WriteLine("Modify 'address' field? (y/n)");
+                Console.WriteLine();
+                Console.Write("Modify 'address' field? (y/n) ");
                 if (AnsweredYes())
                 {
                     Console.Write("Enter new address: ");
                     Address = Console.ReadLine();
                 }
 
-                Console.WriteLine("Modify 'city' field? (y/n)");
+                Console.WriteLine();
+                Console.Write("Modify 'city' field? (y/n) ");
                 if (AnsweredYes())
                 {
                     Console.Write("Enter new city:    ");
                     City = Console.ReadLine();
                 }
 
-                Console.WriteLine("Modify 'state' field? (y/n)");
+                Console.WriteLine();
+                Console.Write("Modify 'state' field? (y/n) ");
                 if (AnsweredYes())
                 {
                     Console.Write("Enter new state:   ");
                     State = Console.ReadLine();
                 }
 
-                Console.WriteLine("Modify 'zip' field? (y/n)");
+                Console.WriteLine();
+                Console.Write("Modify 'zip' field? (y/n) ");
                 if (AnsweredYes())
                 {
                     Console.Write("Enter new ZIP:     ");
@@ -479,10 +499,18 @@ namespace ChocAn
 
                 Provider NewProvider = new Provider(Name, number, Address, City, State, Zip);
 
-                Program.database.ModifyProvider(OldProvider, NewProvider);
+                try
+                {
+                    Program.database.ModifyProvider(OldProvider, NewProvider);
 
-                Console.WriteLine();
-                Console.WriteLine("Record updated.");
+                    Console.WriteLine();
+                    Console.WriteLine("Record updated.");
+                }
+                catch
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Record not updated.");
+                }
             }
         }
 

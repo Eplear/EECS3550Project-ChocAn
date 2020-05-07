@@ -18,8 +18,8 @@ namespace ChocAn
         const int maxLoginAttempts = 5;
         const string PROVIDER_DIRECTORY = "ProviderDirectory.pdf";
 
-        //temporary
-        private Provider provider = new Provider("name", "123", "add", "city", "st", "4000");
+        Provider provider;
+
         /*
          * Main constructor
          * implements functions and creates the terminal interface
@@ -71,15 +71,13 @@ namespace ChocAn
 
             Console.WriteLine();
             Console.Write("Enter provider number: ");
-            string LocationCode = Console.ReadLine();
+            string number = Console.ReadLine();
 
-            isValid = Program.database.ValidateProvider(LocationCode);
-            
-            // get provider details from number
-            
+            isValid = Program.database.ValidateProvider(number);
            
             if (isValid)
             {
+                provider = Program.database.ParseProvider(number);
                 Console.WriteLine("> Access granted.");
                 Console.WriteLine();
                 Console.WriteLine("-------------------------- Information ----------------------------");
@@ -92,7 +90,7 @@ namespace ChocAn
 
             else
             {
-                Console.WriteLine("> Invalid provider number '" + LocationCode);
+                Console.WriteLine("> Invalid provider number '" + number);
                 Console.WriteLine("> Access Denied.");
             }
 

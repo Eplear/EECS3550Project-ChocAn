@@ -38,7 +38,11 @@ namespace ChocAn
             this.Suspended = isSuspended;
         }
 
-        
+        public Member()
+        {
+        }
+
+
         /*
          * Suspend()
          * Suspends a member

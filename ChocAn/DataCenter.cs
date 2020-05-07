@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics.Eventing.Reader;
@@ -7,6 +8,10 @@ using System.Numerics;
 using System.Security.Policy;
 using System.Windows;
 
+/* BROKEN
+ * validate member
+ * modify provider
+ */
 namespace ChocAn
 {
     public class DataCenter
@@ -27,6 +32,7 @@ namespace ChocAn
             CreateTable(sqliteConn);
             InitializeDirectory();
         }
+
         public void InitializeDirectory()
         {
             ProviderDirectory = new Hashtable
@@ -81,7 +87,7 @@ namespace ChocAn
             
             try
             {
-                
+                //code moved out to identify error
             }
             catch
             {
@@ -150,6 +156,7 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@city", provider.City);
             sqliteCmd.Parameters.AddWithValue("@state", provider.State);
             sqliteCmd.Parameters.AddWithValue("@zip", provider.Zip);
+            
             try
             {
                 sqliteCmd.ExecuteNonQuery();
@@ -242,13 +249,12 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@pNum", pNum);
             reader = sqliteCmd.ExecuteReader();
             reader.Read();
-            return new Provider(reader.GetString(1), 
-                                reader.GetString(0), 
-                                reader.GetString(2), 
-                                reader.GetString(3), 
-                                reader.GetString(4), 
+            return new Provider(reader.GetString(1),
+                                reader.GetString(0),
+                                reader.GetString(2),
+                                reader.GetString(3),
+                                reader.GetString(4),
                                 reader.GetString(5));
-
         }
 
         public Member ParseMember(string mNum)
@@ -290,7 +296,7 @@ namespace ChocAn
          * INCOMPLETE
          * need one similar for provider service list
          */
-        public ArrayList MemberServiceList(string mNum)
+        public List<Service> MemberServiceList(string mNum)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
@@ -298,18 +304,18 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@mNum", mNum);
             reader = sqliteCmd.ExecuteReader();
             reader.Read();
-            ArrayList result = new ArrayList();
+            List<Service> result = new List<Service>();
             while (reader.Read())
             {
-                result.Add(new Service(reader.GetDateTime(0),
-                                reader.GetDateTime(1),
-                                reader.GetString(2),
-                                reader.GetString(3),
-                                reader.GetString(4),
-                                reader.GetString(5),
-                                reader.GetString(6),
-                                reader.GetString(7)));
-                reader.NextResult();
+                Service temp = new Service(
+                        DateTime.Parse(reader.GetString(0)),
+                        DateTime.Parse(reader.GetString(0)),
+                        ParseProvider(reader.GetString(2)).Name,
+                        reader.GetString(2),
+                        "",
+                        reader.GetString(3),
+                        reader.GetString(4));
+                result.Add(temp);
             }
             return result;
         }
