@@ -5,7 +5,7 @@
      * Simple entity class
      * holds service information for the provider directory
      */
-    class ServiceInfo
+    public class ServiceInfo
     {
         public int Code{ get; set; }
         public string Name { get; set; }

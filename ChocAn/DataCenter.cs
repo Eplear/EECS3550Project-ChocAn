@@ -45,11 +45,11 @@ namespace ChocAn
                 { 108375, new ServiceInfo(108375, "Physical Therapy", 220) }
             };
         }
-        public string FetchService(int key)
+        public ServiceInfo FetchService(string key)
         {
             try
             {
-                return (string)ProviderDirectory[key];
+                return (ServiceInfo)ProviderDirectory[int.Parse(key)];
             }
             catch
             {
@@ -78,7 +78,7 @@ namespace ChocAn
                 {
                     status = "Suspended.";
                 }
-                Console.WriteLine("Validation Status: " + );
+                Console.WriteLine("Validation Status: ");
             }
             catch
             {
@@ -242,9 +242,7 @@ namespace ChocAn
                                 reader.GetString(5),
                                 reader.GetString(6),
                                 reader.GetString(7),
-                                reader.GetString(8),
-                                reader.GetString(9),
-                                reader.GetDouble(10));
+                                reader.GetString(8));
         }
         /*
          * Created by Adam (don't know what I'm doing tho)
@@ -268,9 +266,7 @@ namespace ChocAn
                                 reader.GetString(5),
                                 reader.GetString(6),
                                 reader.GetString(7),
-                                reader.GetString(8),
-                                reader.GetString(9),
-                                reader.GetDouble(10)));
+                                reader.GetString(8)));
                 reader.NextResult();
             }
             return result;
@@ -290,7 +286,6 @@ namespace ChocAn
             {
                 //Add together the fees
                 result += 0;
-                reader.NextResult();
             }
             return result;
         }
