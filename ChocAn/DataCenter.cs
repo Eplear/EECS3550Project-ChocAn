@@ -122,7 +122,7 @@ namespace ChocAn
 
             return isValid;
         }
-
+        //Doesn't add any booleans?
         public void AddMember(Member member)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
@@ -240,7 +240,7 @@ namespace ChocAn
 
             sqliteCmd.ExecuteNonQuery();
         }
-
+        //Functional
         public Provider ParseProvider(string pNum)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -249,6 +249,7 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@pNum", pNum);
             reader = sqliteCmd.ExecuteReader();
             reader.Read();
+            
             return new Provider(reader.GetString(1),
                                 reader.GetString(0),
                                 reader.GetString(2),
@@ -256,7 +257,7 @@ namespace ChocAn
                                 reader.GetString(4),
                                 reader.GetString(5));
         }
-
+        //Functional without boolean
         public Member ParseMember(string mNum)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -265,15 +266,14 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@mNum", mNum);
             reader = sqliteCmd.ExecuteReader();
             reader.Read();
+            //Temp Removed boolean since it causes issues
             return new Member(reader.GetString(1),
                 reader.GetString(0),
                 reader.GetString(2),
                 reader.GetString(3),
                 reader.GetString(4),
-                reader.GetString(5),
-                reader.GetBoolean(10));
+                reader.GetString(5));
         }
-
         private Service ParseService(string sCode)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -291,11 +291,7 @@ namespace ChocAn
                                 reader.GetString(6),
                                 reader.GetString(7));
         }
-        /*
-         * Created by Adam (don't know what I'm doing tho)
-         * INCOMPLETE
-         * need one similar for provider service list
-         */
+        //Completed - Functional
         public List<Service> MemberServiceList(string mNum)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -312,32 +308,57 @@ namespace ChocAn
                         DateTime.Parse(reader.GetString(0)),
                         ParseProvider(reader.GetString(2)).Name,
                         reader.GetString(2),
-                        "",
+                        ParseMember(reader.GetString(3)).Name,
                         reader.GetString(3),
                         reader.GetString(4));
                 result.Add(temp);
             }
             return result;
         }
-        /*
-         * Created by Adam (don't know what I'm doing tho)
-         * INCOMPLETE
-         */
+        //Completed - Functional
+        public List<Service> ProviderServiceList(string pNum)
+        {
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteDataReader reader;
+            sqliteCmd.CommandText = "SELECT * FROM service WHERE sProviderNum = @pNum;";
+            sqliteCmd.Parameters.AddWithValue("@pNum", pNum);
+            reader = sqliteCmd.ExecuteReader();
+            reader.Read();
+            List<Service> result = new List<Service>();
+            while (reader.Read())
+            {
+                Service temp = new Service(
+                        DateTime.Parse(reader.GetString(0)),
+                        DateTime.Parse(reader.GetString(0)),
+                        ParseProvider(reader.GetString(2)).Name,
+                        reader.GetString(2),
+                        ParseMember(reader.GetString(3)).Name,
+                        reader.GetString(3),
+                        reader.GetString(4));
+                result.Add(temp);
+            }
+            return result;
+        }
+        //Completed - Functional
         public int TotalProviderFee(string pNum)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT * FROM service WHERE sProviderNum = '" + pNum + "';";
+            sqliteCmd.CommandText = "SELECT * FROM service WHERE sProviderNum = @pNum;";
+            sqliteCmd.Parameters.AddWithValue("@pNum", pNum);
             reader = sqliteCmd.ExecuteReader();
+            reader.Read();
+            Console.WriteLine("help");
+            Console.WriteLine(reader.GetString(4));
             int result = 0;
             while (reader.Read())
             {
                 //Add together the fees
-                result += 0;
+                result += FetchService(reader.GetString(4)).Fee;
             }
             return result;
         }
-
+        //Completed - Functional
         public void WriteEFT()
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();

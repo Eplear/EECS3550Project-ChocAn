@@ -64,23 +64,12 @@ namespace ChocAn
         {
             string result = "Name: " + Name + "\nMember Number: " + Number + "\nStreet Address: " + Address + "\nCity: "
                 + City + "\nState: " + State + "\nZipcode: " + Zip + "\n";
-            /* For each service:
-             *  Date Of Service
-             *  Proider Name
-             *  Service Name
-             */
-            try
+            
+            var list = Program.database.MemberServiceList(Number);
+            foreach (Service l in list)
             {
-                var list = Program.database.MemberServiceList(Number);
-                foreach (Service l in list)
-                {
-                    result += "\nDate of Service: " + l.DateOfService + "\nProvider Name: " + l.ProviderName +
-                        "\nService Name: " + l.ServiceName + "\n";
-                }
-            }
-            catch
-            {
-                Console.WriteLine("MemberServiceList Not Working");
+                result += "\n\tDate of Service: " + l.DateOfService + "\n\tProvider Name: " + l.ProviderName +
+                    "\n\tService Name: " + l.ServiceName + "\n";
             }
             return result;
         }

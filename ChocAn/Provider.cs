@@ -1,4 +1,6 @@
-﻿namespace ChocAn
+﻿using System;
+
+namespace ChocAn
 {
     /*
      * Class Provider
@@ -38,26 +40,20 @@
         {
             string result = "Name: " + Name + "\nProvider Number:" + Number + "\nStreet Address: " + Address + "\nCity: " + City
                 + "\nState: " + State + "\nZipcode: " + Zip + "\n";
-            /*For each service:
-             *  Date Of Service
-             *  Date Received by Computer 
-             *  Member Name
-             *  Memeber Number
-             *  Service Code
-             *  Fee to be paid
-             */
-            result += "Total Number of Consultations: " + NumberOfConsultations() + "\nTotal Fees: " + TotalFee();
+            var list = Program.database.ProviderServiceList(Number);
+            foreach (Service l in list)
+            {
+                result += "\n\tDate of Service: " + l.DateOfService + "\n\tDate Received by Computer: " 
+                    + l.DateReceived + "\n\tMember Name: " + l.MemberName + "\n\tMember Number: " + l.MemberNumber
+                    + "\n\tService Code: " + l.ServiceCode + "\n\tFee: " + l.Fee + "\n";
+            }
+            result += "Total Number of Consultations: " + list.Count + "\nTotal Fees: " + TotalFee();
             return result;
         }
-        //WIP
-        public int NumberOfConsultations()
-        {
-            return 0;
-        }
-        //WIP
+        //Completed - functional
         public int TotalFee()
         {
-            return 0;
+            return Program.database.TotalProviderFee(Number);
         }
     }
 }
