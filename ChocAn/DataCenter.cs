@@ -363,7 +363,6 @@ namespace ChocAn
             SQLiteDataReader reader;
             sqliteCmd.CommandText = "SELECT * FROM provider;";
             reader = sqliteCmd.ExecuteReader();
-            
             while (reader.Read())
             {
                 Provider temp = new Provider(
@@ -384,7 +383,21 @@ namespace ChocAn
 
         public void GeneratePayableSummary()
         {
-            
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteDataReader reader;
+            sqliteCmd.CommandText = "SELECT * FROM provider;";
+            reader = sqliteCmd.ExecuteReader();
+            Console.WriteLine("---Payable Summary---\nProviders to be paid:\n");
+            int fees = 0, count = 0;
+            while (reader.Read())
+            {
+                Provider temp = ParseProvider(reader.GetString(0));
+                Console.WriteLine("\tName: " + temp.Name + "\n\tTotal Fee: " + temp.TotalFee() +
+                    "\n\tNumber of Consultations: " + temp.NumberOfConsultations() + "\n");
+                fees += temp.TotalFee();
+                count += temp.NumberOfConsultations();
+            }
+            Console.WriteLine("Overall Total Fees: " + fees + "\nOverall Number of Consultations: " + count);
         }
         //Completed - functional works with managerclient
         public void SendMemReport()
@@ -415,8 +428,8 @@ namespace ChocAn
                     while (reader.Read())
                     {
                         Program.report.MemberReport(ParseMember(reader.GetString(0)));
-                        return;
                     }
+                    return;
                 }
                 else
                 {
@@ -458,8 +471,8 @@ namespace ChocAn
                     while (reader.Read())
                     {
                         Program.report.ProviderReport(ParseProvider(reader.GetString(0)));
-                        return;
                     }
+                    return;
                 }
                 else
                 {
