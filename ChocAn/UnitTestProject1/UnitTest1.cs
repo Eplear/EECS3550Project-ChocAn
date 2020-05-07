@@ -68,14 +68,30 @@ namespace UnitTestProject1
         [TestMethod]
         public void ReportMember()
         {
-            DataCenter dataCenter = new DataCenter();
-            Service s1 = new Service(new DateTime(), new DateTime(), "George", "111222333", "Fayes", "222333444", "246894");
-            dataCenter.AddService(s1);
+            DataCenter database = new DataCenter();
+            Service s1 = new Service(DateTime.Now, DateTime.Now, "George", "111222333", "Fayes", "222333444", "246894");
+            database.AddService(s1);
             Member m = new Member("Faye", "222333444", "Address", "City", "State", "zip");
-            dataCenter.AddMember(m);
+            database.AddMember(m);
+            Provider p = new Provider("George", "111222333", "x", "xz", "asd", "czx");
+            database.AddProvider(p);
             Report report = new Report();
             report.CleanupDirectories();
             report.MemberReport(m);
+        }
+        [TestMethod]
+        public void ReportProvider()
+        {
+            DataCenter database = new DataCenter();
+            Service s1 = new Service(DateTime.Now, DateTime.Now, "George", "111222333", "Fayes", "222333444", "246894");
+            database.AddService(s1);
+            Member m = new Member("Faye", "222333444", "Address", "City", "State", "zip");
+            database.AddMember(m);
+            Provider p = new Provider("George", "111222333", "x", "xz", "asd", "czx");
+            database.AddProvider(p);
+            Report report = new Report();
+            report.CleanupDirectories();
+            report.ProviderReport(p);
         }
     }
 }

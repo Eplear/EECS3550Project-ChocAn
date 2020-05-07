@@ -29,15 +29,16 @@ namespace ChocAn
         {
             try
             {
+                string currentDate = DateTime.Now.Date.Month + "-" + DateTime.Now.Date.Day + "-" + DateTime.Now.Date.Year;
                 string toWrite = "Name: " + p.Name + "\nNumber: " + p.Number + "\nFees to be paid: " + p.TotalFee() + "\n";
                 Console.WriteLine(toWrite);
-                File.WriteAllText(BankRecordsPath + "/" + p.Name + ".txt", toWrite);
+                File.WriteAllText(BankRecordsPath + "/" + p.Name + "-" + currentDate + ".txt", toWrite);
                 //Maybe set fees to zero after recording?
                 return 1;
             }
             catch
             {
-                Console.WriteLine("Bank Record Not Working!");
+                Console.WriteLine("Bank Records Not Working");
                 return 0;
             }
         }
