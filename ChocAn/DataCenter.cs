@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics.Eventing.Reader;
@@ -60,26 +59,29 @@ namespace ChocAn
         {
             bool? isValid = null;
             string status = "Member does not exist.";
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT isSuspended FROM member WHERE EXISTS(SELECT 1 FROM member WHERE mNum = @memNum); ";
+            sqliteCmd.CommandText = "SELECT isSuspended FROM member  WHERE EXISTS(SELECT 1 FROM member WHERE mNum = @memNum); ";
             sqliteCmd.Parameters.AddWithValue("@memNum", memNum);
             
+            reader = sqliteCmd.ExecuteReader();
+            reader.Read();
+            isValid = reader.GetBoolean(0);
 
+            if (isValid == true)
+            {
+                status = "Valid Member.";
+            }
+            if (isValid == false)
+            {
+                status = "Suspended.";
+            }
+            
+            Console.WriteLine("Validation Status: " + status);
+            
             try
             {
-                reader = sqliteCmd.ExecuteReader();
-                reader.Read();
-                isValid = reader.GetBoolean(0);
-                if (isValid == true)
-                {
-                    status = "Valid Member.";
-                }
-                if (isValid == false)
-                {
-                    status = "Suspended.";
-                }
-                Console.WriteLine("Validation Status: " + status);
+                
             }
             catch
             {
@@ -94,13 +96,16 @@ namespace ChocAn
         {
             bool isValid = false;
             int found = 0;
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "SELECT EXISTS(SELECT 1 FROM provider WHERE pNum = @provNum)";
             sqliteCmd.Parameters.AddWithValue("@provNum", provNum);
 
+
+            
             try
             {
-                found = sqliteCmd.ExecuteNonQuery();
+                sqliteCmd.ExecuteScalar();
+                found = 1;
             }
             catch
             {
@@ -157,7 +162,7 @@ namespace ChocAn
 
         public void AddService(Service service)
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText =
                 "INSERT INTO service(currDate, servDate, sProviderNum, sMemberNum, comment, sCode) VALUES(" +
                 "'" + service.DateOfService + "', " +
@@ -187,21 +192,21 @@ namespace ChocAn
 
         public void DeleteMember(string memberID)
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "DELETE FROM member WHERE mNum='"+ memberID + "';";
             sqliteCmd.ExecuteNonQuery();
         }
 
         public void DeleteProvider(string providerID)
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "DELETE FROM provider WHERE pNum='" + providerID + "';";
             sqliteCmd.ExecuteNonQuery();
         }
 
         public void ModifyMember(Member oldMember, Member newMember)
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "UPDATE member " +
                                     "SET mName = " + newMember.Name +
                                     "mNum = " + newMember.Number +
@@ -218,11 +223,12 @@ namespace ChocAn
 
         public void ModifyProvider(Provider oldProvider, Provider newProvider)
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
+            
             sqliteCmd.CommandText = "UPDATE provider " +
                                     "SET mName = " + newProvider.Name +
                                     "pNum = " + newProvider.Number +
-                                    "pStreet = " + newProvider.Address +
+                                    "pAddress = " + newProvider.Address +
                                     "pCity = " + newProvider.City +
                                     "pState = " + newProvider.State +
                                     "pZip = " + newProvider.Zip +
@@ -233,12 +239,13 @@ namespace ChocAn
 
         public Provider ParseProvider(string pNum)
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
             sqliteCmd.CommandText = "SELECT * FROM provider WHERE pNum = '" + pNum + "';";
             reader = sqliteCmd.ExecuteReader();
-            return new Provider(reader.GetString(1), 
-                                reader.GetString(0), 
+            reader.Read();
+            return new Provider(reader.GetString(0), 
+                                reader.GetString(1), 
                                 reader.GetString(2), 
                                 reader.GetString(3), 
                                 reader.GetString(4), 
@@ -248,10 +255,11 @@ namespace ChocAn
 
         public Member ParseMember(string mNum)
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
             sqliteCmd.CommandText = "SELECT * FROM member WHERE mNum = '" + mNum + "';";
             reader = sqliteCmd.ExecuteReader();
+            reader.Read();
             return new Member(reader.GetString(0),
                 reader.GetString(1),
                 reader.GetString(2),
@@ -263,10 +271,11 @@ namespace ChocAn
 
         private Service ParseService(string sCode)
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
             sqliteCmd.CommandText = "SELECT * FROM service WHERE sCode = '" + sCode  +"';";
             reader = sqliteCmd.ExecuteReader();
+            reader.Read();
             return new Service( reader.GetDateTime(0),
                                 reader.GetDateTime(1),
                                 reader.GetString(2),
@@ -276,25 +285,30 @@ namespace ChocAn
                                 reader.GetString(6),
                                 reader.GetString(7));
         }
-        
-        public List<Service> MemberServiceList(string mNum)
+        /*
+         * Created by Adam (don't know what I'm doing tho)
+         * INCOMPLETE
+         * need one similar for provider service list
+         */
+        public ArrayList MemberServiceList(string mNum)
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT * FROM service WHERE sMemberNum = '"+ mNum + "';";
+            sqliteCmd.CommandText = "SELECT * FROM service WHERE sMemberNum = '" + mNum + "';";
             reader = sqliteCmd.ExecuteReader();
-            List<Service> result = new List<Service>();
+            reader.Read();
+            ArrayList result = new ArrayList();
             while (reader.Read())
             {
-                Service temp = new Service(
-                        DateTime.Parse(reader.GetString(0)),
-                        DateTime.Parse(reader.GetString(0)),
-                        "Provider Name",
-                        reader.GetString(2),
-                        "Member Name",
-                        reader.GetString(3),
-                        reader.GetString(4));
-                result.Add(temp);
+                result.Add(new Service(reader.GetDateTime(0),
+                                reader.GetDateTime(1),
+                                reader.GetString(2),
+                                reader.GetString(3),
+                                reader.GetString(4),
+                                reader.GetString(5),
+                                reader.GetString(6),
+                                reader.GetString(7)));
+                reader.NextResult();
             }
             return result;
         }
@@ -304,7 +318,7 @@ namespace ChocAn
          */
         public int TotalProviderFee(string pNum)
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
             sqliteCmd.CommandText = "SELECT * FROM service WHERE sProviderNum = '" + pNum + "';";
             reader = sqliteCmd.ExecuteReader();
@@ -319,10 +333,11 @@ namespace ChocAn
 
         public void WriteEFT()
         {
-            var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
             sqliteCmd.CommandText = "SELECT * FROM provider;";
             reader = sqliteCmd.ExecuteReader();
+            
             while (reader.Read())
             {
                 Provider temp = new Provider(
@@ -389,7 +404,7 @@ namespace ChocAn
                                  "isSuspended BOOLEAN)";
 
             var createServTable = "CREATE TABLE IF NOT EXISTS service(" +
-                                  "currDate TEXT PRIMARY KEY, " +
+                                  "currDate TEXT, " +
                                   "servDate TEXT," +
                                   "sProviderNum TEXT, " +
                                   "sMemberNum TEXT, " +
@@ -417,6 +432,7 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@table", table);
 
             sqliteDatareader = sqliteCmd.ExecuteReader();
+            
             while (sqliteDatareader.Read())
             {
                 var tempReader = sqliteDatareader.GetString(0);
