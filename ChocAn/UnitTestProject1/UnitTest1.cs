@@ -51,6 +51,8 @@ namespace UnitTestProject1
             Provider p1 = new Provider("name1", "123", "add", "city", "st", "4000");
             Provider p2 = new Provider("name2", "135", "dress", "city2", "st2", "5000");
             DataCenter database = new DataCenter();
+            BankRecord bank = new BankRecord();
+            bank.CleanupDirectories();
             database.AddProvider(p1);
             database.AddProvider(p2);
             database.WriteEFT();

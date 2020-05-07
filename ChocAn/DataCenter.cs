@@ -20,7 +20,6 @@ namespace ChocAn
         {
             CreateTable(sqliteConn);
             ReadData(sqliteConn);
-            sqliteConn.Close();
             InitializeDirectory();
         }
 
@@ -28,7 +27,6 @@ namespace ChocAn
         {
             CreateTable(sqliteConn);
             ReadData(sqliteConn);
-            sqliteConn.Close();
             InitializeDirectory();
         }
         public void InitializeDirectory()
@@ -122,7 +120,7 @@ namespace ChocAn
                 "'" + member.Address + "', " +
                 "'" + member.City + "', " +
                 "'" + member.State + "', " +
-                "'" + member.Zip.ToString() + "); ";
+                "'" + member.Zip.ToString() + "'); ";
             sqliteCmd.ExecuteNonQuery();
         }
 
@@ -131,13 +129,20 @@ namespace ChocAn
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText =
                 "INSERT INTO provider(pNum, pName, pStreet, pCity, pState, pZip) VALUES(" +
-                "'" + provider.Number.ToString() + "', " +
+                "'" + provider.Number + "', " +
                 "'" + provider.Name + "', " +
                 "'" + provider.Address + "', " +
                 "'" + provider.City + "', " +
                 "'" + provider.State + "', " +
-                "'" + provider.Zip.ToString() + "); ";
-            sqliteCmd.ExecuteNonQuery();
+                "'" + provider.Zip + "'); ";
+            try
+            {
+                sqliteCmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                Console.WriteLine("Already in there");
+            }
         }
 
         public void AddService(Service service)
@@ -301,19 +306,18 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT * FROM member;";
+            sqliteCmd.CommandText = "SELECT * FROM provider;";
             reader = sqliteCmd.ExecuteReader();
             while (reader.Read())
             {
                 Provider temp = new Provider(
-                    reader.GetString(0),
                     reader.GetString(1),
-                                reader.GetString(2),
-                                reader.GetString(3),
-                                reader.GetString(4),
-                                reader.GetString(5));
+                    reader.GetString(0),
+                    reader.GetString(2),
+                    reader.GetString(3),
+                    reader.GetString(4),
+                    reader.GetString(5));
                 Program.bankrecord.Record(temp);
-                reader.NextResult();
             }
         }
 
