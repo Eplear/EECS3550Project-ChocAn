@@ -61,20 +61,19 @@ namespace ChocAn
         {
             bool? isValid = null;
             string status = null;
-            Member member;
+            
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "SELECT isSuspended EXISTS(SELECT 1 FROM member WHERE mNum = " + memNum + "); ";
 
             try
             {
                 status = sqliteCmd.ExecuteScalar().ToString();
-                Console.WriteLine("Validation Status: " + status);
             }
             catch
             {
                 Console.WriteLine("ERROR: Member number not found.");
             }
-
+            
             if (!status.Equals(null))
             {
                 if (status.Equals('1'))
@@ -115,12 +114,12 @@ namespace ChocAn
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText =
                 "INSERT INTO member(mNum, mName, mStreet, mCity, mState, mZip) VALUES(" +
-                "'" + member.Number.ToString() + "', " +
+                "'" + member.Number + "', " +
                 "'" + member.Name + "', " +
                 "'" + member.Address + "', " +
                 "'" + member.City + "', " +
                 "'" + member.State + "', " +
-                "'" + member.Zip.ToString() + "'); ";
+                "'" + member.Zip + "'); ";
             sqliteCmd.ExecuteNonQuery();
         }
 
@@ -152,21 +151,21 @@ namespace ChocAn
                 "INSERT INTO service(dServ, dRec, pNum, mNum, sCode, com) VALUES(" +
                 "'" + service.DateOfService + "', " +
                 "'" + service.DateReceived + "', " +
-                "'" + service.ProviderNumber.ToString() + "', " +
-                "'" + service.MemberNumber.ToString() + "', " +
+                "'" + service.ProviderNumber + "', " +
+                "'" + service.MemberNumber + "', " +
                 "'" + service.ServiceCode + "', " +
                 "'" + service.Comments + "); ";
             sqliteCmd.ExecuteNonQuery();
         }
 
-        public void DeleteMember(String memberID)
+        public void DeleteMember(string memberID)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "DELETE FROM member WHERE mNum='"+ memberID + "';";
             sqliteCmd.ExecuteNonQuery();
         }
 
-        public void DeleteProvider(String providerID)
+        public void DeleteProvider(string providerID)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "DELETE FROM provider WHERE pNum='" + providerID + "';";
@@ -205,7 +204,7 @@ namespace ChocAn
             sqliteCmd.ExecuteNonQuery();
         }
 
-        public Provider ParseProvider(String pNum)
+        public Provider ParseProvider(string pNum)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
@@ -220,7 +219,7 @@ namespace ChocAn
 
         }
 
-        public Member ParseMember(String mNum)
+        public Member ParseMember(string mNum)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
@@ -347,6 +346,7 @@ namespace ChocAn
             }
             catch (Exception ex)
             {
+                // thank you come again 
             }
 
             return sqlite_conn;

@@ -10,16 +10,18 @@ using System.Threading.Tasks;
 /* To Do
  * - generate member code, should we actually? or just take string
  * - add service method, function missing from database
+ * - check member exists
  */
 
 namespace ChocAn
 {
-    class ManagerClient
+    public class ManagerClient
     {
 
         public ManagerClient()
         {
             PrintHeader();
+            PrintLegend();
 
             //validate manager
 
@@ -74,6 +76,8 @@ namespace ChocAn
             Console.Write("Enter a command: ");
 
             if (!char.TryParse(Console.ReadLine(), out char cmd)) cmd = ' '; //send to default case
+
+            Console.WriteLine();
 
             switch (cmd)
             {
@@ -143,8 +147,10 @@ namespace ChocAn
             Console.Write("\tEnter name:    ");
             string name = Console.ReadLine();
 
+            Console.Write("\tEnter number:  ");
+            string number = Console.ReadLine();
             // generate member num
-            string number = "123456789"; //for testing, DELETE later
+            //string number = "123456789"; //for testing, DELETE later
 
             Console.Write("\tEnter address: ");
             string address = Console.ReadLine();
@@ -222,12 +228,7 @@ namespace ChocAn
             Console.Write("Enter a member number: ");
             string number = Console.ReadLine();
 
-            if (Program.database.ValidateMember(number) == null)
-            {
-                // member does not exist
-                Console.WriteLine("Member " + number + " does not exist.");
-            }
-            else
+            if (Program.database.ValidateMember(number) != null)
             {
                 Member OldMemember = Program.database.ParseMember(number);
 
@@ -327,11 +328,13 @@ namespace ChocAn
             Console.WriteLine("Provider creation");
 
             //get new provider details
-            Console.Write("\tEnter name: ");
+            Console.Write("\tEnter name:   ");
             string name = Console.ReadLine();
 
+            Console.Write("\tEnter number: ");
+            string number = Console.ReadLine();
             // generate provider num
-            string number = "123456789"; //for testing, DELETE later
+            //string number = "123456789"; //for testing, DELETE later
 
             Console.Write("\tEnter address: ");
             string address = Console.ReadLine();
