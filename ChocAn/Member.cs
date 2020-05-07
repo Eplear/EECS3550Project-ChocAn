@@ -1,4 +1,6 @@
-﻿namespace ChocAn
+﻿using System;
+
+namespace ChocAn
 {
     /*
      * Class Member
@@ -63,6 +65,19 @@
              *  Proider Name
              *  Service Name
              */
+            try
+            {
+                var list = Program.database.MemberServiceList(Number);
+                foreach (Service l in list)
+                {
+                    result += "\nDate of Service: " + l.DateOfService + "\nProvider Name: " + l.ProviderName +
+                        "\nService Name: " + l.ServiceName + "\n";
+                }
+            }
+            catch
+            {
+                Console.WriteLine("MemberServiceList Not Working");
+            }
             return result;
         }
     }

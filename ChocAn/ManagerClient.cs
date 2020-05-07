@@ -163,16 +163,20 @@ namespace ChocAn
 
             Console.Write("\tEnter ZIP:     ");
             string zip = Console.ReadLine();
-            
+
             //initialize a member object with entered details
-            Member NewMember = new Member(name, number, address, city, state, zip);
-
-            //add new member to the databse
-            Program.database.AddMember(NewMember);
-
-            //print confirmation of addition to database
-            Console.WriteLine();
-            Console.WriteLine("Member " + number + " added.");
+            try
+            {
+                Member NewMember = new Member(name, number, address, city, state, zip, true);
+                Program.database.AddMember(NewMember);
+                //print confirmation of addition to database
+                Console.WriteLine();
+                Console.WriteLine("Member " + number + " added.");
+            }
+            catch
+            {
+                Console.WriteLine("Member " + number + " already exists.");
+            }
         }
 
 
@@ -240,7 +244,7 @@ namespace ChocAn
                 bool Suspended  = OldMemember.Suspended;
 
                 //show current details of member
-                Console.WriteLine("Member " + number + " details:");
+                Console.WriteLine("Member details:");
                 Console.WriteLine("Name:      " + Name);
                 Console.WriteLine("Address:   " + Address);
                 Console.WriteLine("City:      " + City);
@@ -252,35 +256,35 @@ namespace ChocAn
                 Console.WriteLine("Modify 'name' field? (y/n)");
                 if (AnsweredYes())
                 {
-                    Console.Write("Enter new name: ");
+                    Console.Write("Enter new name:      ");
                     Name = Console.ReadLine();
                 }
 
                 Console.WriteLine("Modify 'address' field? (y/n)");
                 if (AnsweredYes())
                 {
-                    Console.Write("Enter new address: ");
+                    Console.Write("Enter new address:   ");
                     Address = Console.ReadLine();
                 }
 
                 Console.WriteLine("Modify 'city' field? (y/n)");
                 if (AnsweredYes())
                 {
-                    Console.Write("Enter new city: ");
+                    Console.Write("Enter new city:      ");
                     City = Console.ReadLine();
                 }
 
                 Console.WriteLine("Modify 'state' field? (y/n)");
                 if (AnsweredYes())
-                {
-                    Console.Write("Enter new state: ");
+                { 
+                    Console.Write("Enter new state:     ");
                     State = Console.ReadLine();
                 }
 
                 Console.WriteLine("Modify 'zip' field? (y/n)");
                 if (AnsweredYes())
                 {
-                    Console.Write("Enter new ZIP: ");
+                    Console.Write("Enter new ZIP:       ");
                     Zip = Console.ReadLine();
                 }
 
@@ -328,10 +332,10 @@ namespace ChocAn
             Console.WriteLine("Provider creation");
 
             //get new provider details
-            Console.Write("\tEnter name:   ");
+            Console.Write("\tEnter name:    ");
             string name = Console.ReadLine();
 
-            Console.Write("\tEnter number: ");
+            Console.Write("\tEnter number:  ");
             string number = Console.ReadLine();
             // generate provider num
             //string number = "123456789"; //for testing, DELETE later
@@ -348,14 +352,21 @@ namespace ChocAn
             Console.Write("\tEnter ZIP:     ");
             string zip = Console.ReadLine();
 
-            //initialize a provider object with entered details 
-            Provider NewProvider = new Provider(name, number, address, city, state, zip);
+            try
+            {
+                //initialize a provider object with entered details 
+                Provider NewProvider = new Provider(name, number, address, city, state, zip);
 
-            //add new provider to databse
-            Program.database.AddProvider(NewProvider);
+                //add new provider to databse
+                Program.database.AddProvider(NewProvider);
 
-            Console.WriteLine();
-            Console.WriteLine("Provider " + number + " added.");
+                Console.WriteLine();
+                Console.WriteLine("Provider " + number + " added.");
+            }
+            catch
+            {
+                Console.WriteLine("Provider " + number + " already exists.");
+            }
         }
 
 
@@ -411,12 +422,7 @@ namespace ChocAn
             Console.Write("Enter a Provider number: ");
             string number = Console.ReadLine();
 
-            if (!Program.database.ValidateProvider(number))
-            {
-                // member does not exist
-                Console.WriteLine("Provider " + number + " does not exist.");
-            }
-            else
+            if (Program.database.ValidateProvider(number))
             {
                 Provider OldProvider = Program.database.ParseProvider(number);
 
@@ -427,7 +433,8 @@ namespace ChocAn
                 string Zip = OldProvider.Zip;
 
                 //show current details of member
-                Console.WriteLine("Provider " + number + " details:");
+                Console.WriteLine();
+                Console.WriteLine("Provider details:");
                 Console.WriteLine("Name:      " + Name);
                 Console.WriteLine("Address:   " + Address);
                 Console.WriteLine("City:      " + City);
@@ -438,7 +445,7 @@ namespace ChocAn
                 Console.WriteLine("Modify 'name' field? (y/n)");
                 if (AnsweredYes())
                 {
-                    Console.Write("Enter new name: ");
+                    Console.Write("Enter new name:    ");
                     Name = Console.ReadLine();
                 }
 
@@ -452,21 +459,21 @@ namespace ChocAn
                 Console.WriteLine("Modify 'city' field? (y/n)");
                 if (AnsweredYes())
                 {
-                    Console.Write("Enter new city: ");
+                    Console.Write("Enter new city:    ");
                     City = Console.ReadLine();
                 }
 
                 Console.WriteLine("Modify 'state' field? (y/n)");
                 if (AnsweredYes())
                 {
-                    Console.Write("Enter new state: ");
+                    Console.Write("Enter new state:   ");
                     State = Console.ReadLine();
                 }
 
                 Console.WriteLine("Modify 'zip' field? (y/n)");
                 if (AnsweredYes())
                 {
-                    Console.Write("Enter new ZIP: ");
+                    Console.Write("Enter new ZIP:     ");
                     Zip = Console.ReadLine();
                 }
 
@@ -477,7 +484,6 @@ namespace ChocAn
                 Console.WriteLine();
                 Console.WriteLine("Record updated.");
             }
-
         }
 
 

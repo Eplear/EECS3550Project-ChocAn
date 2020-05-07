@@ -6,9 +6,9 @@ namespace ChocAn
     /* Report Class
      * Writes reports into text files
      */
-    class Report
+    public class Report
     {
-        public const string ReportsPath = "./Reports";
+        public const string ReportsPath = "Reports";
         public Report()
         {
             //setup directories for member and provider reports
@@ -25,6 +25,8 @@ namespace ChocAn
         {
             Directory.Delete(ReportsPath + "/MemberReports", true);
             Directory.Delete(ReportsPath + "/ProviderReports", true);
+            Directory.CreateDirectory(ReportsPath + "/MemberReports");
+            Directory.CreateDirectory(ReportsPath + "/ProviderReports");
         }
         /* MemberReport()
          * Writes a report into a text file for a member
