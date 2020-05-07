@@ -257,14 +257,13 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@mNum", mNum);
             reader = sqliteCmd.ExecuteReader();
             reader.Read();
-            return new Member(
-                        reader.GetString(0),
-                        reader.GetString(1),
-                        reader.GetString(2),
-                        reader.GetString(3),
-                        reader.GetString(4),
-                        reader.GetString(5),
-                        reader.GetBoolean(6));
+            return new Member(reader.GetString(1),
+                reader.GetString(0),
+                reader.GetString(2),
+                reader.GetString(3),
+                reader.GetString(4),
+                reader.GetString(5),
+                reader.GetBoolean(10));
         }
 
         private Service ParseService(string sCode)
