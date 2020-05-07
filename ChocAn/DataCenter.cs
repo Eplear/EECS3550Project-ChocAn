@@ -99,11 +99,11 @@ namespace ChocAn
 
             try
             {
-                found = sqliteCmd.ExecuteNonQuery();
+                found = sqliteCmd.ExecuteScalar();
             }
             catch
             {
-                Console.WriteLine("ERROR: Member number not found.");
+                Console.WriteLine("ERROR: Provider number not found.");
             }
 
             if (found == 1) isValid = true;
@@ -158,13 +158,8 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText =
-                "INSERT INTO service(currDate, servDate, sProviderNum, sMemberNum, comment, sCode) VALUES(" +
-                "'" + service.DateOfService + "', " +
-                "'" + service.DateReceived + "', " +
-                "'" + service.ProviderNumber + "', " +
-                "'" + service.MemberNumber + "', " +
-                "'" + service.ServiceCode + "', " +
-                "'" + service.Comments + "'); ";
+                "INSERT INTO service(currDate, servDate, sProviderNum, sMemberNum, comment, sCode) " +
+                "VALUES(@dateServ, @dateRec, @pNum, @mNum, @sCode, @com); ";
             sqliteCmd.Parameters.AddWithValue("@dateServ", service.DateOfService);
             sqliteCmd.Parameters.AddWithValue("@dateRec", service.DateReceived);
             sqliteCmd.Parameters.AddWithValue("@pNum", service.ProviderNumber);
@@ -173,7 +168,7 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@com", service.Comments);
 
             sqliteCmd.ExecuteNonQuery();
-        }
+        
             try
             {
                 sqliteCmd.ExecuteNonQuery();
@@ -202,16 +197,16 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "UPDATE member " +
-                                    "SET mName = " + newMember.Name +
-                                    "mNum = " + newMember.Number +
-                                    "mStreet = " + newMember.Address +
-                                    "mCity = " + newMember.City +
-                                    "mState = " + newMember.State +
-                                    "mZip = " + newMember.Zip +
-                                    "isSuspended = " + newMember.Suspended +
-                                    ";" +
-                                    "WHERE mNum = '" + oldMember.Number + "'" +
-                                    "LIMIT 1;";
+                "SET( mName = @name, mNum = @num, mStreet = @street, mCity = @city, mState = @state, mZip = @zip, isSuspended = @suspended) " +
+                "WHERE mNum = @oldNum LIMIT 1;";
+            sqliteCmd.Parameters.AddWithValue("@name", newMember.Name);
+            sqliteCmd.Parameters.AddWithValue("@num", newMember.Number);
+            sqliteCmd.Parameters.AddWithValue("@street", newMember.Address);
+            sqliteCmd.Parameters.AddWithValue("@city", newMember.City);
+            sqliteCmd.Parameters.AddWithValue("@state", newMember.State);
+            sqliteCmd.Parameters.AddWithValue("@zip", newMember.Zip);
+            sqliteCmd.Parameters.AddWithValue("@suspended", newMember.Suspended);
+
             sqliteCmd.ExecuteNonQuery();
         }
 
@@ -219,14 +214,15 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "UPDATE provider " +
-                                    "SET mName = " + newProvider.Name +
-                                    "pNum = " + newProvider.Number +
-                                    "pStreet = " + newProvider.Address +
-                                    "pCity = " + newProvider.City +
-                                    "pState = " + newProvider.State +
-                                    "pZip = " + newProvider.Zip +
-                                    "WHERE pNum = '" + oldProvider.Number + "'" +
+                                    "SET(pName = @name, pNum = @num, pStreet = @street, pCity = @city, pState = @state, pZip = @zip) WHERE pNum = @oldNum" +
                                     "LIMIT 1;";
+            sqliteCmd.Parameters.AddWithValue("@name", newProvider.Name);
+            sqliteCmd.Parameters.AddWithValue("@num", newProvider.Number);
+            sqliteCmd.Parameters.AddWithValue("@street", newProvider.Address);
+            sqliteCmd.Parameters.AddWithValue("@city", newProvider.City);
+            sqliteCmd.Parameters.AddWithValue("@state", newProvider.State);
+            sqliteCmd.Parameters.AddWithValue("@zip", newProvider.Zip);
+
             sqliteCmd.ExecuteNonQuery();
         }
 
@@ -234,7 +230,8 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT * FROM provider WHERE pNum = '" + pNum + "';";
+            sqliteCmd.CommandText = "SELECT * FROM provider WHERE pNum = @pNum;";
+            sqliteCmd.Parameters.AddWithValue("@pNum", pNum);
             reader = sqliteCmd.ExecuteReader();
             return new Provider(reader.GetString(0), 
                                 reader.GetString(1), 
@@ -249,7 +246,8 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT * FROM member WHERE mNum = '" + mNum + "';";
+            sqliteCmd.CommandText = "SELECT * FROM member WHERE mNum = @mNum;";
+            sqliteCmd.Parameters.AddWithValue("@mNum", mNum);
             reader = sqliteCmd.ExecuteReader();
             return new Member(reader.GetString(0),
                 reader.GetString(1),
@@ -264,7 +262,8 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT * FROM service WHERE sCode = '" + sCode  +"';";
+            sqliteCmd.CommandText = "SELECT * FROM service WHERE sCode = @sCode;";
+            sqliteCmd.Parameters.AddWithValue("@sCode", sCode);
             reader = sqliteCmd.ExecuteReader();
             return new Service( reader.GetDateTime(0),
                                 reader.GetDateTime(1),
@@ -284,7 +283,8 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT * FROM service WHERE sMemberNum = '" + mNum + "';";
+            sqliteCmd.CommandText = "SELECT * FROM service WHERE sMemberNum = @mNum;";
+            sqliteCmd.Parameters.AddWithValue("@mNum", mNum);
             reader = sqliteCmd.ExecuteReader();
             ArrayList result = new ArrayList();
             while (reader.Read())
@@ -434,6 +434,6 @@ namespace ChocAn
             sqliteCmd.CommandText = "DELETE * FROM member, provider, service";
             sqliteCmd.ExecuteNonQuery();
         }
-
+        
     }
 }
