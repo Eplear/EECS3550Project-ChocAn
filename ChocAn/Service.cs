@@ -25,13 +25,13 @@ namespace ChocAn
         }
 
         public Service(DateTime dateOfService, DateTime dateReceived, string providerName,
-            string providerNumber, string serviceName, string memberName, string memberNumber, string serviceCode, string comments = null)
+            string providerNumber, string memberName, string memberNumber, string serviceCode, string comments = null)
         {
             this.DateOfService = dateOfService;
             this.DateReceived = dateReceived;
             this.ProviderName = providerName;
             this.ProviderNumber = providerNumber;
-            this.ServiceName = serviceName;
+            this.ServiceName = Program.database.FetchService(serviceCode).Name;
             this.MemberName = memberName;
             this.MemberNumber = memberNumber;
             this.ServiceCode = serviceCode;

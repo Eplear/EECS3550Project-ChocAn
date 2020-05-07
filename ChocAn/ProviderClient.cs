@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.SqlServer.Server;
 
 /* To do
  * - handle login 
@@ -214,12 +215,8 @@ namespace ChocAn
 
             DateTime dateRecieved = DateTime.Now;
 
-            Console.Write("> Enter name of service:              ");
-            string nameOfService = Console.ReadLine();
-
             Console.Write("> Enter service code or ls for list:  ");
-            string serviceCode = "";
-            
+            string serviceCode;
             while (true)
             {
                 string s = Console.ReadLine();
@@ -238,18 +235,14 @@ namespace ChocAn
                     {
                         break;
                     }
-
                     Console.Write("> Enter a valid service code: ");
                 }
             }
 
-            //TODO: Get service fee from service code
-            double serviceFee = 0;
-
             Console.WriteLine("> Enter any comments:");
             string comment = Console.ReadLine();
 
-            Service service = new Service(dateOfService, dateRecieved, provider.Name, provider.Number, nameOfService, "Member name", "Member number", serviceCode, comment);
+            Service service = new Service(dateOfService, dateRecieved, provider.Name, provider.Number, "Member name", "Member number", serviceCode, comment);
 
             Console.Write("> Would you like to log service? y/n: ");
             char cmd;
