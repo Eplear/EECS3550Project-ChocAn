@@ -234,7 +234,7 @@ namespace ChocAn
                 {
                     serviceCode = s;
                     //is numeric code valid
-                    if (Program.database.FetchService(int.Parse(serviceCode)).Equals(null))
+                    if (Program.database.FetchService(serviceCode).Name.Equals(null))
                     {
                         break;
                     }
@@ -249,7 +249,7 @@ namespace ChocAn
             Console.WriteLine("> Enter any comments:");
             string comment = Console.ReadLine();
 
-            Service service = new Service(dateOfService, dateRecieved, "comp", provider.Name, provider.Number, nameOfService, "Member name", "Member number", serviceCode, comment, serviceFee);
+            Service service = new Service(dateOfService, dateRecieved, provider.Name, provider.Number, nameOfService, "Member name", "Member number", serviceCode, comment);
 
             Console.Write("> Would you like to log service? y/n: ");
             char cmd;

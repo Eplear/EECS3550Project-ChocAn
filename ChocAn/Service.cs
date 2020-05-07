@@ -24,8 +24,8 @@ namespace ChocAn
 
         }
 
-        public Service(DateTime dateOfService, DateTime dateReceived, string computer, string providerName,
-            string providerNumber, string serviceName, string memberName, string memberNumber, string serviceCode, string comments, double fee)
+        public Service(DateTime dateOfService, DateTime dateReceived, string providerName,
+            string providerNumber, string serviceName, string memberName, string memberNumber, string serviceCode, string comments = null)
         {
             this.DateOfService = dateOfService;
             this.DateReceived = dateReceived;
@@ -36,7 +36,7 @@ namespace ChocAn
             this.MemberNumber = memberNumber;
             this.ServiceCode = serviceCode;
             this.Comments = comments;
-            this.Fee = fee;
+            this.Fee = Program.database.FetchService(serviceCode).Fee;
         }
         /*
          * MemberReport()

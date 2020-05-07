@@ -19,7 +19,6 @@ namespace UnitTestProject1
         {
             DataCenter dataCenter = new DataCenter();
             dataCenter.ValidateProvider("123456789");
-
         }
 
         [TestMethod]
@@ -58,11 +57,9 @@ namespace UnitTestProject1
             database.WriteEFT();
         }
         [TestMethod]
-        public void AddNewMember()
+        public void AddNewServices()
         {
             DataCenter dataCenter = new DataCenter();
-            dataCenter.ValidateMember("000000001");
-
         }
     }
 }
