@@ -35,6 +35,7 @@
             this.Zip = zip;
             this.Suspended = isSuspended;
         }
+
         
         /*
          * Suspend()

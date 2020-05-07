@@ -8,8 +8,8 @@ namespace ChocAn
 { 
     class Program
     {
-        const bool PROVIDER_TERMINAL = true;
-        const bool MANAGER_TERMINAL  = false;
+        const bool PROVIDER_TERMINAL = false;
+        const bool MANAGER_TERMINAL  = true;
 
         static public DataCenter database = new DataCenter();
         static public Report report = new Report();
