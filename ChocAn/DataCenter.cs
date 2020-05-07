@@ -69,7 +69,8 @@ namespace ChocAn
             try
             {
                 reader = sqliteCmd.ExecuteReader();
-                isValid = reader.GetBoolean(10);
+                reader.Read();
+                isValid = reader.GetBoolean(0);
                 if (isValid == true)
                 {
                     status = "Valid Member.";
@@ -165,6 +166,15 @@ namespace ChocAn
                 "'" + service.MemberNumber + "', " +
                 "'" + service.ServiceCode + "', " +
                 "'" + service.Comments + "'); ";
+            sqliteCmd.Parameters.AddWithValue("@dateServ", service.DateOfService);
+            sqliteCmd.Parameters.AddWithValue("@dateRec", service.DateReceived);
+            sqliteCmd.Parameters.AddWithValue("@pNum", service.ProviderNumber);
+            sqliteCmd.Parameters.AddWithValue("@mNum", service.MemberNumber);
+            sqliteCmd.Parameters.AddWithValue("@sCode", service.ServiceCode);
+            sqliteCmd.Parameters.AddWithValue("@com", service.Comments);
+
+            sqliteCmd.ExecuteNonQuery();
+        }
             try
             {
                 sqliteCmd.ExecuteNonQuery();
@@ -412,6 +422,14 @@ namespace ChocAn
                 var tempReader = sqliteDatareader.GetString(0);
                 Console.WriteLine(tempReader);
             }
+        }
+
+        public void NukeTables()
+        {
+            SQLiteCommand sqliteCmd;
+            sqliteCmd = sqliteConn.CreateCommand();
+            sqliteCmd.CommandText = "DELETE * FROM member, provider, service";
+            sqliteCmd.ExecuteNonQuery();
         }
 
     }
