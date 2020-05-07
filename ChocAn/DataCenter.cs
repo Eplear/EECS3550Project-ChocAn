@@ -240,8 +240,8 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@pNum", pNum);
             reader = sqliteCmd.ExecuteReader();
             reader.Read();
-            return new Provider(reader.GetString(0), 
-                                reader.GetString(1), 
+            return new Provider(reader.GetString(1), 
+                                reader.GetString(0), 
                                 reader.GetString(2), 
                                 reader.GetString(3), 
                                 reader.GetString(4), 
@@ -257,8 +257,8 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@mNum", mNum);
             reader = sqliteCmd.ExecuteReader();
             reader.Read();
-            return new Member(reader.GetString(0),
-                reader.GetString(1),
+            return new Member(reader.GetString(1),
+                reader.GetString(0),
                 reader.GetString(2),
                 reader.GetString(3),
                 reader.GetString(4),
