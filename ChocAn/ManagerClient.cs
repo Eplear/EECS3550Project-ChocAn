@@ -557,9 +557,10 @@ namespace ChocAn
             Console.WriteLine(" 1 - Generate payable summary");
             Console.WriteLine(" 2 - Send member report");
             Console.WriteLine(" 3 - Send provider report");
-            Console.WriteLine(" 3 - Write EFT");
-            Console.WriteLine(" 4 - Get provider directory");
-            Console.WriteLine(" 5 - Generate all reports");
+            Console.WriteLine(" 4 - Write EFT");
+            Console.WriteLine(" 5 - Get provider directory");
+            Console.WriteLine(" 6 - Generate all reports");
+            Console.WriteLine(" 7 - Delete all reports");
             Console.WriteLine(" e - Exit");
             Console.WriteLine("-------------------------------------------------------------------");
 
@@ -605,6 +606,12 @@ namespace ChocAn
                         Program.database.SendMemReport();
                         Program.database.WriteEFT();
                         Console.WriteLine("  Reports have been created. ");
+                        break;
+                    case '7':
+                        Console.WriteLine("> Deleting all reports...");
+                        Program.report.CleanupDirectories();
+                        Program.bankrecord.CleanupDirectories();
+                        Console.WriteLine("> Reports Deleted");
                         break;
                     case 'e':
                         Console.WriteLine("> Exiting");

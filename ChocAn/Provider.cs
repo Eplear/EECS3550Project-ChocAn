@@ -55,5 +55,10 @@ namespace ChocAn
         {
             return Program.database.TotalProviderFee(Number);
         }
+        public int NumberOfConsultations()
+        {
+            var list = Program.database.ProviderServiceList(Number);
+            return list.Count;
+        }
     }
 }
