@@ -8,6 +8,10 @@ using System.Numerics;
 using System.Security.Policy;
 using System.Windows;
 
+/* BROKEN
+ * validate member
+ * modify provider
+ */
 namespace ChocAn
 {
     public class DataCenter
@@ -28,6 +32,7 @@ namespace ChocAn
             CreateTable(sqliteConn);
             InitializeDirectory();
         }
+
         public void InitializeDirectory()
         {
             ProviderDirectory = new Hashtable
@@ -82,7 +87,7 @@ namespace ChocAn
             
             try
             {
-                
+                //code moved out to identify error
             }
             catch
             {
@@ -151,6 +156,7 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@city", provider.City);
             sqliteCmd.Parameters.AddWithValue("@state", provider.State);
             sqliteCmd.Parameters.AddWithValue("@zip", provider.Zip);
+            
             try
             {
                 sqliteCmd.ExecuteNonQuery();
