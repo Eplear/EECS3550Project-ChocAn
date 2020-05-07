@@ -63,7 +63,8 @@ namespace ChocAn
             string status = "Member does not exist.";
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT isSuspended EXISTS(SELECT 1 FROM member WHERE mNum = " + memNum + "); ";
+            sqliteCmd.CommandText = "SELECT isSuspended FROM member WHERE EXISTS(SELECT 1 FROM member WHERE mNum = @memNum); ";
+            sqliteCmd.Parameters.AddWithValue("@memNum", memNum);
             
 
             try
@@ -78,7 +79,7 @@ namespace ChocAn
                 {
                     status = "Suspended.";
                 }
-                Console.WriteLine("Validation Status: " + );
+                Console.WriteLine("Validation Status: " + status);
             }
             catch
             {
@@ -94,7 +95,8 @@ namespace ChocAn
             bool isValid = false;
             int found = 0;
             var sqliteCmd = sqliteConn.CreateCommand();
-            sqliteCmd.CommandText = "SELECT EXISTS(SELECT 1 FROM provider WHERE pNum = " + provNum + "); ";
+            sqliteCmd.CommandText = "SELECT EXISTS(SELECT 1 FROM provider WHERE pNum = @provNum)";
+            sqliteCmd.Parameters.AddWithValue("@provNum", provNum);
 
             try
             {
@@ -113,28 +115,30 @@ namespace ChocAn
         public void AddMember(Member member)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
-            sqliteCmd.CommandText =
-                "INSERT INTO member(mNum, mName, mStreet, mCity, mState, mZip) VALUES(" +
-                "'" + member.Number + "', " +
-                "'" + member.Name + "', " +
-                "'" + member.Address + "', " +
-                "'" + member.City + "', " +
-                "'" + member.State + "', " +
-                "'" + member.Zip.ToString() + "'); ";
+            sqliteCmd.CommandText = "INSERT INTO member(mNum, mName, mStreet, mCity, mState, mZip) " +
+                    "VALUES(@num, @name, @street, @city, @state, @zip)";
+            sqliteCmd.Parameters.AddWithValue("@num", member.Number);
+            sqliteCmd.Parameters.AddWithValue("@name", member.Name);
+            sqliteCmd.Parameters.AddWithValue("@street", member.Street);
+            sqliteCmd.Parameters.AddWithValue("@city", member.City);
+            sqliteCmd.Parameters.AddWithValue("@state", member.State);
+            sqliteCmd.Parameters.AddWithValue("@zip", member.Zip);
+
             sqliteCmd.ExecuteNonQuery();
         }
 
         public void AddProvider(Provider provider)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
-            sqliteCmd.CommandText =
-                "INSERT INTO provider(pNum, pName, pStreet, pCity, pState, pZip) VALUES(" +
-                "'" + provider.Number + "', " +
-                "'" + provider.Name + "', " +
-                "'" + provider.Address + "', " +
-                "'" + provider.City + "', " +
-                "'" + provider.State + "', " +
-                "'" + provider.Zip.ToString() + "'); ";
+            sqliteCmd.CommandText = "INSERT INTO provider(pNum, pName, pStreet, pCity, pState, pZip) " +
+                "VALUES(@num, @name, @street, @city, @state, @zip)";
+            sqliteCmd.Parameters.AddWithValue("@num", provider.Number);
+            sqliteCmd.Parameters.AddWithValue("@name", provider.Name);
+            sqliteCmd.Parameters.AddWithValue("@street", provider.Street);
+            sqliteCmd.Parameters.AddWithValue("@city", provider.City);
+            sqliteCmd.Parameters.AddWithValue("@state", provider.State);
+            sqliteCmd.Parameters.AddWithValue("@zip", provider.Zip);
+
             sqliteCmd.ExecuteNonQuery();
         }
 
@@ -387,12 +391,13 @@ namespace ChocAn
         }
 
 
-        private static void ReadData(SQLiteConnection conn)
+        private static void ReadData(string table)
         {
             SQLiteDataReader sqliteDatareader;
             SQLiteCommand sqliteCmd;
-            sqliteCmd = conn.CreateCommand();
-            sqliteCmd.CommandText = "SELECT * FROM service";
+            sqliteCmd = sqliteConn.CreateCommand();
+            sqliteCmd.CommandText = "SELECT * FROM @table";
+            sqliteCmd.Parameters.AddWithValue("@table", table);
 
             sqliteDatareader = sqliteCmd.ExecuteReader();
             while (sqliteDatareader.Read())
