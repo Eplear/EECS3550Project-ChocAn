@@ -104,8 +104,6 @@ namespace ChocAn
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "SELECT EXISTS(SELECT 1 FROM provider WHERE pNum = @provNum)";
             sqliteCmd.Parameters.AddWithValue("@provNum", provNum);
-
-
             
             try
             {
