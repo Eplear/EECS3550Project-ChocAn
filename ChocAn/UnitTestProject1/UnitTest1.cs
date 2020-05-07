@@ -32,16 +32,18 @@ namespace UnitTestProject1
         [TestMethod]
         public void ValidateExistingMember()
         {
-            DataCenter dataCenter = new DataCenter();
-            dataCenter.ValidateMember("123456789");
+            DataCenter database = new DataCenter();
+            Member m1 = new Member("Adam", "123456789", "Perth St", "Toledo", "Ohio", "43607");
+            database.AddMember(m1);
+            database.ValidateMember("123456789");
 
         }
 
         [TestMethod]
         public void ValidateNonExistingMember()
         {
-            DataCenter dataCenter = new DataCenter();
-            dataCenter.ValidateMember("000000001");
+            DataCenter database = new DataCenter();
+            database.ValidateMember("000000001");
 
         }
         [TestMethod]
@@ -60,6 +62,8 @@ namespace UnitTestProject1
         public void AddNewServices()
         {
             DataCenter dataCenter = new DataCenter();
+            Service s1 = new Service(new DateTime(), new DateTime(), "George", "111222333", "Fayes", "222333444", "246894");
+            dataCenter.AddService(s1);
         }
     }
 }

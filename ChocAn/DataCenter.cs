@@ -19,14 +19,12 @@ namespace ChocAn
         public DataCenter()
         {
             CreateTable(sqliteConn);
-            ReadData(sqliteConn);
             InitializeDirectory();
         }
 
         public DataCenter(bool isTesting)
         {
             CreateTable(sqliteConn);
-            ReadData(sqliteConn);
             InitializeDirectory();
         }
         public void InitializeDirectory()
@@ -119,12 +117,19 @@ namespace ChocAn
                     "VALUES(@num, @name, @street, @city, @state, @zip)";
             sqliteCmd.Parameters.AddWithValue("@num", member.Number);
             sqliteCmd.Parameters.AddWithValue("@name", member.Name);
-            sqliteCmd.Parameters.AddWithValue("@street", member.Street);
+            sqliteCmd.Parameters.AddWithValue("@street", member.Address);
             sqliteCmd.Parameters.AddWithValue("@city", member.City);
             sqliteCmd.Parameters.AddWithValue("@state", member.State);
             sqliteCmd.Parameters.AddWithValue("@zip", member.Zip);
 
-            sqliteCmd.ExecuteNonQuery();
+            try
+            {
+                sqliteCmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                Console.WriteLine("Member Already In the Database!");
+            }
         }
 
         public void AddProvider(Provider provider)
@@ -134,26 +139,39 @@ namespace ChocAn
                 "VALUES(@num, @name, @street, @city, @state, @zip)";
             sqliteCmd.Parameters.AddWithValue("@num", provider.Number);
             sqliteCmd.Parameters.AddWithValue("@name", provider.Name);
-            sqliteCmd.Parameters.AddWithValue("@street", provider.Street);
+            sqliteCmd.Parameters.AddWithValue("@street", provider.Address);
             sqliteCmd.Parameters.AddWithValue("@city", provider.City);
             sqliteCmd.Parameters.AddWithValue("@state", provider.State);
             sqliteCmd.Parameters.AddWithValue("@zip", provider.Zip);
-
-            sqliteCmd.ExecuteNonQuery();
+            try
+            {
+                sqliteCmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                Console.WriteLine("Provider Already In the Database!");
+            }
         }
 
         public void AddService(Service service)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText =
-                "INSERT INTO service(dServ, dRec, pNum, mNum, sCode, com) VALUES(" +
+                "INSERT INTO service(currDate, servDate, sProviderNum, sMemberNum, comment, sCode) VALUES(" +
                 "'" + service.DateOfService + "', " +
                 "'" + service.DateReceived + "', " +
                 "'" + service.ProviderNumber + "', " +
                 "'" + service.MemberNumber + "', " +
                 "'" + service.ServiceCode + "', " +
                 "'" + service.Comments + "'); ";
-            sqliteCmd.ExecuteNonQuery();
+            try
+            {
+                sqliteCmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                Console.WriteLine("Service Already In the Database!");
+            }
         }
 
         public void DeleteMember(string memberID)
@@ -245,8 +263,7 @@ namespace ChocAn
                                 reader.GetString(4),
                                 reader.GetString(5),
                                 reader.GetString(6),
-                                reader.GetString(7),
-                                reader.GetString(8));
+                                reader.GetString(7));
         }
         /*
          * Created by Adam (don't know what I'm doing tho)
@@ -269,8 +286,7 @@ namespace ChocAn
                                 reader.GetString(4),
                                 reader.GetString(5),
                                 reader.GetString(6),
-                                reader.GetString(7),
-                                reader.GetString(8)));
+                                reader.GetString(7)));
                 reader.NextResult();
             }
             return result;
@@ -372,7 +388,6 @@ namespace ChocAn
                                   "sMemberNum TEXT, " +
                                   "comment TEXT, " +
                                   "sCode TEXT, " +
-                                  "PRIMARY KEY(servDate, sMemberNum, sCode)," +
                                   "FOREIGN KEY(sProviderNum) REFERENCES provider(pNum), " +
                                   "FOREIGN KEY(sMemberNum) REFERENCES member(mNum))";
 
@@ -386,11 +401,11 @@ namespace ChocAn
         }
 
 
-        private static void ReadData(string table)
+        private void ReadData(string table)
         {
             SQLiteDataReader sqliteDatareader;
-            SQLiteCommand sqliteCmd;
-            sqliteCmd = sqliteConn.CreateCommand();
+
+            var sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "SELECT * FROM @table";
             sqliteCmd.Parameters.AddWithValue("@table", table);
 
