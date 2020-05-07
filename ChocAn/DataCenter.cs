@@ -19,14 +19,14 @@ namespace ChocAn
         public DataCenter()
         {
             CreateTable(sqliteConn);
-            ReadData(sqliteConn);
+            //ReadData(sqliteConn);
             InitializeDirectory();
         }
 
         public DataCenter(bool isTesting)
         {
             CreateTable(sqliteConn);
-            ReadData(sqliteConn);
+            //ReadData(sqliteConn);
             InitializeDirectory();
         }
         public void InitializeDirectory()
@@ -70,7 +70,8 @@ namespace ChocAn
             try
             {
                 reader = sqliteCmd.ExecuteReader();
-                isValid = reader.GetBoolean(10);
+                reader.Read();
+                isValid = reader.GetBoolean(0);
                 if (isValid == true)
                 {
                     status = "Valid Member.";
@@ -119,7 +120,7 @@ namespace ChocAn
                     "VALUES(@num, @name, @street, @city, @state, @zip)";
             sqliteCmd.Parameters.AddWithValue("@num", member.Number);
             sqliteCmd.Parameters.AddWithValue("@name", member.Name);
-            sqliteCmd.Parameters.AddWithValue("@street", member.Street);
+            sqliteCmd.Parameters.AddWithValue("@street", member.Address);
             sqliteCmd.Parameters.AddWithValue("@city", member.City);
             sqliteCmd.Parameters.AddWithValue("@state", member.State);
             sqliteCmd.Parameters.AddWithValue("@zip", member.Zip);
@@ -134,7 +135,7 @@ namespace ChocAn
                 "VALUES(@num, @name, @street, @city, @state, @zip)";
             sqliteCmd.Parameters.AddWithValue("@num", provider.Number);
             sqliteCmd.Parameters.AddWithValue("@name", provider.Name);
-            sqliteCmd.Parameters.AddWithValue("@street", provider.Street);
+            sqliteCmd.Parameters.AddWithValue("@street", provider.Address);
             sqliteCmd.Parameters.AddWithValue("@city", provider.City);
             sqliteCmd.Parameters.AddWithValue("@state", provider.State);
             sqliteCmd.Parameters.AddWithValue("@zip", provider.Zip);
@@ -153,6 +154,13 @@ namespace ChocAn
                 "'" + service.MemberNumber + "', " +
                 "'" + service.ServiceCode + "', " +
                 "'" + service.Comments + "'); ";
+            sqliteCmd.Parameters.AddWithValue("@dateServ", service.DateOfService);
+            sqliteCmd.Parameters.AddWithValue("@dateRec", service.DateReceived);
+            sqliteCmd.Parameters.AddWithValue("@pNum", service.ProviderNumber);
+            sqliteCmd.Parameters.AddWithValue("@mNum", service.MemberNumber);
+            sqliteCmd.Parameters.AddWithValue("@sCode", service.ServiceCode);
+            sqliteCmd.Parameters.AddWithValue("@com", service.Comments);
+
             sqliteCmd.ExecuteNonQuery();
         }
 
@@ -386,7 +394,7 @@ namespace ChocAn
         }
 
 
-        private static void ReadData(string table)
+        private void ReadData(string table)
         {
             SQLiteDataReader sqliteDatareader;
             SQLiteCommand sqliteCmd;
@@ -400,6 +408,14 @@ namespace ChocAn
                 var tempReader = sqliteDatareader.GetString(0);
                 Console.WriteLine(tempReader);
             }
+        }
+
+        public void NukeTables()
+        {
+            SQLiteCommand sqliteCmd;
+            sqliteCmd = sqliteConn.CreateCommand();
+            sqliteCmd.CommandText = "DELETE * FROM member, provider, service";
+            sqliteCmd.ExecuteNonQuery();
         }
 
     }
