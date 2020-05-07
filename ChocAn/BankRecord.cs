@@ -8,10 +8,10 @@ namespace ChocAn
      * Simple boundary class 
      * Used for writing EFT information to disk
      */
-    class BankRecord
+    public class BankRecord
     {
         //Global Variable
-        public const string BankRecordsPath = "C:/Users/adamb/Documents/GitHub/EECS3550Project-ChocAn/ChocAn/BankRecords";
+        public const string BankRecordsPath = "./BankRecords";
                
         public BankRecord()
         {

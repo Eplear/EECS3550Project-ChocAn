@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChocAn;
+using System;
 
 namespace UnitTestProject1
 {
@@ -44,7 +45,16 @@ namespace UnitTestProject1
             dataCenter.ValidateMember("000000001");
 
         }
-
+        [TestMethod]
+        public void WrtieEFT()
+        {
+            Provider p1 = new Provider("name1", "123", "add", "city", "st", "4000");
+            Provider p2 = new Provider("name2", "135", "dress", "city2", "st2", "5000");
+            DataCenter database = new DataCenter();
+            database.AddProvider(p1);
+            database.AddProvider(p2);
+            database.WriteEFT();
+        }
         [TestMethod]
         public void AddNewMember()
         {

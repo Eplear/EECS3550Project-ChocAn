@@ -305,15 +305,14 @@ namespace ChocAn
             reader = sqliteCmd.ExecuteReader();
             while (reader.Read())
             {
-                Member temp = new Member(
+                Provider temp = new Provider(
                     reader.GetString(0),
                     reader.GetString(1),
-                    reader.GetString(2),
-                    reader.GetString(3),
-                    reader.GetString(4),
-                    reader.GetString(5),
-                    reader.GetBoolean(10));
-                temp.ServiceReport();
+                                reader.GetString(2),
+                                reader.GetString(3),
+                                reader.GetString(4),
+                                reader.GetString(5));
+                Program.bankrecord.Record(temp);
                 reader.NextResult();
             }
         }
