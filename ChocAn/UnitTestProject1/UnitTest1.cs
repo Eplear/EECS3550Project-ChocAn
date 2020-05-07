@@ -11,6 +11,8 @@ namespace UnitTestProject1
         public void InitializeDataCenter()
         {
             DataCenter dataCenter = new DataCenter();
+            
+            
 
         }
 
@@ -18,15 +20,22 @@ namespace UnitTestProject1
         public void ValidateExistingProvider()
         {
             DataCenter dataCenter = new DataCenter();
-            dataCenter.ValidateProvider("123456789");
+            bool isValidProvider;
+
+            isValidProvider = dataCenter.ValidateProvider("123456789");
+
+            Assert.IsTrue(isValidProvider);
         }
 
         [TestMethod]
         public void ValidateNonExistingProvider()
         {
             DataCenter dataCenter = new DataCenter();
-            dataCenter.ValidateProvider("000000001");
+            bool isValidProvider;
 
+            isValidProvider = dataCenter.ValidateProvider("000000001");
+
+            Assert.IsFalse(isValidProvider);
         }
 
         [TestMethod]
@@ -34,18 +43,25 @@ namespace UnitTestProject1
         {
             DataCenter database = new DataCenter();
             Member m1 = new Member("Adam", "123456789", "Perth St", "Toledo", "Ohio", "43607");
-            database.AddMember(m1);
-            database.ValidateMember("123456789");
+            bool? isValidMember;
 
+            database.AddMember(m1);
+            isValidMember = database.ValidateMember("123456789");
+
+            Assert.IsNotNull(isValidMember);
         }
 
         [TestMethod]
         public void ValidateNonExistingMember()
         {
             DataCenter database = new DataCenter();
-            database.ValidateMember("000000001");
+            bool? isValidMember;
+            
+            isValidMember = database.ValidateMember("000000001");
 
+            Assert.IsNull(isValidMember);
         }
+
         [TestMethod]
         public void WrtieEFT()
         {
@@ -58,6 +74,7 @@ namespace UnitTestProject1
             database.AddProvider(p2);
             database.WriteEFT();
         }
+
         [TestMethod]
         public void AddNewServices()
         {
@@ -65,33 +82,43 @@ namespace UnitTestProject1
             Service s1 = new Service(new DateTime(), new DateTime(), "George", "111222333", "Fayes", "222333444", "246894");
             dataCenter.AddService(s1);
         }
+
         [TestMethod]
         public void ReportMember()
         {
             DataCenter database = new DataCenter();
             Service s1 = new Service(DateTime.Now, DateTime.Now, "George", "111222333", "Fayes", "222333444", "246894");
-            database.AddService(s1);
             Member m = new Member("Faye", "222333444", "Address", "City", "State", "zip");
-            database.AddMember(m);
             Provider p = new Provider("George", "111222333", "x", "xz", "asd", "czx");
+            int reportReturn;
+
+            database.AddService(s1);
+            database.AddMember(m);
             database.AddProvider(p);
             Report report = new Report();
             report.CleanupDirectories();
-            report.MemberReport(m);
+            reportReturn = report.MemberReport(m);
+
+            Assert.Equals(1, reportReturn);
         }
+
         [TestMethod]
         public void ReportProvider()
         {
             DataCenter database = new DataCenter();
             Service s1 = new Service(DateTime.Now, DateTime.Now, "George", "111222333", "Fayes", "222333444", "246894");
-            database.AddService(s1);
             Member m = new Member("Faye", "222333444", "Address", "City", "State", "zip");
-            database.AddMember(m);
             Provider p = new Provider("George", "111222333", "x", "xz", "asd", "czx");
+            int reportReturn;
+
+            database.AddService(s1);
+            database.AddMember(m);
             database.AddProvider(p);
             Report report = new Report();
             report.CleanupDirectories();
-            report.ProviderReport(p);
+            reportReturn = report.ProviderReport(p);
+
+            Assert.Equals(1, reportReturn);
         }
     }
 }

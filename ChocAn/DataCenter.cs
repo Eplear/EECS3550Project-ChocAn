@@ -213,7 +213,8 @@ namespace ChocAn
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "UPDATE member " +
                 "SET( mName = @name, mNum = @num, mStreet = @street, mCity = @city, mState = @state, mZip = @zip, isSuspended = @suspended) " +
-                "WHERE mNum = @oldNum LIMIT 1;";
+                "WHERE mNum = @oldNum " +
+                "LIMIT 1;";
             sqliteCmd.Parameters.AddWithValue("@name", newMember.Name);
             sqliteCmd.Parameters.AddWithValue("@num", newMember.Number);
             sqliteCmd.Parameters.AddWithValue("@street", newMember.Address);
@@ -221,6 +222,7 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@state", newMember.State);
             sqliteCmd.Parameters.AddWithValue("@zip", newMember.Zip);
             sqliteCmd.Parameters.AddWithValue("@suspended", newMember.Suspended);
+            sqliteCmd.Parameters.AddWithValue("@oldNum", oldMember.Number);
 
             sqliteCmd.ExecuteNonQuery();
         }
@@ -230,7 +232,8 @@ namespace ChocAn
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             
             sqliteCmd.CommandText = "UPDATE provider " +
-                                    "SET(pName = @name, pNum = @num, pStreet = @street, pCity = @city, pState = @state, pZip = @zip) WHERE pNum = @oldNum" +
+                                    "SET(pName = @name, pNum = @num, pStreet = @street, pCity = @city, pState = @state, pZip = @zip) " +
+                                    "WHERE pNum = @oldNum" +
                                     "LIMIT 1;";
             sqliteCmd.Parameters.AddWithValue("@name", newProvider.Name);
             sqliteCmd.Parameters.AddWithValue("@num", newProvider.Number);
@@ -238,6 +241,7 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@city", newProvider.City);
             sqliteCmd.Parameters.AddWithValue("@state", newProvider.State);
             sqliteCmd.Parameters.AddWithValue("@zip", newProvider.Zip);
+            sqliteCmd.Parameters.AddWithValue("@oldNum", oldProvider.Number);
 
             sqliteCmd.ExecuteNonQuery();
         }
