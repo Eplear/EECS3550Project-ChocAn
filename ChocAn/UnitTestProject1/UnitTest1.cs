@@ -79,7 +79,7 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
-        public void WrtieEFT()
+        public void WriteEFT()
         {
             Provider p1 = new Provider("name1", "123", "add", "city", "st", "4000");
             Provider p2 = new Provider("name2", "135", "dress", "city2", "st2", "5000");
@@ -115,7 +115,7 @@ namespace UnitTestProject1
             report.CleanupDirectories();
             reportReturn = report.MemberReport(m);
 
-            Assert.Equals(1, reportReturn);
+            Assert.AreEqual(1, reportReturn);
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace UnitTestProject1
             report.CleanupDirectories();
             reportReturn = report.ProviderReport(p);
 
-            Assert.Equals(1, reportReturn);
+            Assert.AreEqual(1, reportReturn);
         }
     }
 }
