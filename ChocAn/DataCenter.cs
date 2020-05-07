@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics.Eventing.Reader;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Windows;
 
@@ -299,7 +300,6 @@ namespace ChocAn
             sqliteCmd.CommandText = "SELECT * FROM service WHERE sMemberNum = @mNum;";
             sqliteCmd.Parameters.AddWithValue("@mNum", mNum);
             reader = sqliteCmd.ExecuteReader();
-            reader.Read();
             List<Service> result = new List<Service>();
             while (reader.Read())
             {
@@ -323,7 +323,6 @@ namespace ChocAn
             sqliteCmd.CommandText = "SELECT * FROM service WHERE sProviderNum = @pNum;";
             sqliteCmd.Parameters.AddWithValue("@pNum", pNum);
             reader = sqliteCmd.ExecuteReader();
-            reader.Read();
             List<Service> result = new List<Service>();
             while (reader.Read())
             {
@@ -347,9 +346,6 @@ namespace ChocAn
             sqliteCmd.CommandText = "SELECT * FROM service WHERE sProviderNum = @pNum;";
             sqliteCmd.Parameters.AddWithValue("@pNum", pNum);
             reader = sqliteCmd.ExecuteReader();
-            reader.Read();
-            Console.WriteLine("help");
-            Console.WriteLine(reader.GetString(4));
             int result = 0;
             while (reader.Read())
             {
@@ -388,11 +384,92 @@ namespace ChocAn
         {
             
         }
-
+        //Completed - functional works with managerclient
         public void SendMemReport()
         {
+            while (true)
+            {
+                Console.WriteLine();
+                Console.Write("Enter the member number (or 'list' or 'all'): ");
+                string cmd = Console.ReadLine();
+                if (cmd.Equals("list"))
+                {
+                    //print list of names - numbers
+                    SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
+                    SQLiteDataReader reader;
+                    sqliteCmd.CommandText = "SELECT * FROM member;";
+                    reader = sqliteCmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(reader.GetString(1) + " - " + reader.GetString(0));
+                    }
+                }
+                else if (cmd.Equals("all"))
+                {
+                    SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
+                    SQLiteDataReader reader;
+                    sqliteCmd.CommandText = "SELECT * FROM member;";
+                    reader = sqliteCmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Program.report.MemberReport(ParseMember(reader.GetString(0)));
+                        return;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        Program.report.MemberReport(ParseMember(cmd));
+                        return;
+                    }
+                    catch { Console.WriteLine("Not a valid member number!"); }
+                }
+            }
         }
-
+        //completed - functional
+        public void SendProvReport()
+        {
+            while (true)
+            {
+                Console.WriteLine();
+                Console.Write("Enter the provider number (or 'list' or 'all'): ");
+                string cmd = Console.ReadLine();
+                if (cmd.Equals("list"))
+                {
+                    //print list of names - numbers
+                    SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
+                    SQLiteDataReader reader;
+                    sqliteCmd.CommandText = "SELECT * FROM provider;";
+                    reader = sqliteCmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(reader.GetString(1) + " - " + reader.GetString(0));
+                    }
+                }
+                else if (cmd.Equals("all"))
+                {
+                    SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
+                    SQLiteDataReader reader;
+                    sqliteCmd.CommandText = "SELECT * FROM provider;";
+                    reader = sqliteCmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Program.report.ProviderReport(ParseProvider(reader.GetString(0)));
+                        return;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        Program.report.ProviderReport(ParseProvider(cmd));
+                        return;
+                    }
+                    catch { Console.WriteLine("Not a valid provider number!"); }
+                }
+            }
+        }
         private static SQLiteConnection CreateConnection()
         {
             SQLiteConnection sqlite_conn;

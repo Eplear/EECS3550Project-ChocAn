@@ -556,6 +556,7 @@ namespace ChocAn
             Console.WriteLine("---------------------------- Reports ------------------------------");
             Console.WriteLine(" 1 - Generate payable summary");
             Console.WriteLine(" 2 - Send member report");
+            Console.WriteLine(" 3 - Send provider report");
             Console.WriteLine(" 3 - Write EFT");
             Console.WriteLine(" 4 - Get provider directory");
             Console.WriteLine(" 5 - Generate all reports");
@@ -585,15 +586,20 @@ namespace ChocAn
                         Console.WriteLine("  member reports have been sent.");
                         break;
                     case '3':
+                        Console.WriteLine("> Sending provider reports...");
+                        Program.database.SendProvReport();
+                        Console.WriteLine("  provider reports have been sent.");
+                        break;
+                    case '4':
                         Console.WriteLine("> Writing EFT...");
                         Program.database.WriteEFT();
                         Console.WriteLine("  EFT written to disk.");
                         break;
-                    case '4':
+                    case '5':
                         Console.WriteLine("> Getting provider directory...");
                         Program.database.GetProviderDirectory();
                         break;
-                    case '5':
+                    case '6':
                         Console.WriteLine("> Generating all reports...");
                         Program.database.GeneratePayableSummary();
                         Program.database.SendMemReport();
