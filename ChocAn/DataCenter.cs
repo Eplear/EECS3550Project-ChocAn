@@ -20,7 +20,6 @@ namespace ChocAn
         {
             CreateTable(sqliteConn);
             ReadData(sqliteConn);
-            sqliteConn.Close();
             InitializeDirectory();
         }
 
@@ -28,7 +27,6 @@ namespace ChocAn
         {
             CreateTable(sqliteConn);
             ReadData(sqliteConn);
-            sqliteConn.Close();
             InitializeDirectory();
         }
         public void InitializeDirectory()
@@ -62,31 +60,31 @@ namespace ChocAn
         public bool? ValidateMember(string memNum)
         {
             bool? isValid = null;
-            string status = null;
-            Member member;
+            string status = "Member does not exist.";
             var sqliteCmd = sqliteConn.CreateCommand();
+            SQLiteDataReader reader;
             sqliteCmd.CommandText = "SELECT isSuspended EXISTS(SELECT 1 FROM member WHERE mNum = " + memNum + "); ";
+            
 
             try
             {
-                status = sqliteCmd.ExecuteScalar().ToString();
-                Console.WriteLine("Validation Status: " + status);
+                reader = sqliteCmd.ExecuteReader();
+                isValid = reader.GetBoolean(10);
+                if (isValid == true)
+                {
+                    status = "Valid Member.";
+                }
+                if (isValid == false)
+                {
+                    status = "Suspended.";
+                }
+                Console.WriteLine("Validation Status: " + );
             }
             catch
             {
                 Console.WriteLine("ERROR: Member number not found.");
             }
-
-            if (!status.Equals(null))
-            {
-                if (status.Equals('1'))
-                {
-                    isValid = true;
-                }else if (status.Equals('0'))
-                {
-                    isValid = false;
-                }
-            }
+            
             
             return isValid;
         }
@@ -122,7 +120,7 @@ namespace ChocAn
                 "'" + member.Address + "', " +
                 "'" + member.City + "', " +
                 "'" + member.State + "', " +
-                "'" + member.Zip.ToString() + "); ";
+                "'" + member.Zip.ToString() + "'); ";
             sqliteCmd.ExecuteNonQuery();
         }
 
@@ -136,7 +134,7 @@ namespace ChocAn
                 "'" + provider.Address + "', " +
                 "'" + provider.City + "', " +
                 "'" + provider.State + "', " +
-                "'" + provider.Zip.ToString() + "); ";
+                "'" + provider.Zip.ToString() + "'); ";
             sqliteCmd.ExecuteNonQuery();
         }
 
@@ -150,7 +148,7 @@ namespace ChocAn
                 "'" + service.ProviderNumber.ToString() + "', " +
                 "'" + service.MemberNumber.ToString() + "', " +
                 "'" + service.ServiceCode + "', " +
-                "'" + service.Comments + "); ";
+                "'" + service.Comments + "'); ";
             sqliteCmd.ExecuteNonQuery();
         }
 
