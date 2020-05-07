@@ -299,19 +299,18 @@ namespace ChocAn
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT * FROM member;";
+            sqliteCmd.CommandText = "SELECT * FROM provider;";
             reader = sqliteCmd.ExecuteReader();
             while (reader.Read())
             {
                 Provider temp = new Provider(
-                    reader.GetString(0),
                     reader.GetString(1),
-                                reader.GetString(2),
-                                reader.GetString(3),
-                                reader.GetString(4),
-                                reader.GetString(5));
+                    reader.GetString(0),
+                    reader.GetString(2),
+                    reader.GetString(3),
+                    reader.GetString(4),
+                    reader.GetString(5));
                 Program.bankrecord.Record(temp);
-                reader.NextResult();
             }
         }
 

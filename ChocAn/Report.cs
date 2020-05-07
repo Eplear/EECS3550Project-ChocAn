@@ -17,7 +17,7 @@ namespace ChocAn
         }
         /* CleanupDirectories()
          * Deletes the directories for member and provider reports
-         * Also delets any subdirectories
+         * Also deletes any subdirectories
          * @params: none
          * @return: none
          */

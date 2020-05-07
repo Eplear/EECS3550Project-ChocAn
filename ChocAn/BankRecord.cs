@@ -11,7 +11,7 @@ namespace ChocAn
     public class BankRecord
     {
         //Global Variable
-        public const string BankRecordsPath = "./BankRecords";
+        public const string BankRecordsPath = "BankRecords";
                
         public BankRecord()
         {
@@ -27,18 +27,30 @@ namespace ChocAn
          */
         public int Record(Provider p)
         {
-            string currentDate = DateTime.Now.Date.ToString();
             try
             {
-                string toWrite = "Name: " + p.Name + "\nNumber" + p.Number + "\nFees to be paid" + p.TotalFee() + "\n";
-                File.WriteAllText(BankRecordsPath + p.Name + currentDate + ".txt", toWrite);
+                string toWrite = "Name: " + p.Name + "\nNumber: " + p.Number + "\nFees to be paid: " + p.TotalFee() + "\n";
+                Console.WriteLine(toWrite);
+                File.WriteAllText(BankRecordsPath + "/" + p.Name + ".txt", toWrite);
                 //Maybe set fees to zero after recording?
                 return 1;
             }
             catch
             {
+                Console.WriteLine("Bank Record Not Working!");
                 return 0;
             }
+        }
+        /* CleanupDirectories()
+         * Deletes the directories for member and provider reports
+         * Also delets any subdirectories
+         * @params: none
+         * @return: none
+         */
+        public void CleanupDirectories()
+        {
+            Directory.Delete(BankRecordsPath, true);
+            Directory.CreateDirectory(BankRecordsPath);
         }
     }
 }
