@@ -187,14 +187,16 @@ namespace ChocAn
         public void DeleteMember(string memberID)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
-            sqliteCmd.CommandText = "DELETE FROM member WHERE mNum='"+ memberID + "';";
+            sqliteCmd.CommandText = "DELETE FROM member WHERE mNum= @num;";
+            sqliteCmd.Parameters.AddWithValue("@num", memberID);
             sqliteCmd.ExecuteNonQuery();
         }
 
         public void DeleteProvider(string providerID)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
-            sqliteCmd.CommandText = "DELETE FROM provider WHERE pNum='" + providerID + "';";
+            sqliteCmd.CommandText = "DELETE FROM provider WHERE pNum= @num;";
+            sqliteCmd.Parameters.AddWithValue("@num", providerID);
             sqliteCmd.ExecuteNonQuery();
         }
 
@@ -443,7 +445,7 @@ namespace ChocAn
         {
             SQLiteCommand sqliteCmd;
             sqliteCmd = sqliteConn.CreateCommand();
-            sqliteCmd.CommandText = "DELETE * FROM member, provider, service";
+            sqliteCmd.CommandText = "DELETE * FROM(member, provider, service);";
             sqliteCmd.ExecuteNonQuery();
         }
         
