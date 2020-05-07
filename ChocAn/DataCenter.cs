@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics.Eventing.Reader;
@@ -226,8 +227,8 @@ namespace ChocAn
             SQLiteDataReader reader;
             sqliteCmd.CommandText = "SELECT * FROM provider WHERE pNum = '" + pNum + "';";
             reader = sqliteCmd.ExecuteReader();
-            return new Provider(reader.GetString(0), 
-                                reader.GetString(1), 
+            return new Provider(reader.GetString(1), 
+                                reader.GetString(0), 
                                 reader.GetString(2), 
                                 reader.GetString(3), 
                                 reader.GetString(4), 
@@ -265,29 +266,25 @@ namespace ChocAn
                                 reader.GetString(6),
                                 reader.GetString(7));
         }
-        /*
-         * Created by Adam (don't know what I'm doing tho)
-         * INCOMPLETE
-         * need one similar for provider service list
-         */
-        public ArrayList MemberServiceList(string mNum)
+        
+        public List<Service> MemberServiceList(string mNum)
         {
             var sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT * FROM service WHERE sMemberNum = '" + mNum + "';";
+            sqliteCmd.CommandText = "SELECT * FROM service WHERE sMemberNum = '"+ mNum + "';";
             reader = sqliteCmd.ExecuteReader();
-            ArrayList result = new ArrayList();
+            List<Service> result = new List<Service>();
             while (reader.Read())
             {
-                result.Add(new Service(reader.GetDateTime(0),
-                                reader.GetDateTime(1),
-                                reader.GetString(2),
-                                reader.GetString(3),
-                                reader.GetString(4),
-                                reader.GetString(5),
-                                reader.GetString(6),
-                                reader.GetString(7)));
-                reader.NextResult();
+                Service temp = new Service(
+                        DateTime.Parse(reader.GetString(0)),
+                        DateTime.Parse(reader.GetString(0)),
+                        "Provider Name",
+                        reader.GetString(2),
+                        "Member Name",
+                        reader.GetString(3),
+                        reader.GetString(4));
+                result.Add(temp);
             }
             return result;
         }
@@ -382,7 +379,7 @@ namespace ChocAn
                                  "isSuspended BOOLEAN)";
 
             var createServTable = "CREATE TABLE IF NOT EXISTS service(" +
-                                  "currDate TEXT, " +
+                                  "currDate TEXT PRIMARY KEY, " +
                                   "servDate TEXT," +
                                   "sProviderNum TEXT, " +
                                   "sMemberNum TEXT, " +

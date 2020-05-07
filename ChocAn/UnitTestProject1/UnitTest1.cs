@@ -65,6 +65,18 @@ namespace UnitTestProject1
             Service s1 = new Service(new DateTime(), new DateTime(), "George", "111222333", "Fayes", "222333444", "246894");
             dataCenter.AddService(s1);
         }
+        [TestMethod]
+        public void ReportMember()
+        {
+            DataCenter dataCenter = new DataCenter();
+            Service s1 = new Service(new DateTime(), new DateTime(), "George", "111222333", "Fayes", "222333444", "246894");
+            dataCenter.AddService(s1);
+            Member m = new Member("Faye", "222333444", "Address", "City", "State", "zip");
+            dataCenter.AddMember(m);
+            Report report = new Report();
+            report.CleanupDirectories();
+            report.MemberReport(m);
+        }
     }
 }
  
