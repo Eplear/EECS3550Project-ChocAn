@@ -173,8 +173,6 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@sCode", service.ServiceCode);
             sqliteCmd.Parameters.AddWithValue("@com", service.Comments);
 
-            sqliteCmd.ExecuteNonQuery();
-        }
             try
             {
                 sqliteCmd.ExecuteNonQuery();
@@ -184,6 +182,7 @@ namespace ChocAn
                 Console.WriteLine("Service Already In the Database!");
             }
         }
+            
 
         public void DeleteMember(string memberID)
         {
