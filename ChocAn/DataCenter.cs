@@ -68,12 +68,20 @@ namespace ChocAn
             string status = "Member does not exist.";
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
-            sqliteCmd.CommandText = "SELECT isSuspended FROM member  WHERE EXISTS(SELECT 1 FROM member WHERE mNum = @memNum); ";
+            sqliteCmd.CommandText = "SELECT EXISTS(SELECT isSuspended FROM member WHERE mNum = @memNum); ";
             sqliteCmd.Parameters.AddWithValue("@memNum", memNum);
             
             reader = sqliteCmd.ExecuteReader();
             reader.Read();
             isValid = reader.GetBoolean(0);
+            try
+            {
+                
+            }
+            catch
+            {
+                Console.WriteLine("ERROR: Member number not found.");
+            }
 
             if (isValid == true)
             {
@@ -83,19 +91,9 @@ namespace ChocAn
             {
                 status = "Suspended.";
             }
-            
+
             Console.WriteLine("Validation Status: " + status);
-            
-            try
-            {
-                //code moved out to identify error
-            }
-            catch
-            {
-                Console.WriteLine("ERROR: Member number not found.");
-            }
-            
-            
+
             return isValid;
         }
 
@@ -111,30 +109,32 @@ namespace ChocAn
             
             try
             {
-                sqliteCmd.ExecuteScalar();
-                found = 1;
+                found = Convert.ToInt32(sqliteCmd.ExecuteScalar());
             }
             catch
             {
                 Console.WriteLine("ERROR: Provider number not found.");
             }
 
-            if (found == 1) isValid = true;
+            isValid = (found == 1);
 
             return isValid;
         }
         //Doesn't add any booleans?
         public void AddMember(Member member)
         {
+            int isSuspended = 0;
+            if (member.Suspended) isSuspended = 1;
             var sqliteCmd = sqliteConn.CreateCommand();
-            sqliteCmd.CommandText = "INSERT INTO member(mNum, mName, mStreet, mCity, mState, mZip) " +
-                    "VALUES(@num, @name, @street, @city, @state, @zip)";
+            sqliteCmd.CommandText = "INSERT INTO member(mNum, mName, mStreet, mCity, mState, mZip, isSuspended) " +
+                    "VALUES(@num, @name, @street, @city, @state, @zip, @suspended)";
             sqliteCmd.Parameters.AddWithValue("@num", member.Number);
             sqliteCmd.Parameters.AddWithValue("@name", member.Name);
             sqliteCmd.Parameters.AddWithValue("@street", member.Address);
             sqliteCmd.Parameters.AddWithValue("@city", member.City);
             sqliteCmd.Parameters.AddWithValue("@state", member.State);
             sqliteCmd.Parameters.AddWithValue("@zip", member.Zip);
+            sqliteCmd.Parameters.AddWithValue("@suspended", isSuspended);
 
             try
             {

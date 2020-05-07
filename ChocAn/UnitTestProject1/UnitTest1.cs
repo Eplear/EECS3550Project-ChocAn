@@ -21,7 +21,8 @@ namespace UnitTestProject1
         {
             DataCenter dataCenter = new DataCenter();
             bool isValidProvider;
-
+            Provider p1 = new Provider("Big Pharma", "123456789", "1 Main St.", "New York", "New York", "55432");
+            dataCenter.AddProvider(p1);
             isValidProvider = dataCenter.ValidateProvider("123456789");
 
             Assert.IsTrue(isValidProvider);
@@ -39,16 +40,31 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
-        public void ValidateExistingMember()
+        public void ValidateSuspendedMember()
         {
             DataCenter database = new DataCenter();
-            Member m1 = new Member("Adam", "123456789", "Perth St", "Toledo", "Ohio", "43607");
+            Member m1 = new Member("Adam", "123456789", "Perth St", "Toledo", "Ohio", "43607", true);
             bool? isValidMember;
 
             database.AddMember(m1);
             isValidMember = database.ValidateMember("123456789");
+            bool isValid = isValidMember == false;
 
-            Assert.IsNotNull(isValidMember);
+            Assert.IsFalse(isValid);
+        }
+
+        [TestMethod]
+        public void ValidateGoodMember()
+        {
+            DataCenter database = new DataCenter();
+            Member m1 = new Member("Adam", "123456789", "Perth St", "Toledo", "Ohio", "43607", false);
+            bool? isValidMember;
+
+            database.AddMember(m1);
+            isValidMember = database.ValidateMember("123456789");
+            bool isValid = isValidMember == true;
+
+            Assert.IsTrue(isValid);
         }
 
         [TestMethod]
