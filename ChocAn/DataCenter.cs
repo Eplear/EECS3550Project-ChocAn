@@ -530,6 +530,7 @@ namespace ChocAn
                                   "sMemberNum TEXT, " +
                                   "comment TEXT, " +
                                   "sCode TEXT, " +
+                                  "PRIMARY KEY (servDate, sMemberNum)" +
                                   "FOREIGN KEY(sProviderNum) REFERENCES provider(pNum), " +
                                   "FOREIGN KEY(sMemberNum) REFERENCES member(mNum))";
 
