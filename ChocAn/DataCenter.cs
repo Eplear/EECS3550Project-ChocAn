@@ -209,7 +209,7 @@ namespace ChocAn
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "UPDATE member " +
-                "SET mName = @name " +
+                "SET mName = @name, mNum = @num, mStreet = @street, mCity = @city, mState = @state, mZip = @zip, isSuspended = @suspended " +
                 "WHERE mNum = @oldNum;";
             sqliteCmd.Parameters.AddWithValue("@name", newMember.Name);
             sqliteCmd.Parameters.AddWithValue("@num", newMember.Number);
