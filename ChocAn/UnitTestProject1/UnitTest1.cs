@@ -138,9 +138,15 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
+        [ExpectedException(typeof(System.InvalidOperationException),
+    "Member does not exist.")]
         public void DeleteTables()
         {
+            DataCenter database = new DataCenter();
 
+            database.Populate();
+            database.NukeTables();
+            database.ParseMember("123456789");
         }
 
     }

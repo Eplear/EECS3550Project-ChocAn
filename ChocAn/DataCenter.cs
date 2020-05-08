@@ -562,7 +562,11 @@ namespace ChocAn
         {
             SQLiteCommand sqliteCmd;
             sqliteCmd = sqliteConn.CreateCommand();
-            sqliteCmd.CommandText = "DELETE * FROM(member, provider, service);";
+            sqliteCmd.CommandText = "DELETE FROM member;";
+            sqliteCmd.ExecuteNonQuery();
+            sqliteCmd.CommandText = "DELETE FROM provider;";
+            sqliteCmd.ExecuteNonQuery();
+            sqliteCmd.CommandText = "DELETE FROM service;";
             sqliteCmd.ExecuteNonQuery();
         }
         //For Testing
