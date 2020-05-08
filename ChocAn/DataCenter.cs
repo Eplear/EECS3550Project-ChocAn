@@ -61,8 +61,10 @@ namespace ChocAn
             try
             {
                 found = Convert.ToInt32(sqliteCmd.ExecuteScalar());
+                // Checks if any rows are returned.
                 if (found != 0)
                 {
+                    // Checks suspension status of member.
                     reader = sqliteCmd.ExecuteReader();
                     reader.Read();
                     isValid = reader.GetBoolean(0);
@@ -83,7 +85,9 @@ namespace ChocAn
                 status = "Suspended.";
             }
 
-            //Console.WriteLine("Validation Status: " + status);
+            // Returns 'null' if member doesn't exist, 
+            //    'false' if the member is suspended, 
+            //    and 'true' if the member exists with no suspension
 
             return isValid;
         }
@@ -98,6 +102,7 @@ namespace ChocAn
             
             try
             {
+                // 'found' will equal 0 if no matching provider is found.
                 found = Convert.ToInt32(sqliteCmd.ExecuteScalar());
             }
             catch
@@ -109,7 +114,7 @@ namespace ChocAn
 
             return isValid;
         }
-        //Doesn't add any booleans?
+
         public void AddMember(Member member)
         {
             int isSuspended = 0;
@@ -224,7 +229,7 @@ namespace ChocAn
 
             sqliteCmd.ExecuteNonQuery();
         }
-        //Functional
+
         public Provider ParseProvider(string pNum)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -240,7 +245,7 @@ namespace ChocAn
                                 reader.GetString(4),
                                 reader.GetString(5));
         }
-        //Functional without boolean
+
         public Member ParseMember(string mNum)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -249,7 +254,7 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@mNum", mNum);
             reader = sqliteCmd.ExecuteReader();
             reader.Read();
-            //Temp Removed boolean since it causes issues
+        
             return new Member(reader.GetString(1),
                 reader.GetString(0),
                 reader.GetString(2),
@@ -274,7 +279,7 @@ namespace ChocAn
                                 reader.GetString(6),
                                 reader.GetString(7));
         }
-        //Completed - Functional
+
         public List<Service> MemberServiceList(string mNum)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -297,7 +302,7 @@ namespace ChocAn
             }
             return result;
         }
-        //Completed - Functional
+
         public List<Service> ProviderServiceList(string pNum)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -320,7 +325,7 @@ namespace ChocAn
             }
             return result;
         }
-        //Completed - Functional
+
         public int TotalProviderFee(string pNum)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -336,7 +341,7 @@ namespace ChocAn
             }
             return result;
         }
-        //Completed - Functional
+
         public void WriteEFT()
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -355,12 +360,12 @@ namespace ChocAn
                 Program.bankrecord.Record(temp);
             }
         }
-        //Completed - functional
+
         public void GetProviderDirectory()
         {
             System.Diagnostics.Process.Start(PROVIDER_DIRECTORY);
         }
-        //Completed - Testing
+
         public void GeneratePayableSummary()
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -379,7 +384,7 @@ namespace ChocAn
             }
             Console.WriteLine("Overall Total Fees: " + fees + "\nOverall Number of Consultations: " + count);
         }
-        //Completed - functional works with managerclient
+
         public void SendMemReport()
         {
             while (true)
@@ -422,7 +427,7 @@ namespace ChocAn
                 }
             }
         }
-        //Completed - functional
+
         public void SendProvReport()
         {
             while (true)
@@ -468,16 +473,16 @@ namespace ChocAn
         private static SQLiteConnection CreateConnection()
         {
             SQLiteConnection sqlite_conn;
-            // Create a new database connection:
+            // Creates a new database connection.
             sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Compress = True; ");
-            // Open the connection:
+            // Opens the connection.
             try
             {
                 sqlite_conn.Open();
             }
             catch (Exception ex)
             {
-                // thank you come again 
+                // Doesn't create new connection.
             }
 
             return sqlite_conn;
@@ -544,10 +549,13 @@ namespace ChocAn
         {
             SQLiteCommand sqliteCmd;
             sqliteCmd = sqliteConn.CreateCommand();
+            // Delete member table
             sqliteCmd.CommandText = "DELETE FROM member;";
             sqliteCmd.ExecuteNonQuery();
+            // Delete provider table
             sqliteCmd.CommandText = "DELETE FROM provider;";
             sqliteCmd.ExecuteNonQuery();
+            // Delete service table
             sqliteCmd.CommandText = "DELETE FROM service;";
             sqliteCmd.ExecuteNonQuery();
         }
