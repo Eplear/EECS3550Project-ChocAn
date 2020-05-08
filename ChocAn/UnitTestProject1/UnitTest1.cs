@@ -99,6 +99,21 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
+        public void ModifyProvider()
+        {
+            DataCenter database = new DataCenter();
+            Provider p1 = new Provider("Big Pharma", "123456789", "1 Main St.", "New York", "New York", "55432");
+            Provider p2 = new Provider("Big Pharma Inc", "123456789", "123 Sesame St.", "Hell's Kitchen", "New York", "55667");
+
+            database.AddProvider(p1);
+            database.ModifyProvider(p1, p2);
+            Provider testingProv = database.ParseProvider(p2.Number);
+            database.NukeTables();
+
+            Assert.AreEqual("Big Pharma Inc", testingProv.Name);
+        }
+
+        [TestMethod]
         public void WriteEFT()
         {
             DataCenter database = new DataCenter();
