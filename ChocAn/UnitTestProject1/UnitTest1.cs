@@ -24,6 +24,7 @@ namespace UnitTestProject1
             Provider p1 = new Provider("Big Pharma", "123456789", "1 Main St.", "New York", "New York", "55432");
             dataCenter.AddProvider(p1);
             isValidProvider = dataCenter.ValidateProvider("123456789");
+            dataCenter.NukeTables();
 
             Assert.IsTrue(isValidProvider);
         }
@@ -35,6 +36,7 @@ namespace UnitTestProject1
             bool isValidProvider;
 
             isValidProvider = dataCenter.ValidateProvider("000000001");
+            dataCenter.NukeTables();
 
             Assert.IsFalse(isValidProvider);
         }
@@ -49,6 +51,7 @@ namespace UnitTestProject1
             database.AddMember(m1);
             isValidMember = database.ValidateMember("123456789");
             bool isValid = isValidMember == false;
+            database.NukeTables();
 
             Assert.IsFalse(isValid);
         }
@@ -63,6 +66,7 @@ namespace UnitTestProject1
             database.AddMember(m1);
             isValidMember = database.ValidateMember("123456789");
             bool isValid = isValidMember == true;
+            database.NukeTables();
 
             Assert.IsTrue(isValid);
         }
@@ -74,8 +78,24 @@ namespace UnitTestProject1
             bool? isValidMember;
             
             isValidMember = database.ValidateMember("000000001");
+            database.NukeTables();
 
             Assert.IsNull(isValidMember);
+        }
+
+        [TestMethod]
+        public void ModifyMember()
+        {
+            DataCenter database = new DataCenter();
+            Member m1 = new Member("Adam", "123456789", "Perth St", "Toledo", "Ohio", "43607", false);
+            Member m2 = new Member("Adam Lebowski", "123456789", "Bancroft", "Toledo", "Ohio", "43606", false);
+
+            database.AddMember(m1);
+            database.ModifyMember(m1, m2);
+            Member testingMem = database.ParseMember(m2.Number);
+            database.NukeTables();
+
+            Assert.AreEqual("Adam Lebowski", testingMem.Name);
         }
 
         [TestMethod]
@@ -92,6 +112,7 @@ namespace UnitTestProject1
             DataCenter dataCenter = new DataCenter();
             Service s1 = new Service(new DateTime(), new DateTime(), "George", "111222333", "Fayes", "222333444", "246894");
             dataCenter.AddService(s1);
+            dataCenter.NukeTables();
         }
 
         [TestMethod]
@@ -103,6 +124,7 @@ namespace UnitTestProject1
             int reportReturn;
             Report report = new Report();
             reportReturn = report.MemberReport(m);
+            database.NukeTables();
 
             Assert.AreEqual(1, reportReturn);
         }
@@ -116,9 +138,24 @@ namespace UnitTestProject1
             Provider p = new Provider("Adam", "123456789", "111 Elm St", "Toledo", "Ohio", "43606");
             Report report = new Report();
             reportReturn = report.ProviderReport(p);
+            database.NukeTables();
 
             Assert.AreEqual(1, reportReturn);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.InvalidOperationException),
+    "Member does not exist.")]
+        public void DeleteTables()
+        {
+            DataCenter database = new DataCenter();
+
+            database.Populate();
+            database.NukeTables();
+            database.ParseMember("123456789");
+            database.NukeTables();
+        }
+
     }
 }
  
