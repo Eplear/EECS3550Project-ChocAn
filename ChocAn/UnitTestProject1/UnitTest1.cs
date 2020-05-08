@@ -11,9 +11,6 @@ namespace UnitTestProject1
         public void InitializeDataCenter()
         {
             DataCenter dataCenter = new DataCenter();
-            
-            
-
         }
 
         [TestMethod]

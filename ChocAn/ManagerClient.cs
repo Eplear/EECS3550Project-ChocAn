@@ -46,10 +46,12 @@ namespace ChocAn
             Console.WriteLine(" 1 - Add new member");
             Console.WriteLine(" 2 - Delete member");
             Console.WriteLine(" 3 - Modify member");
-            Console.WriteLine(" 4 - Add new provider");
-            Console.WriteLine(" 5 - Delete Provider");
-            Console.WriteLine(" 6 - Modify provider");
-            Console.WriteLine(" 7 - Generate reports");
+            Console.WriteLine(" 4 - Print member details");
+            Console.WriteLine(" 5 - Add new provider");
+            Console.WriteLine(" 6 - Delete Provider");
+            Console.WriteLine(" 7 - Modify provider");
+            Console.WriteLine(" 8 - Print Provider Details");
+            Console.WriteLine(" 9 - Generate reports");
             Console.WriteLine(" e - Exit");
             Console.WriteLine("-------------------------------------------------------------------");
         }
@@ -86,18 +88,26 @@ namespace ChocAn
                     ModifyMember();
                     break;
                 case '4':
+                    Console.WriteLine("> Print member details");
+                    PrintMemberDetails();
+                    break;
+                case '5':
                     Console.WriteLine("> Add new provider");
                     AddProvider();
                     break;
-                case '5':
+                case '6':
                     Console.WriteLine("> Delete provider");
                     DeleteProvider();
                     break;
-                case '6':
+                case '7':
                     Console.WriteLine("> Modify provider");
                     ModifyProvider();
                     break;
-                case '7':
+                case '8':
+                    Console.WriteLine("> Print provider details");
+                    PrintProviderDetails();
+                    break;
+                case '9':
                     Console.WriteLine("> Generate reports");
                     GenerateReports();
                     break;
@@ -186,10 +196,10 @@ namespace ChocAn
             }
             else
             {
-                //TODO maybe show member details before deletion
+                Console.WriteLine();
 
                 //Confirm member deletion
-                Console.WriteLine("Are you sure you want to delte member" + number + " (Y/N)?");
+                Console.Write("Are you sure you want to delte member" + number + " (Y/N)? ");
 
                 char cmd;
 
@@ -372,10 +382,10 @@ namespace ChocAn
             }
             else
             {
-                //TODO maybe show provider details before deletion
+                Console.WriteLine();
 
                 //confirm provider deletion
-                Console.WriteLine("Are you sure you want to delte provider" + number + " (Y/N)?");
+                Console.Write("Are you sure you want to delte provider" + number + " (Y/N)? ");
 
                 char cmd;
 
@@ -404,7 +414,7 @@ namespace ChocAn
          */
         void ModifyProvider()
         {
-            Console.Write("Enter a Provider number: ");
+            Console.Write("Enter a provider number: ");
             string number = Console.ReadLine();
 
             if (Program.database.ValidateProvider(number))
@@ -499,7 +509,7 @@ namespace ChocAn
             Console.WriteLine(" 2 - Send member report");
             Console.WriteLine(" 3 - Send provider report");
             Console.WriteLine(" 4 - Write EFT");
-            Console.WriteLine(" 5 - Get provider directory");
+            Console.WriteLine(" 5 - View provider directory");
             Console.WriteLine(" 6 - Delete all reports");
             Console.WriteLine(" e - Exit");
             Console.WriteLine("-------------------------------------------------------------------");
@@ -510,7 +520,7 @@ namespace ChocAn
             do
             {
                 Console.WriteLine();
-                Console.Write("Enter a command: ");
+                Console.Write("Enter a report command: ");
 
                 if (!char.TryParse(Console.ReadLine(), out char cmd)) cmd = ' '; //send to default case
 
@@ -555,6 +565,73 @@ namespace ChocAn
                 }
 
             } while (!exit);
+        }
+
+
+        /*
+         * Gets member number
+         * checks database
+         * prints info to console
+         */
+        void PrintMemberDetails()
+        {
+            Console.Write("Enter a member number: ");
+            string number = Console.ReadLine();
+
+            if (Program.database.ValidateMember(number) != null)
+            {
+                Member OldMemember = Program.database.ParseMember(number);
+
+                string Name = OldMemember.Name;
+                string Address = OldMemember.Address;
+                string City = OldMemember.City;
+                string State = OldMemember.State;
+                string Zip = OldMemember.Zip;
+                bool Suspended = OldMemember.Suspended;
+
+                //show current details of member
+                Console.WriteLine();
+                Console.WriteLine("Member details:");
+                Console.WriteLine("Name:      " + Name);
+                Console.WriteLine("Address:   " + Address);
+                Console.WriteLine("City:      " + City);
+                Console.WriteLine("State      " + State);
+                Console.WriteLine("Zip:       " + Zip);
+                Console.WriteLine("Suspended: " + Suspended);
+                Console.WriteLine();
+            }
+        }
+
+        /*
+         * Gets provider number
+         * checks database
+         * prints info to console
+         */
+        void PrintProviderDetails()
+        {
+            Console.Write("Enter a Provider number: ");
+            string number = Console.ReadLine();
+
+            if (Program.database.ValidateProvider(number))
+            {
+                Provider OldProvider = Program.database.ParseProvider(number);
+
+                string Name = OldProvider.Name;
+                string Address = OldProvider.Address;
+                string City = OldProvider.City;
+                string State = OldProvider.State;
+                string Zip = OldProvider.Zip;
+
+                //show current details of member
+                Console.WriteLine();
+                Console.WriteLine("Provider details:");
+                Console.WriteLine("Name:      " + Name);
+                Console.WriteLine("Address:   " + Address);
+                Console.WriteLine("City:      " + City);
+                Console.WriteLine("State      " + State);
+                Console.WriteLine("Zip:       " + Zip);
+                Console.WriteLine();
+            }
         }
 
 
