@@ -41,14 +41,14 @@ namespace UnitTestProject1
         [TestMethod]
         public void ValidateSuspendedMember()
         {
-            DataCenter database = new DataCenter();
+            DataCenter dataCenter = new DataCenter();
             Member m1 = new Member("Adam", "123456789", "Perth St", "Toledo", "Ohio", "43607", true);
             bool? isValidMember;
 
-            database.AddMember(m1);
-            isValidMember = database.ValidateMember("123456789");
+            dataCenter.AddMember(m1);
+            isValidMember = dataCenter.ValidateMember("123456789");
             bool isValid = isValidMember == false;
-            database.NukeTables();
+            dataCenter.NukeTables();
 
             Assert.IsFalse(isValid);
         }
@@ -56,14 +56,14 @@ namespace UnitTestProject1
         [TestMethod]
         public void ValidateGoodMember()
         {
-            DataCenter database = new DataCenter();
+            DataCenter dataCenter = new DataCenter();
             Member m1 = new Member("Adam", "123456789", "Perth St", "Toledo", "Ohio", "43607", false);
             bool? isValidMember;
 
-            database.AddMember(m1);
-            isValidMember = database.ValidateMember("123456789");
+            dataCenter.AddMember(m1);
+            isValidMember = dataCenter.ValidateMember("123456789");
             bool isValid = isValidMember == true;
-            database.NukeTables();
+            dataCenter.NukeTables();
 
             Assert.IsTrue(isValid);
         }
@@ -71,11 +71,11 @@ namespace UnitTestProject1
         [TestMethod]
         public void ValidateNonExistingMember()
         {
-            DataCenter database = new DataCenter();
+            DataCenter dataCenter = new DataCenter();
             bool? isValidMember;
             
-            isValidMember = database.ValidateMember("000000001");
-            database.NukeTables();
+            isValidMember = dataCenter.ValidateMember("000000001");
+            dataCenter.NukeTables();
 
             Assert.IsNull(isValidMember);
         }
@@ -83,14 +83,14 @@ namespace UnitTestProject1
         [TestMethod]
         public void ModifyMember()
         {
-            DataCenter database = new DataCenter();
+            DataCenter dataCenter = new DataCenter();
             Member m1 = new Member("Adam", "123456789", "Perth St", "Toledo", "Ohio", "43607", false);
             Member m2 = new Member("Adam Lebowski", "123456789", "Bancroft", "Toledo", "Ohio", "43606", false);
 
-            database.AddMember(m1);
-            database.ModifyMember(m1, m2);
-            Member testingMem = database.ParseMember(m2.Number);
-            database.NukeTables();
+            dataCenter.AddMember(m1);
+            dataCenter.ModifyMember(m1, m2);
+            Member testingMem = dataCenter.ParseMember(m2.Number);
+            dataCenter.NukeTables();
 
             Assert.AreEqual("Adam Lebowski", testingMem.Name);
         }
@@ -98,14 +98,14 @@ namespace UnitTestProject1
         [TestMethod]
         public void ModifyProvider()
         {
-            DataCenter database = new DataCenter();
+            DataCenter dataCenter = new DataCenter();
             Provider p1 = new Provider("Big Pharma", "123456789", "1 Main St.", "New York", "New York", "55432");
             Provider p2 = new Provider("Big Pharma Inc", "123456789", "123 Sesame St.", "Hell's Kitchen", "New York", "55667");
 
-            database.AddProvider(p1);
-            database.ModifyProvider(p1, p2);
-            Provider testingProv = database.ParseProvider(p2.Number);
-            database.NukeTables();
+            dataCenter.AddProvider(p1);
+            dataCenter.ModifyProvider(p1, p2);
+            Provider testingProv = dataCenter.ParseProvider(p2.Number);
+            dataCenter.NukeTables();
 
             Assert.AreEqual("Big Pharma Inc", testingProv.Name);
         }
@@ -113,9 +113,9 @@ namespace UnitTestProject1
         [TestMethod]
         public void WriteEFT()
         {
-            DataCenter database = new DataCenter();
-            database.Populate();
-            database.WriteEFT();
+            DataCenter dataCenter = new DataCenter();
+            dataCenter.Populate();
+            dataCenter.WriteEFT();
         }
 
         [TestMethod]
@@ -130,13 +130,13 @@ namespace UnitTestProject1
         [TestMethod]
         public void ReportMember()
         {
-            DataCenter database = new DataCenter();
-            database.Populate();
+            DataCenter dataCenter = new DataCenter();
+            dataCenter.Populate();
             Member m = new Member("Katy", "112233445", "21552 Drive St", "LA", "California", "31244");
             int reportReturn;
             Report report = new Report();
             reportReturn = report.MemberReport(m);
-            database.NukeTables();
+            dataCenter.NukeTables();
 
             Assert.AreEqual(1, reportReturn);
         }
@@ -144,13 +144,13 @@ namespace UnitTestProject1
         [TestMethod]
         public void ReportProvider()
         {
-            DataCenter database = new DataCenter();
-            database.Populate();
+            DataCenter dataCenter = new DataCenter();
+            dataCenter.Populate();
             int reportReturn;
             Provider p = new Provider("Adam", "123456789", "111 Elm St", "Toledo", "Ohio", "43606");
             Report report = new Report();
             reportReturn = report.ProviderReport(p);
-            database.NukeTables();
+            dataCenter.NukeTables();
 
             Assert.AreEqual(1, reportReturn);
         }
@@ -160,12 +160,12 @@ namespace UnitTestProject1
     "Member does not exist.")]
         public void DeleteTables()
         {
-            DataCenter database = new DataCenter();
+            DataCenter dataCenter = new DataCenter();
 
-            database.Populate();
-            database.NukeTables();
-            database.ParseMember("123456789");
-            database.NukeTables();
+            dataCenter.Populate();
+            dataCenter.NukeTables();
+            dataCenter.ParseMember("123456789");
+            dataCenter.NukeTables();
         }
 
     }
