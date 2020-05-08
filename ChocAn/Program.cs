@@ -8,8 +8,8 @@ namespace ChocAn
 { 
     class Program
     {
-        const bool PROVIDER_TERMINAL = false;
-        const bool MANAGER_TERMINAL  = true;
+        const bool PROVIDER_TERMINAL = true;
+        const bool MANAGER_TERMINAL  = false;
 
         static public DataCenter database = new DataCenter();
         static public Report report = new Report();
@@ -17,7 +17,7 @@ namespace ChocAn
 
         public static void Main(string[] args)
         {
-            
+            database.Populate();
             //enter if terminal should be provider
             if (PROVIDER_TERMINAL)
             {

@@ -26,12 +26,14 @@ namespace ChocAn
         {
             CreateTable(sqliteConn);
             InitializeDirectory();
+            
         }
 
         public DataCenter(bool isTesting)
         {
             CreateTable(sqliteConn);
             InitializeDirectory();
+            
         }
 
         public void InitializeDirectory()
@@ -48,7 +50,7 @@ namespace ChocAn
                 { 213579, new ServiceInfo(213579, "STD Testing", 15) },
                 { 980343, new ServiceInfo(980343, "Kidney Transplant", 9000) },
                 { 108375, new ServiceInfo(108375, "Physical Therapy", 220) }
-            };
+            }; 
         }
         public ServiceInfo FetchService(string key)
         {
@@ -138,10 +140,7 @@ namespace ChocAn
             {
                 sqliteCmd.ExecuteNonQuery();
             }
-            catch
-            {
-                Console.WriteLine("Member Already In the Database!");
-            }
+            catch { }
         }
 
         public void AddProvider(Provider provider)
@@ -155,15 +154,12 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@city", provider.City);
             sqliteCmd.Parameters.AddWithValue("@state", provider.State);
             sqliteCmd.Parameters.AddWithValue("@zip", provider.Zip);
-            
+
             try
             {
                 sqliteCmd.ExecuteNonQuery();
             }
-            catch
-            {
-                Console.WriteLine("Provider Already In the Database!");
-            }
+            catch { }
         }
 
         public void AddService(Service service)
@@ -183,10 +179,7 @@ namespace ChocAn
             {
                 sqliteCmd.ExecuteNonQuery();
             }
-            catch
-            {
-                Console.WriteLine("Service Already In the Database!");
-            }
+            catch { }
         }
             
 
@@ -252,7 +245,6 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@pNum", pNum);
             reader = sqliteCmd.ExecuteReader();
             reader.Read();
-            
             return new Provider(reader.GetString(1),
                                 reader.GetString(0),
                                 reader.GetString(2),
@@ -375,12 +367,12 @@ namespace ChocAn
                 Program.bankrecord.Record(temp);
             }
         }
-
+        //Completed - functional
         public void GetProviderDirectory()
         {
             System.Diagnostics.Process.Start(PROVIDER_DIRECTORY);
         }
-
+        //Completed - Testing
         public void GeneratePayableSummary()
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
@@ -442,7 +434,7 @@ namespace ChocAn
                 }
             }
         }
-        //completed - functional
+        //Completed - functional
         public void SendProvReport()
         {
             while (true)
@@ -530,7 +522,7 @@ namespace ChocAn
                                   "sMemberNum TEXT, " +
                                   "comment TEXT, " +
                                   "sCode TEXT, " +
-                                  "PRIMARY KEY (servDate, sMemberNum)" +
+                                  "PRIMARY KEY (currDate, sMemberNum)" +
                                   "FOREIGN KEY(sProviderNum) REFERENCES provider(pNum), " +
                                   "FOREIGN KEY(sMemberNum) REFERENCES member(mNum))";
 
@@ -542,7 +534,6 @@ namespace ChocAn
             sqliteCmd.CommandText = createServTable;
             sqliteCmd.ExecuteNonQuery();
         }
-
 
         private void ReadData(string table)
         {
@@ -567,6 +558,21 @@ namespace ChocAn
             sqliteCmd = sqliteConn.CreateCommand();
             sqliteCmd.CommandText = "DELETE * FROM(member, provider, service);";
             sqliteCmd.ExecuteNonQuery();
+        }
+        //For Testing
+        public void Populate()
+        {
+            AddProvider(new Provider("Adam", "123456789", "111 Elm St", "Toledo", "Ohio", "43606"));
+            AddProvider(new Provider("Trey", "111222333", "456 Park Rd", "Miami", "Florida", "12345"));
+            AddProvider(new Provider("Josh", "987654321", "000 Zero Dr", "Madrid", "Spain", "21345"));
+            AddMember(new Member("Katy", "112233445", "21552 Drive St", "LA", "California", "31244"));
+            AddMember(new Member("Sherry", "998877665", "544 Street Dr", "Portland", "Oregon", "31224"));
+            AddMember(new Member("Martha", "000000000", "899 Hello Bl", "Dallas", "Texas", "31244"));
+            AddService(new Service(DateTime.Parse("01-09-2000"), DateTime.Now, "Adam", "123456789", "Katy", "112233445", "634378"));
+            AddService(new Service(DateTime.Parse("04-20-2019"), DateTime.Now, "Adam", "123456789", "Sherry", "998877665", "980343"));
+            AddService(new Service(DateTime.Parse("10-08-2019"), DateTime.Now, "Josh", "987654321", "Sherry", "998877665", "108375"));
+            AddService(new Service(DateTime.Parse("12-20-2012"), DateTime.Now, "Josh", "987654321", "Martha", "000000000", "234546"));
+            AddService(new Service(DateTime.Parse("09-20-2012"), DateTime.Now, "Trey", "111222333", "Katy", "112233445", "893209"));
         }
         
     }
