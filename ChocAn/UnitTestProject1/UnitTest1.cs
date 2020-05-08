@@ -81,13 +81,8 @@ namespace UnitTestProject1
         [TestMethod]
         public void WriteEFT()
         {
-            Provider p1 = new Provider("name1", "123", "add", "city", "st", "4000");
-            Provider p2 = new Provider("name2", "135", "dress", "city2", "st2", "5000");
             DataCenter database = new DataCenter();
-            BankRecord bank = new BankRecord();
-            bank.CleanupDirectories();
-            database.AddProvider(p1);
-            database.AddProvider(p2);
+            database.Populate();
             database.WriteEFT();
         }
 
@@ -103,16 +98,10 @@ namespace UnitTestProject1
         public void ReportMember()
         {
             DataCenter database = new DataCenter();
-            Service s1 = new Service(DateTime.Now, DateTime.Now, "George", "111222333", "Fayes", "222333444", "246894");
-            Member m = new Member("Faye", "222333444", "Address", "City", "State", "zip");
-            Provider p = new Provider("George", "111222333", "x", "xz", "asd", "czx");
+            database.Populate();
+            Member m = new Member("Katy", "112233445", "21552 Drive St", "LA", "California", "31244");
             int reportReturn;
-
-            database.AddService(s1);
-            database.AddMember(m);
-            database.AddProvider(p);
             Report report = new Report();
-            report.CleanupDirectories();
             reportReturn = report.MemberReport(m);
 
             Assert.AreEqual(1, reportReturn);
@@ -122,16 +111,10 @@ namespace UnitTestProject1
         public void ReportProvider()
         {
             DataCenter database = new DataCenter();
-            Service s1 = new Service(DateTime.Now, DateTime.Now, "George", "111222333", "Fayes", "222333444", "246894");
-            Member m = new Member("Faye", "222333444", "Address", "City", "State", "zip");
-            Provider p = new Provider("George", "111222333", "x", "xz", "asd", "czx");
+            database.Populate();
             int reportReturn;
-
-            database.AddService(s1);
-            database.AddMember(m);
-            database.AddProvider(p);
+            Provider p = new Provider("Adam", "123456789", "111 Elm St", "Toledo", "Ohio", "43606");
             Report report = new Report();
-            report.CleanupDirectories();
             reportReturn = report.ProviderReport(p);
 
             Assert.AreEqual(1, reportReturn);
