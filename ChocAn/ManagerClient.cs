@@ -56,8 +56,7 @@ namespace ChocAn
             Console.WriteLine(" 4 - Add new provider");
             Console.WriteLine(" 5 - Delete Provider");
             Console.WriteLine(" 6 - Modify provider");
-            Console.WriteLine(" 7 - Add new service");
-            Console.WriteLine(" 8 - Generate reports");
+            Console.WriteLine(" 7 - Generate reports");
             Console.WriteLine(" e - Exit");
             Console.WriteLine("-------------------------------------------------------------------");
         }
@@ -106,10 +105,6 @@ namespace ChocAn
                     ModifyProvider();
                     break;
                 case '7':
-                    Console.WriteLine("> Add service");
-                    AddService();
-                    break;
-                case '8':
                     Console.WriteLine("> Generate reports");
                     GenerateReports();
                     break;
@@ -321,24 +316,6 @@ namespace ChocAn
 
 
         /*
-         * Returns true id user typed Y
-         * return false otherwise
-         */
-        bool AnsweredYes()
-        {
-            char cmd;
-
-            while (true)
-            {
-                if (char.TryParse(Console.ReadLine(), out cmd)) break;
-
-                Console.Write("Enter a y or n: ");
-            }
-
-            return (char.ToUpperInvariant(cmd) == 'Y');
-        }
-
-        /*
          * Promts manager to enter new provider details
          * adds new provider to database
          */
@@ -515,36 +492,7 @@ namespace ChocAn
         }
 
 
-        /*
-         * Adds a new service offering to database
-         */
-        void AddService()
-        {
-            Console.WriteLine("Service creation");
-
-            //get new service details
-            Console.Write("\tEnter name: ");
-            string name = Console.ReadLine();
-
-            //generate code
-
-            Console.Write("\tEnter fee:  ");
-
-            while (true)
-            {
-                if (double.TryParse(Console.ReadLine(), out double serviceFee)) break;
-
-                Console.Write("> Enter a valid fee:                  ");
-            }
-
-            //initialize new service offering from entered details
-
-            //add new service offering to directory
-            //TODO still need add service function
-
-        }
-
-
+        
         /*
          * prints a legend of commands
          * allows the manager to choos which report to generate
@@ -615,5 +563,25 @@ namespace ChocAn
 
             } while (!exit);
         }
+
+
+        /*
+         * Returns true id user typed Y
+         * return false otherwise
+         */
+        bool AnsweredYes()
+        {
+            char cmd;
+
+            while (true)
+            {
+                if (char.TryParse(Console.ReadLine(), out cmd)) break;
+
+                Console.Write("Enter a y or n: ");
+            }
+
+            return (char.ToUpperInvariant(cmd) == 'Y');
+        }
+
     }
 }
