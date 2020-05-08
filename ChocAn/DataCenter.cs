@@ -73,7 +73,6 @@ namespace ChocAn
                 Console.WriteLine("ERROR: Member number not found.");
             }
 
-            
 
             if (isValid == true)
             {
@@ -84,7 +83,7 @@ namespace ChocAn
                 status = "Suspended.";
             }
 
-            Console.WriteLine("Validation Status: " + status);
+            //Console.WriteLine("Validation Status: " + status);
 
             return isValid;
         }
