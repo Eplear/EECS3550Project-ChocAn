@@ -551,6 +551,12 @@ namespace ChocAn
             sqliteCmd.CommandText = "DELETE FROM service;";
             sqliteCmd.ExecuteNonQuery();
         }
+
+        public void Close()
+        {
+            sqliteConn.Close();
+        }
+
         //For Testing
         public void Populate()
         {
