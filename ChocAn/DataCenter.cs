@@ -212,9 +212,8 @@ namespace ChocAn
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             
             sqliteCmd.CommandText = "UPDATE provider " +
-                                    "SET(pName = @name, pNum = @num, pStreet = @street, pCity = @city, pState = @state, pZip = @zip) " +
-                                    "WHERE pNum = @oldNum" +
-                                    "LIMIT 1;";
+                                    "SET pName = @name, pNum = @num, pStreet = @street, pCity = @city, pState = @state, pZip = @zip " +
+                                    "WHERE pNum = @oldNum;";
             sqliteCmd.Parameters.AddWithValue("@name", newProvider.Name);
             sqliteCmd.Parameters.AddWithValue("@num", newProvider.Number);
             sqliteCmd.Parameters.AddWithValue("@street", newProvider.Address);
