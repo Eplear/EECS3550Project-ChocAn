@@ -192,6 +192,7 @@ namespace ChocAn
         public void ModifyMember(Member oldMember, Member newMember)
         {
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
+            int isSuspended = newMember.Suspended ? 1 : 0;
             sqliteCmd.CommandText = "UPDATE member " +
                 "SET mName = @name, mNum = @num, mStreet = @street, mCity = @city, mState = @state, mZip = @zip, isSuspended = @suspended " +
                 "WHERE mNum = @oldNum;";
@@ -201,7 +202,7 @@ namespace ChocAn
             sqliteCmd.Parameters.AddWithValue("@city", newMember.City);
             sqliteCmd.Parameters.AddWithValue("@state", newMember.State);
             sqliteCmd.Parameters.AddWithValue("@zip", newMember.Zip);
-            sqliteCmd.Parameters.AddWithValue("@suspended", newMember.Suspended);
+            sqliteCmd.Parameters.AddWithValue("@suspended", isSuspended);
             sqliteCmd.Parameters.AddWithValue("@oldNum", oldMember.Number);
 
             sqliteCmd.ExecuteNonQuery();
