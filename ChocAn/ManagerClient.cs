@@ -559,8 +559,7 @@ namespace ChocAn
             Console.WriteLine(" 3 - Send provider report");
             Console.WriteLine(" 4 - Write EFT");
             Console.WriteLine(" 5 - Get provider directory");
-            Console.WriteLine(" 6 - Generate all reports");
-            Console.WriteLine(" 7 - Delete all reports");
+            Console.WriteLine(" 6 - Delete all reports");
             Console.WriteLine(" e - Exit");
             Console.WriteLine("-------------------------------------------------------------------");
 
@@ -601,13 +600,6 @@ namespace ChocAn
                         Program.database.GetProviderDirectory();
                         break;
                     case '6':
-                        Console.WriteLine("> Generating all reports...");
-                        Program.database.GeneratePayableSummary();
-                        Program.database.SendMemReport();
-                        Program.database.WriteEFT();
-                        Console.WriteLine("  Reports have been created. ");
-                        break;
-                    case '7':
                         Console.WriteLine("> Deleting all reports...");
                         Program.report.CleanupDirectories();
                         Program.bankrecord.CleanupDirectories();
@@ -622,20 +614,6 @@ namespace ChocAn
                 }
 
             } while (!exit);
-        }
-
-
-        void PrintProviderDirectory(Hashtable dir)
-        {
-            Console.Write("Printing directory [code, name, fee].");
-
-            foreach (string key in dir.Keys)
-            {
-                ServiceInfo si = (ServiceInfo)dir[key];
-                Console.Write(si.Code);
-                Console.Write(si.Name);
-                Console.WriteLine(si.Fee);
-            }
         }
     }
 }

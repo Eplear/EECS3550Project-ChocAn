@@ -379,7 +379,7 @@ namespace ChocAn
             SQLiteDataReader reader;
             sqliteCmd.CommandText = "SELECT * FROM provider;";
             reader = sqliteCmd.ExecuteReader();
-            Console.WriteLine("---Payable Summary---\nProviders to be paid:\n");
+            Console.WriteLine("\n---Payable Summary---\nProviders to be paid:\n");
             int fees = 0, count = 0;
             while (reader.Read())
             {

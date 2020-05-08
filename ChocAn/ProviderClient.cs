@@ -138,6 +138,11 @@ namespace ChocAn
                     Console.WriteLine("> Exiting");
                     exit = true;
                     break;
+                case 's':
+                    Console.WriteLine("Switching to Manager Terminal...");
+                    Console.Clear();
+                    ManagerClient client = new ManagerClient();
+                    break;
                 default:
                     Console.WriteLine("> Invalid command");
                     break;
