@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SQLite;
-using System.Diagnostics.Eventing.Reader;
-using System.Numerics;
-using System.Security.Cryptography;
-using System.Security.Policy;
-using System.Windows;
-
 /* BROKEN
  * validate member
  * modify provider
@@ -18,7 +11,6 @@ namespace ChocAn
     public class DataCenter
     {
         private readonly SQLiteConnection sqliteConn = CreateConnection();
-        private bool isTesting = false;
         public Hashtable ProviderDirectory;
         const string PROVIDER_DIRECTORY = "ProviderDirectory.pdf";
 
@@ -28,14 +20,6 @@ namespace ChocAn
             InitializeDirectory();
             
         }
-
-        public DataCenter(bool isTesting)
-        {
-            CreateTable(sqliteConn);
-            InitializeDirectory();
-            
-        }
-
         public void InitializeDirectory()
         {
             ProviderDirectory = new Hashtable
