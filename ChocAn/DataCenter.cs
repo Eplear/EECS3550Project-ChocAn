@@ -68,22 +68,28 @@ namespace ChocAn
         {
             bool? isValid = null;
             string status = "Member does not exist.";
+            int found = 0;
             SQLiteCommand sqliteCmd = sqliteConn.CreateCommand();
             SQLiteDataReader reader;
             sqliteCmd.CommandText = "SELECT EXISTS(SELECT isSuspended FROM member WHERE mNum = @memNum); ";
             sqliteCmd.Parameters.AddWithValue("@memNum", memNum);
-            
-            reader = sqliteCmd.ExecuteReader();
-            reader.Read();
-            isValid = reader.GetBoolean(0);
+                        
             try
             {
-                
+                found = Convert.ToInt32(sqliteCmd.ExecuteScalar());
+                if (found != 0)
+                {
+                    reader = sqliteCmd.ExecuteReader();
+                    reader.Read();
+                    isValid = reader.GetBoolean(0);
+                }
             }
             catch
             {
                 Console.WriteLine("ERROR: Member number not found.");
             }
+
+            
 
             if (isValid == true)
             {

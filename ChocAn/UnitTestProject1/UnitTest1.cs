@@ -119,6 +119,13 @@ namespace UnitTestProject1
 
             Assert.AreEqual(1, reportReturn);
         }
+
+        [TestMethod]
+        public void DeleteTables()
+        {
+
+        }
+
     }
 }
  
